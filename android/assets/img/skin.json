@@ -1,0 +1,14 @@
+{
+    "com.badlogic.gdx.graphics.g2d.BitmapFont": {
+        "font144": { "file": "fonts/montserrat144.fnt" },
+        "font72": { "file": "fonts/montserrat72.fnt" },
+        "font36": { "file": "fonts/montserrat36.fnt" }
+    },
+    
+    "com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle": {
+        "font144": { "font": font144 },
+        "font72": { "font": font72},
+        "font36": { "font": font36},
+        "default": { "font": font144}
+    }
+ }

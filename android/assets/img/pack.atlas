@@ -1,0 +1,165 @@
+
+pack.png
+size: 1003,993
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+level/circle_inner
+  rotate: false
+  xy: 2, 2
+  size: 337, 337
+  orig: 337, 337
+  offset: 0, 0
+  index: -1
+level/circle_outer
+  rotate: false
+  xy: 2, 341
+  size: 652, 652
+  orig: 652, 652
+  offset: 0, 0
+  index: -1
+level/coin
+  rotate: false
+  xy: 341, 153
+  size: 430, 186
+  orig: 430, 186
+  offset: 0, 0
+  index: -1
+level/enemy
+  rotate: false
+  xy: 878, 857
+  size: 125, 136
+  orig: 125, 136
+  offset: 0, 0
+  index: -1
+level/ship_back
+  rotate: false
+  xy: 656, 802
+  size: 220, 94
+  orig: 220, 94
+  offset: 0, 0
+  index: -1
+level/ship_body
+  rotate: false
+  xy: 656, 706
+  size: 220, 94
+  orig: 220, 94
+  offset: 0, 0
+  index: -1
+level/ship_fire1
+  rotate: false
+  xy: 656, 898
+  size: 220, 95
+  orig: 220, 95
+  offset: 0, 0
+  index: -1
+level/ship_fire2
+  rotate: false
+  xy: 341, 56
+  size: 220, 95
+  orig: 220, 95
+  offset: 0, 0
+  index: -1
+
+pack2.png
+size: 980,492
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+menu/fullscreen_off
+  rotate: false
+  xy: 737, 132
+  size: 135, 114
+  orig: 135, 114
+  offset: 0, 0
+  index: -1
+menu/fullscreen_on
+  rotate: false
+  xy: 737, 26
+  size: 117, 104
+  orig: 117, 104
+  offset: 0, 0
+  index: -1
+menu/menu_close
+  rotate: false
+  xy: 2, 248
+  size: 243, 244
+  orig: 243, 244
+  offset: 0, 0
+  index: -1
+menu/menu_open
+  rotate: false
+  xy: 2, 2
+  size: 243, 244
+  orig: 243, 244
+  offset: 0, 0
+  index: -1
+menu/music_off
+  rotate: false
+  xy: 247, 248
+  size: 243, 244
+  orig: 243, 244
+  offset: 0, 0
+  index: -1
+menu/music_on
+  rotate: false
+  xy: 247, 2
+  size: 243, 244
+  orig: 243, 244
+  offset: 0, 0
+  index: -1
+menu/settings
+  rotate: false
+  xy: 492, 248
+  size: 243, 244
+  orig: 243, 244
+  offset: 0, 0
+  index: -1
+menu/sound_off
+  rotate: false
+  xy: 492, 2
+  size: 243, 244
+  orig: 243, 244
+  offset: 0, 0
+  index: -1
+menu/sound_on
+  rotate: false
+  xy: 737, 248
+  size: 243, 244
+  orig: 243, 244
+  offset: 0, 0
+  index: -1
+
+pack3.png
+size: 777,821
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+splash/bunny0
+  rotate: false
+  xy: 2, 354
+  size: 350, 350
+  orig: 350, 350
+  offset: 0, 0
+  index: -1
+splash/bunny1
+  rotate: false
+  xy: 2, 2
+  size: 350, 350
+  orig: 350, 350
+  offset: 0, 0
+  index: -1
+splash/bunny2
+  rotate: false
+  xy: 354, 354
+  size: 350, 350
+  orig: 350, 350
+  offset: 0, 0
+  index: -1
+splash/site
+  rotate: false
+  xy: 2, 706
+  size: 775, 115
+  orig: 775, 115
+  offset: 0, 0
+  index: -1
