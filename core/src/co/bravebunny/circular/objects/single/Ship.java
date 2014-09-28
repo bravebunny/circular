@@ -7,6 +7,7 @@ import co.bravebunny.circular.managers.Particles;
 import co.bravebunny.circular.managers.Positions;
 import co.bravebunny.circular.objects.Solid;
 import co.bravebunny.circular.screens.Common;
+import co.bravebunny.circular.screens.Level;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -64,7 +65,7 @@ public class Ship {
 	public static void moveDown () {
 		moveSFX_1.play();
         Tween.to(getBody(), ActorAccessor.SCALE, 0.8f)
-        .target(0.65f, 0.65f).ease(Elastic.OUT)
+        .target(0.60f, 0.60f).ease(Elastic.OUT)
         .start(Common.getTweenManager());
 	}
 	
@@ -111,7 +112,7 @@ public class Ship {
 	public static void show () {
         getBody().setX(Common.getViewport().getWorldWidth()/2 - getBody().getWidth()/2);
         getBody().setY(Common.getViewport().getWorldHeight()/2 + 350);
-        Common.getStage().addActor(getBody());
+        Level.layerShip.addActor(getBody());
         
         fire.setX(-100);
         fire.setY(0);

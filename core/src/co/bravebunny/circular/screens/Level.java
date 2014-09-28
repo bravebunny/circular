@@ -17,17 +17,18 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class Level extends Common implements Screen {
 	
-	//objects
-	private static Score score = new Score();
-	
 	//values
 	private static float bpm = 107;
 	private static Music music;
 	private static float time = 0;
+	public static int score = 0;
 	
 	//groups (object layers)
-	public static Group gameLayer = new Group();
-	public static Group overlayLayer = new Group();
+	public static Group layerGame = new Group();
+	public static Group layerShip = new Group();
+	public static Group layerObjects = new Group();
+	public static Group layerOverlay = new Group();
+	public static Group layerGUI = new Group();
 	
     public static float getBPM() {
     	return bpm;
@@ -53,11 +54,15 @@ public class Level extends Common implements Screen {
     	
     	super.show();
     	Circle.show();
-        score.show();
+        Score.show();
         Particles.show();
         Ship.show();
         
-        getStage().addActor(gameLayer);
+        getStage().addActor(layerGame);
+        getStage().addActor(layerShip);
+        getStage().addActor(layerObjects);
+        getStage().addActor(layerOverlay);
+        getStage().addActor(layerGUI);
         
     	//initialize input
     	GameInput input = new GameInput();
@@ -98,7 +103,7 @@ public class Level extends Common implements Screen {
     	Particles.render(delta);
     	Ship.render(delta);
     	Circle.render(delta);
-    	score.render(delta);
+    	Score.render(delta);
     	
     	for (Solid solid : Solid.solids) {
     		solid.render(delta);
@@ -125,6 +130,7 @@ public class Level extends Common implements Screen {
 		@SuppressWarnings("unused")
 		Enemy enemy = new Enemy(bpm);
 		Circle.beat();
+		Score.inc();
 		//enemy.beat();
 
     }

@@ -1,6 +1,5 @@
 package co.bravebunny.circular.objects.multiple;
 
-import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -13,8 +12,8 @@ import co.bravebunny.circular.managers.Particles;
 import co.bravebunny.circular.managers.Positions;
 import co.bravebunny.circular.objects.Solid;
 import co.bravebunny.circular.objects.single.Ship;
-import co.bravebunny.circular.objects.single.Ship.ShipState;
 import co.bravebunny.circular.screens.Common;
+import co.bravebunny.circular.screens.Level;
 import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
@@ -28,7 +27,6 @@ public class Enemy extends Solid{
 	private float angle;
 	private int type;
 	
-	
 	private TweenCallback tweenCallback = new TweenCallback()
 	{
 		@Override
@@ -39,8 +37,6 @@ public class Enemy extends Solid{
 			}
 		}
 	};
-	
-	
 
 	public Enemy(float bpm) {
 		this.bpm = bpm;
@@ -55,13 +51,12 @@ public class Enemy extends Solid{
 		image.setRotation(angle - 90);
 		Positions.setPolarPosition(image, h, angle);
 		image.setScale(0);
-		Common.getStage().addActor(image);
+		Level.layerObjects.addActor(getActor());
 		
-		//grow to inicial size
+		//grow to initial size
 		Tween.to(image, ActorAccessor.SCALE, 60/bpm).target(1 - type*0.3f)
 		.ease(Back.OUT).start(Common.getTweenManager());
 		
-        
         //destroy the enemy after some time
         Timer.schedule(new Task(){
             @Override
@@ -70,7 +65,6 @@ public class Enemy extends Solid{
             }
         }, 3*60/bpm);
         
-
 	}
 	
 	public void destroy() {
@@ -81,7 +75,6 @@ public class Enemy extends Solid{
 	//enemy beat effect
 	public void beat(){
 		//TODO
-
 	}
 
 	@Override
@@ -106,5 +99,4 @@ public class Enemy extends Solid{
 		super.dispose();
 		image.remove();
 	}
-	
 }

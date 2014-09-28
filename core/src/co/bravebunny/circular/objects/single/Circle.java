@@ -22,8 +22,8 @@ public class Circle {
 	public static  void show() {
 		Positions.setPolarPosition(circleOuter);
 		Positions.setPolarPosition(circleInner);
-		Level.gameLayer.addActor(circleOuter);
-	    Level.gameLayer.addActor(circleInner);
+		Level.layerGame.addActor(circleOuter);
+	    Level.layerGame.addActor(circleInner);
 	    beat();
 	}
 	
@@ -43,7 +43,8 @@ public class Circle {
 	
 	//fills the screen with the inner circle
 	public static  void grow() {
-		circleInner.setZIndex(9999);
+		Level.layerGame.removeActor(circleInner);
+		Level.layerOverlay.addActor(circleInner);
 		
 		float target = Positions.getDistance(circleInner, Common.getViewport().getWorldWidth(), Common.getViewport().getWorldHeight())
 				/ (circleInner.getWidth()/2);
