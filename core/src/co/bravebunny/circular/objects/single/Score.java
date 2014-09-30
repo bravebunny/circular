@@ -11,14 +11,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public class Score {
 	static Table table = new Table();
-	static Label label = new Label("45", Assets.skin);
+	static Label label = new Label("0", Assets.skin);
 	static float angleVariation = 10;
 	
 	public static void show() {
 		Positions.setPolarPosition(table);
 		table.add(label);
 		//table.debug();
-	    Level.layerGUI.addActor(table);
+	    Level.layerHUD.addActor(table);
 	    //Assets.skin.getFont("font144").getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 	    table.setTransform(true);
 	    

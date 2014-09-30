@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class Assets {
@@ -36,5 +38,11 @@ public class Assets {
     // so we can still run menus and loading screens smoothly
     public static boolean update() {
         return manager.update();
+    }
+    
+    //Loads an image from the atlas
+    public static Image load (String file) {
+    	AtlasRegion region = skin.getAtlas().findRegion(file);
+    	return new Image(region);
     }
 }

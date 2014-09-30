@@ -1,6 +1,5 @@
 package co.bravebunny.circular.objects.multiple;
 
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -8,6 +7,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
 import co.bravebunny.circular.managers.ActorAccessor;
+import co.bravebunny.circular.managers.Assets;
 import co.bravebunny.circular.managers.Particles;
 import co.bravebunny.circular.managers.Positions;
 import co.bravebunny.circular.objects.Solid;
@@ -20,8 +20,7 @@ import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.equations.Back;
 
 public class Enemy extends Solid{
-	private AtlasRegion region = Common.getAtlas().findRegion("level/enemy");
-	private Image image = new Image(region);
+	private Image image = Assets.load("level/enemy");
 	private float bpm;
 	private float h;
 	private float angle;

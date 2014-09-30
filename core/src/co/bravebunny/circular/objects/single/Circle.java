@@ -5,19 +5,20 @@ import aurelienribon.tweenengine.equations.Back;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 
 import co.bravebunny.circular.managers.ActorAccessor;
+import co.bravebunny.circular.managers.Assets;
 import co.bravebunny.circular.managers.Positions;
 import co.bravebunny.circular.screens.Common;
 import co.bravebunny.circular.screens.Level;
 
 
 public class Circle {
-	static AtlasRegion circleOuterRegion = Common.getAtlas().findRegion("level/circle_outer");
-	static private Image circleOuter = new Image(circleOuterRegion);
-	static AtlasRegion circleInnerRegion = Common.getAtlas().findRegion("level/circle_inner");
-	static private Image circleInner = new Image(circleInnerRegion);
 	
+	static private Image circleOuter = Assets.load("level/circle_outer");
+	static private Image circleInner = Assets.load("level/circle_inner");
 	
 	public static  void show() {
 		Positions.setPolarPosition(circleOuter);
@@ -32,11 +33,11 @@ public class Circle {
 	}
 	
 	public static  void beat() {
-        Tween.from(circleOuter, ActorAccessor.SCALE, 60/107f)
+        Tween.from(circleOuter, ActorAccessor.SCALE, 60/Level.getBPM())
         .target(1.1f).ease(Back.OUT)
         .start(Common.getTweenManager());
         
-        Tween.from(circleInner, ActorAccessor.SCALE, 60/107f)
+        Tween.from(circleInner, ActorAccessor.SCALE, 60/Level.getBPM())
         .target(0.9f).ease(Back.OUT)
         .start(Common.getTweenManager());
 	}
@@ -47,11 +48,26 @@ public class Circle {
 		Level.layerOverlay.addActor(circleInner);
 		
 		float target = Positions.getDistance(circleInner, Common.getViewport().getWorldWidth(), Common.getViewport().getWorldHeight())
-				/ (circleInner.getWidth()/2);
+				/ (circleInner.getWidth());
 		
-		Tween.to(circleInner, ActorAccessor.SCALE, 0.8f)
-        .target(target, target).ease(Back.IN)
+		Tween.to(circleInner, ActorAccessor.SCALE, 60/Level.getBPM())
+        .target(target).ease(Back.IN)
         .start(Common.getTweenManager());
+	}
+	
+	public static  void shrink() {
+		Tween.to(circleInner, ActorAccessor.SCALE, 60/Level.getBPM())
+        .target(1).ease(Back.IN)
+        .start(Common.getTweenManager());
+		
+    	Timer.schedule(new Task(){
+    	    @Override
+    	    public void run() {
+    	    	Level.layerOverlay.removeActor(circleInner);
+    			Level.layerGame.addActor(circleInner);
+    	    }
+    	}, 60/Level.getBPM());
+		
 	}
 
 }

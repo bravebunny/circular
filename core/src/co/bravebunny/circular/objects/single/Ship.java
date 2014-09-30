@@ -3,15 +3,14 @@ package co.bravebunny.circular.objects.single;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.equations.Elastic;
 import co.bravebunny.circular.managers.ActorAccessor;
+import co.bravebunny.circular.managers.Assets;
 import co.bravebunny.circular.managers.Particles;
 import co.bravebunny.circular.managers.Positions;
 import co.bravebunny.circular.objects.Solid;
 import co.bravebunny.circular.screens.Common;
 import co.bravebunny.circular.screens.Level;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public class Ship {
@@ -19,11 +18,8 @@ public class Ship {
 	static String PCOLOR = "FFDE00FF";	//the color of the explosion particles
 	
 	//images
-	static private AtlasRegion bodyRegion = Common.getAtlas().findRegion("level/ship_body");
-	static private Image body = new Image(bodyRegion);
-	
-	static private AtlasRegion fireRegion = Common.getAtlas().findRegion("level/ship_fire1");
-	static private Image fire = new Image(fireRegion);
+	static private Image body = Assets.load("level/ship_body");
+	static private Image fire = Assets.load("level/ship_fire1");
 	
 	//sounds
 	static private Sound moveSFX_1 = Gdx.audio.newSound(Gdx.files.internal("media/sfx/move1.ogg"));
@@ -82,6 +78,12 @@ public class Ship {
 		state = ShipState.DEAD;
 		body.setVisible(false);
 		Circle.grow();
+		HUD.restartShow();
+	}
+	
+	public static void reset() {
+		state = ShipState.ALIVE;
+		body.setVisible(true);
 	}
 	
 	public static boolean collidesWith(Solid object) {

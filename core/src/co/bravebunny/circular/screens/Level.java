@@ -4,6 +4,7 @@ import co.bravebunny.circular.managers.GameInput;
 import co.bravebunny.circular.managers.Particles;
 import co.bravebunny.circular.objects.multiple.Enemy;
 import co.bravebunny.circular.objects.single.Circle;
+import co.bravebunny.circular.objects.single.HUD;
 import co.bravebunny.circular.objects.single.Score;
 import co.bravebunny.circular.objects.single.Ship;
 import co.bravebunny.circular.objects.single.Ship.ShipState;
@@ -14,6 +15,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 
 public class Level extends Common implements Screen {
 	
@@ -28,7 +31,7 @@ public class Level extends Common implements Screen {
 	public static Group layerShip = new Group();
 	public static Group layerObjects = new Group();
 	public static Group layerOverlay = new Group();
-	public static Group layerGUI = new Group();
+	public static Group layerHUD = new Group();
 	
     public static float getBPM() {
     	return bpm;
@@ -57,12 +60,13 @@ public class Level extends Common implements Screen {
         Score.show();
         Particles.show();
         Ship.show();
+        HUD.show();
         
         getStage().addActor(layerGame);
         getStage().addActor(layerShip);
         getStage().addActor(layerObjects);
         getStage().addActor(layerOverlay);
-        getStage().addActor(layerGUI);
+        getStage().addActor(layerHUD);
         
     	//initialize input
     	GameInput input = new GameInput();
@@ -104,6 +108,7 @@ public class Level extends Common implements Screen {
     	Ship.render(delta);
     	Circle.render(delta);
     	Score.render(delta);
+    	HUD.render(delta);
     	
     	for (Solid solid : Solid.solids) {
     		solid.render(delta);
@@ -122,6 +127,22 @@ public class Level extends Common implements Screen {
     }
     
     public void renderPause(float delta) {
+    }
+    
+    public static void restart() {
+    	if (HUD.restart.getScaleX() >= 1) {
+        	Circle.shrink();
+        	HUD.restartHide();
+        	score = 0;
+        	
+        	Timer.schedule(new Task(){
+        	    @Override
+        	    public void run() {
+        	    	Ship.reset();
+        	    	Ship.moveUp();
+        	    }
+        	}, 60/Level.getBPM());
+    	}
     }
     
     

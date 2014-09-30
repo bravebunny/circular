@@ -23,7 +23,7 @@ public abstract class Common {
 	protected static Viewport viewport;
 	protected static Stage stage;
 	protected static TweenManager tweenManager = new TweenManager();
-	protected State state = State.RUN;
+	public static State state = State.RUN;
 	
 	public static Viewport getViewport() {
 		return viewport;

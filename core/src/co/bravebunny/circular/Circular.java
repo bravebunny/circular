@@ -1,6 +1,8 @@
 package co.bravebunny.circular;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+
 import co.bravebunny.circular.screens.*;
 
 /* old imports
@@ -15,6 +17,7 @@ public class Circular extends Game {
 	
 	@Override
 	public void create () {
+		Gdx.input.setCatchBackKey(true);
 		setScreen(new Splash());
 
 	}
