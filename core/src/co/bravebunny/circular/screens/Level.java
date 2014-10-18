@@ -1,5 +1,7 @@
 package co.bravebunny.circular.screens;
 
+import co.bravebunny.circular.Circular.State;
+import co.bravebunny.circular.managers.Assets;
 import co.bravebunny.circular.managers.GameInput;
 import co.bravebunny.circular.managers.Particles;
 import co.bravebunny.circular.objects.multiple.Enemy;
@@ -73,7 +75,8 @@ public class Level extends Common implements Screen {
     	Gdx.input.setInputProcessor(input);
     	
     	//start music
-    	music = Gdx.audio.newMusic(Gdx.files.internal("media/music/music1.ogg"));
+    	//music = Gdx.audio.newMusic(Gdx.files.internal("media/music/music1.ogg"));
+    	music = Assets.loadMusic("music1");
     	music.play();
     	
     	//start rhythm
@@ -82,7 +85,8 @@ public class Level extends Common implements Screen {
     }
 
     @Override
-    public void hide() {    
+    public void hide() {
+    	
     }
 
     @Override
@@ -104,25 +108,27 @@ public class Level extends Common implements Screen {
     }
     
     public void renderRun(float delta) {
-    	Particles.render(delta);
-    	Ship.render(delta);
-    	Circle.render(delta);
-    	Score.render(delta);
-    	HUD.render(delta);
-    	
-    	for (Solid solid : Solid.solids) {
-    		solid.render(delta);
-    	}
-    	
-        if (music.isPlaying()) {
-        	time += delta;
-            if (time >= 60/bpm) {
-            	if (Ship.state == ShipState.ALIVE) {
-            		//call all the rhythm related stuff
-                	rhythm();
-            	}
-                time -= 60/bpm;
-            }
+    	if (music.isPlaying()) {
+	    	Particles.render(delta);
+	    	Ship.render(delta);
+	    	Circle.render(delta);
+	    	Score.render(delta);
+	    	HUD.render(delta);
+	    	
+	    	for (Solid solid : Solid.solids) {
+	    		solid.render(delta);
+	    	}
+	    	
+	        
+	    	time += delta;
+	        if (time >= 60/bpm) {
+	        	if (Ship.state == ShipState.ALIVE) {
+	        		//call all the rhythm related stuff
+	            	rhythm();
+	        	}
+	            time -= 60/bpm;
+	        }
+        
         }
     }
     
@@ -149,7 +155,7 @@ public class Level extends Common implements Screen {
     //events that happen every beat
     public void rhythm() {
 		@SuppressWarnings("unused")
-		Enemy enemy = new Enemy(bpm);
+		Enemy enemy = new Enemy();
 		Circle.beat();
 		Score.inc();
 		//enemy.beat();

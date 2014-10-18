@@ -19,8 +19,8 @@ public class Circular extends Game {
 	public void create () {
 		Gdx.input.setCatchBackKey(true);
 		setScreen(new Splash());
-
 	}
+	
 	public enum State
 	{
 	    PAUSE,

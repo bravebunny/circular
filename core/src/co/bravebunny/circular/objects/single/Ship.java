@@ -18,13 +18,13 @@ public class Ship {
 	static String PCOLOR = "FFDE00FF";	//the color of the explosion particles
 	
 	//images
-	static private Image body = Assets.load("level/ship_body");
-	static private Image fire = Assets.load("level/ship_fire1");
+	static private Image body = Assets.loadImage("level/ship_body");
+	static private Image fire = Assets.loadImage("level/ship_fire1");
 	
 	//sounds
-	static private Sound moveSFX_1 = Gdx.audio.newSound(Gdx.files.internal("media/sfx/move1.ogg"));
-	static private Sound moveSFX_2 = Gdx.audio.newSound(Gdx.files.internal("media/sfx/move2.ogg"));
-	static private Sound explosionSFX = Gdx.audio.newSound(Gdx.files.internal("media/sfx/explosion.ogg"));
+	static private Sound moveSFX_1 = Assets.loadSound("move1");
+	static private Sound moveSFX_2 = Assets.loadSound("move2");
+	static private Sound explosionSFX = Assets.loadSound("explosion");
 	
 	//values
 	static float radius = 400;		//radius of the circular trajectory of the ship
@@ -51,11 +51,11 @@ public class Ship {
 	}
 	
 	public static float getX() {
-		return body.getCenterX();
+		return Positions.getCenterX(body);
 	}
 	
 	public static float getY() {
-		return body.getCenterY();
+		return Positions.getCenterY(body);
 	}
 	
 	public static void moveDown () {

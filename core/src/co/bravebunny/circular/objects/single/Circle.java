@@ -17,8 +17,8 @@ import co.bravebunny.circular.screens.Level;
 
 public class Circle {
 	
-	static private Image circleOuter = Assets.load("level/circle_outer");
-	static private Image circleInner = Assets.load("level/circle_inner");
+	static private Image circleOuter = Assets.loadImage("level/circle_outer");
+	static private Image circleInner = Assets.loadImage("level/circle_inner");
 	
 	public static  void show() {
 		Positions.setPolarPosition(circleOuter);

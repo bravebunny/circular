@@ -1,5 +1,6 @@
 package co.bravebunny.circular.screens;
 
+import co.bravebunny.circular.Circular.State;
 import co.bravebunny.circular.managers.Assets;
 import co.bravebunny.circular.managers.Positions;
 
@@ -30,8 +31,6 @@ public class Splash extends Common implements Screen {
     @Override
     public void show() {
     	
-    	Assets.queueLoading();
-    	
     	bgRed = 104;
     	bgGreen = 156;
     	bgBlue = 59;
@@ -58,6 +57,9 @@ public class Splash extends Common implements Screen {
 	            }
     		})
         ));
+        
+        //Start loading assets
+        Assets.queueLoading();
     }
 
     @Override

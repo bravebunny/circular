@@ -20,8 +20,7 @@ import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.equations.Back;
 
 public class Enemy extends Solid{
-	private Image image = Assets.load("level/enemy");
-	private float bpm;
+	private Image image = Assets.loadImage("level/enemy");
 	private float h;
 	private float angle;
 	private int type;
@@ -37,8 +36,7 @@ public class Enemy extends Solid{
 		}
 	};
 
-	public Enemy(float bpm) {
-		this.bpm = bpm;
+	public Enemy() {
 		this.angle = Ship.getRotation() + 180;
 		this.type = MathUtils.random(1);
 		this.h = 400 - type*150;
@@ -53,7 +51,7 @@ public class Enemy extends Solid{
 		Level.layerObjects.addActor(getActor());
 		
 		//grow to initial size
-		Tween.to(image, ActorAccessor.SCALE, 60/bpm).target(1 - type*0.3f)
+		Tween.to(image, ActorAccessor.SCALE, 60/Level.getBPM()).target(1 - type*0.3f)
 		.ease(Back.OUT).start(Common.getTweenManager());
 		
         //destroy the enemy after some time
@@ -62,7 +60,7 @@ public class Enemy extends Solid{
             public void run() {
                 destroy();
             }
-        }, 3*60/bpm);
+        }, 3*60/Level.getBPM());
         
 	}
 	
