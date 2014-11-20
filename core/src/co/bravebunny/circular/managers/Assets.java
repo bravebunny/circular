@@ -28,7 +28,7 @@ public class Assets {
         manager.load("media/sfx/move2.ogg", Sound.class);
         manager.load("media/sfx/explosion.ogg", Sound.class);
         
-        manager.load("media/music/music1.ogg", Music.class);
+        manager.load("media/music/menu.ogg", Music.class);
     }
 
     //In here we'll create our skin, so we only have to create it once.
@@ -44,7 +44,7 @@ public class Assets {
     }
     
     //Loads an image from the atlas
-    public static Image loadImage (String file) {
+    public static Image getImage (String file) {
     	AtlasRegion region = skin.getAtlas().findRegion(file);
     	return new Image(region);
     }
@@ -52,11 +52,15 @@ public class Assets {
     //Loads a sound. input string examples:
     // "sfx/move1"
     // "music/music1"
-    public static Sound loadSound (String file) {
+    public static Sound getSound (String file) {
     	return manager.get("media/sfx/" + file + ".ogg", Sound.class);
     }
     
-    public static Music loadMusic (String file) {
+    public static Music getMusic (String file) {
     	return manager.get("media/music/" + file + ".ogg", Music.class);
+    }
+    
+    public static void loadMusic (int level) {
+    	manager.load("media/music/menu.ogg", Music.class);
     }
 }

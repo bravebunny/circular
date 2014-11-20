@@ -1,5 +1,6 @@
 package co.bravebunny.circular.screens;
 
+import co.bravebunny.circular.Circular.CurrentScreen;
 import co.bravebunny.circular.Circular.State;
 import co.bravebunny.circular.managers.Assets;
 import co.bravebunny.circular.managers.Positions;
@@ -30,6 +31,7 @@ public class Splash extends Common implements Screen {
 
     @Override
     public void show() {
+    	screen = CurrentScreen.SPLASH;
     	
     	bgRed = 104;
     	bgGreen = 156;
@@ -93,5 +95,23 @@ public class Splash extends Common implements Screen {
     public void renderPause(float delta){
     	renderRun(delta);
     }
+
+	@Override
+	public void touchDown(int screenX, int screenY) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void touchUp(int screenX, int screenY) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void backKey() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

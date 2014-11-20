@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
 public class HUD {
-	public static Image restart = Assets.loadImage("level/hud_restart");
+	public static Image restart = Assets.getImage("level/hud_restart");
 	
 	public static void show() {
 		Positions.setPolarPosition(restart);

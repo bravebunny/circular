@@ -5,13 +5,6 @@ import com.badlogic.gdx.Gdx;
 
 import co.bravebunny.circular.screens.*;
 
-/* old imports
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-*/
-
 public class Circular extends Game {
 	public static final String TITLE = "Circular";
 	
@@ -21,12 +14,17 @@ public class Circular extends Game {
 		setScreen(new Splash());
 	}
 	
-	public enum State
-	{
+	public enum State {
 	    PAUSE,
 	    RUN,
 	    RESUME,
 	    STOPPED
+	}
+	
+	public enum CurrentScreen {
+		SPLASH,
+		MENU,
+		LEVEL
 	}
 
 }

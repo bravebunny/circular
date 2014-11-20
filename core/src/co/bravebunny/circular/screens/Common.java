@@ -2,6 +2,7 @@ package co.bravebunny.circular.screens;
 
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenManager;
+import co.bravebunny.circular.Circular.CurrentScreen;
 import co.bravebunny.circular.Circular.State;
 import co.bravebunny.circular.managers.Assets;
 import co.bravebunny.circular.managers.ActorAccessor;
@@ -24,6 +25,10 @@ public abstract class Common {
 	protected static Stage stage;
 	protected static TweenManager tweenManager = new TweenManager();
 	public static State state = State.RUN;
+	public static CurrentScreen screen = CurrentScreen.SPLASH;
+	
+	//color to be used as background for each screen [0, 255]
+	protected float bgRed, bgGreen, bgBlue;
 	
 	public static Viewport getViewport() {
 		return viewport;
@@ -38,10 +43,13 @@ public abstract class Common {
 		return Assets.skin.getAtlas();
 	}
 
-	//color to be used as background for each screen [0, 255]
-	protected float bgRed, bgGreen, bgBlue;
+	public abstract void touchDown(int screenX, int screenY);
 	
-    protected void render(float delta) {
+	public abstract void touchUp(int screenX, int screenY);
+	
+	public abstract void backKey();
+	
+	protected void render(float delta) {
     	Gdx.gl.glClearColor(bgRed/255f ,bgGreen/255f ,bgBlue/255f ,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); //clear the batch
         

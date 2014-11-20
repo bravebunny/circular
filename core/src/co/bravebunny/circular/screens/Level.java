@@ -1,6 +1,8 @@
 package co.bravebunny.circular.screens;
 
+import co.bravebunny.circular.Circular;
 import co.bravebunny.circular.Circular.State;
+import co.bravebunny.circular.Circular.CurrentScreen;
 import co.bravebunny.circular.managers.Assets;
 import co.bravebunny.circular.managers.GameInput;
 import co.bravebunny.circular.managers.Particles;
@@ -17,14 +19,16 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
 public class Level extends Common implements Screen {
+	//objects
+	private static Music music;
 	
 	//values
 	private static float bpm = 107;
-	private static Music music;
 	private static float time = 0;
 	public static int score = 0;
 	
@@ -34,6 +38,11 @@ public class Level extends Common implements Screen {
 	public static Group layerObjects = new Group();
 	public static Group layerOverlay = new Group();
 	public static Group layerHUD = new Group();
+	
+	//other objects
+	public static Ship ship;
+	public static Circle circle;
+	public static Array<Enemy> enemies = new Array<Enemy>();
 	
     public static float getBPM() {
     	return bpm;
@@ -51,6 +60,8 @@ public class Level extends Common implements Screen {
 
     @Override
     public void show() {
+    	screen = CurrentScreen.LEVEL;
+    	
     	bgRed = 0;
     	bgGreen = 89;
     	bgBlue = 118;
@@ -58,10 +69,13 @@ public class Level extends Common implements Screen {
     	//time = TimeUtils.millis();
     	
     	super.show();
-    	Circle.show();
+    	
+    	circle = new Circle();
+    	circle.setLayer(layerGame);
+    	ship = new Ship();
+    	
         Score.show();
         Particles.show();
-        Ship.show();
         HUD.show();
         
         getStage().addActor(layerGame);
@@ -71,16 +85,19 @@ public class Level extends Common implements Screen {
         getStage().addActor(layerHUD);
         
     	//initialize input
-    	GameInput input = new GameInput();
+    	GameInput input = new GameInput(this);
     	Gdx.input.setInputProcessor(input);
     	
     	//start music
-    	//music = Gdx.audio.newMusic(Gdx.files.internal("media/music/music1.ogg"));
-    	music = Assets.loadMusic("music1");
+    	music = Gdx.audio.newMusic(Gdx.files.internal("media/music/music1.ogg"));
+    	//music = Assets.getMusic("music1");
+    	//I SHOULD BE USING THE ASSET MANAGER HERE
+    	//I'M NOT, THOUGH
+    	//WHY ARE WE YELLING
     	music.play();
     	
-    	//start rhythm
-    	//rhythm();
+    	ship.state = ShipState.ALIVE;
+
 
     }
 
@@ -110,19 +127,28 @@ public class Level extends Common implements Screen {
     public void renderRun(float delta) {
     	if (music.isPlaying()) {
 	    	Particles.render(delta);
-	    	Ship.render(delta);
-	    	Circle.render(delta);
+	    	ship.render(delta);
+	    	circle.render(delta);
 	    	Score.render(delta);
 	    	HUD.render(delta);
 	    	
-	    	for (Solid solid : Solid.solids) {
-	    		solid.render(delta);
+	    	for (int i = 0; i < enemies.size; i++) {
+	    		if (enemies.get(i).isDead()) {
+	    			enemies.removeIndex(i);
+	    		} else {
+	    			enemies.get(i).render(delta);
+	    			if (ship.collidesWith(enemies.get(i))) {
+		    			enemies.removeIndex(i);
+		    			enemies.get(i).explode();
+		    			ship.destroy();
+		    			circle.grow();
+		    		}
+	    		}
 	    	}
-	    	
 	        
 	    	time += delta;
 	        if (time >= 60/bpm) {
-	        	if (Ship.state == ShipState.ALIVE) {
+	        	if (ship.state == ShipState.ALIVE) {
 	        		//call all the rhythm related stuff
 	            	rhythm();
 	        	}
@@ -137,15 +163,15 @@ public class Level extends Common implements Screen {
     
     public static void restart() {
     	if (HUD.restart.getScaleX() >= 1) {
-        	Circle.shrink();
+        	circle.shrink();
         	HUD.restartHide();
         	score = 0;
         	
         	Timer.schedule(new Task(){
         	    @Override
         	    public void run() {
-        	    	Ship.reset();
-        	    	Ship.moveUp();
+        	    	ship.reset();
+        	    	ship.moveUp();
         	    }
         	}, 60/Level.getBPM());
     	}
@@ -154,12 +180,43 @@ public class Level extends Common implements Screen {
     
     //events that happen every beat
     public void rhythm() {
-		@SuppressWarnings("unused")
 		Enemy enemy = new Enemy();
-		Circle.beat();
+		enemy.setRotation(ship.getRotation() + 180);
+		enemies.add(enemy);
+		circle.beat();
 		Score.inc();
 		//enemy.beat();
 
     }
+
+	@Override
+	public void touchDown(int screenX, int screenY) {
+		if (ship.state == Ship.ShipState.ALIVE) {
+			ship.moveDown();
+		} else {
+			restart();
+		}
+		
+	}
+
+	@Override
+	public void touchUp(int screenX, int screenY) {
+		switch (ship.state)
+        {
+        case ALIVE:
+        	ship.moveUp();
+            break;
+        case DEAD:
+        	
+            break;
+        }
+		
+	}
+
+	@Override
+	public void backKey() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

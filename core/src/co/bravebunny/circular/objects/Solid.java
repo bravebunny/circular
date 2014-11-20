@@ -1,38 +1,22 @@
 package co.bravebunny.circular.objects;
 
+import co.bravebunny.circular.managers.Positions;
 
-import co.bravebunny.circular.objects.single.Ship;
-
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.utils.Array;
-
-public abstract class Solid {
-	public static Array<Solid> solids = new Array<Solid>();
+public abstract class Solid extends GameObject {
 	
-	public Solid() {
-		solids.add(this);
-	}
-	
-	//radius of the collision circle
-	public float radius;
-	
-	//called when there is a collision with this object
-	public abstract void collide();
-	
-	//actor to be used for the collision
-	public abstract Actor getActor();
+	public float radius; //radius of the collision circle
+	public boolean coll_on = true; //true if collisions are enabled
 	
 	public void render(float delta) {
-		if (Ship.collidesWith(this)) {
-			this.collide();
-			Ship.destroy();
-		}
+
 	}
 	
-	public void dispose() {
-		solids.removeValue(this, true);
+	public boolean collidesWith(Solid object) {
+		return (Positions.getDistance(body, object.getX(), object.getY()) < (radius + object.radius)) 
+				&&
+				coll_on;
+
 	}
-	
 
 
 }

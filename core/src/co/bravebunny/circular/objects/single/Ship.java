@@ -13,24 +13,35 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
-public class Ship {
+public class Ship extends Solid {
 	//constants
-	static String PCOLOR = "FFDE00FF";	//the color of the explosion particles
+	String PCOLOR = "FFDE00FF";	//the color of the explosion particles
 	
 	//images
-	static private Image body = Assets.loadImage("level/ship_body");
-	static private Image fire = Assets.loadImage("level/ship_fire1");
+	private Image fire = Assets.getImage("level/ship_fire1");
 	
 	//sounds
-	static private Sound moveSFX_1 = Assets.loadSound("move1");
-	static private Sound moveSFX_2 = Assets.loadSound("move2");
-	static private Sound explosionSFX = Assets.loadSound("explosion");
+	private Sound moveSFX_1 = Assets.getSound("move1");
+	private Sound moveSFX_2 = Assets.getSound("move2");
+	private Sound explosionSFX = Assets.getSound("explosion");
 	
 	//values
-	static float radius = 400;		//radius of the circular trajectory of the ship
-	static float colRadius = 60;	//radius of the collision circle
-	public static ShipState state = ShipState.ALIVE;
+	float radius = 400;		//radius of the circular trajectory of the ship
+	float colRadius = 60;	//radius of the collision circle
+	public ShipState state = ShipState.DEAD;
 	
+	
+	public Ship() {
+		body = Assets.getImage("level/ship_body");
+		
+		body.setX(Common.getViewport().getWorldWidth()/2 - body.getWidth()/2);
+		body.setY(Common.getViewport().getWorldHeight()/2 + 350);
+        Level.layerShip.addActor(body);
+        
+        fire.setX(-100);
+        fire.setY(0);
+        //Common.getStage().addActor(fire);
+	}
 	
 	public static enum ShipState
 	{
@@ -38,70 +49,49 @@ public class Ship {
 	    DEAD,
 	}
 	
-	public static Image getBody() {
-		return body;
-	}
-
-	public static void setBody(Image body) {
-		Ship.body = body;
-	}
-
-	public static float getRotation() {
-		return getBody().getRotation();
-	}
-	
-	public static float getX() {
-		return Positions.getCenterX(body);
-	}
-	
-	public static float getY() {
-		return Positions.getCenterY(body);
-	}
-	
-	public static void moveDown () {
+	public void moveDown () {
 		moveSFX_1.play();
-        Tween.to(getBody(), ActorAccessor.SCALE, 0.8f)
+        Tween.to(body, ActorAccessor.SCALE, 0.8f)
         .target(0.60f, 0.60f).ease(Elastic.OUT)
         .start(Common.getTweenManager());
 	}
 	
-	public static void moveUp() {
+	public void moveUp() {
 		moveSFX_2.play();
-        Tween.to(getBody(), ActorAccessor.SCALE, 0.8f)
+        Tween.to(body, ActorAccessor.SCALE, 0.8f)
         .target(1f, 1f).ease(Elastic.OUT)
         .start(Common.getTweenManager());
 	}
 	
-	public static void destroy() {
+	public void destroy() {
 		explosionSFX.play();
 		Particles.create(getX(), getY(), PCOLOR);
 		state = ShipState.DEAD;
 		body.setVisible(false);
-		Circle.grow();
 		HUD.restartShow();
 	}
 	
-	public static void reset() {
+	public void reset() {
 		state = ShipState.ALIVE;
 		body.setVisible(true);
 	}
 	
-	public static boolean collidesWith(Solid object) {
-		if (Positions.getDistance(getBody(), object.getActor()) < (colRadius + object.radius)) {
-			return body.isVisible();
+	public boolean collidesWith(Solid object) {
+		if (Positions.getDistance(body, object.getX(), object.getY()) < (colRadius + object.radius)) {
+			return object.body.isVisible();
 		}
 		return false;
 	}
 	
-	public static void renderAlive (float delta) {
-		getBody().rotateBy(-3*60*delta);
+	public void renderAlive (float delta) {
+		body.rotateBy(-3*60*delta);
         //set the rotation/scaling origin of the ship the the center of the screen
 		//body.setOrigin(body.getWidth()/2, -(body.getY() - Common.getViewport().getWorldHeight()/2));
 		
-		Positions.setPolarPosition(getBody(), radius*getBody().getScaleX(), getBody().getRotation() + 90);
+		Positions.setPolarPosition(body, radius*body.getScaleX(), body.getRotation() + 90);
 	}
 	
-	public static void render (float delta) {
+	public void render (float delta) {
 		switch (state) {
 		case ALIVE:
 			renderAlive(delta);
@@ -110,15 +100,10 @@ public class Ship {
 			break;
 		}
 	}
-	
-	public static void show () {
-        getBody().setX(Common.getViewport().getWorldWidth()/2 - getBody().getWidth()/2);
-        getBody().setY(Common.getViewport().getWorldHeight()/2 + 350);
-        Level.layerShip.addActor(getBody());
-        
-        fire.setX(-100);
-        fire.setY(0);
-        //Common.getStage().addActor(fire);
-      
+
+	@Override
+	public void dispose() {
+		// TODO BOM
+		
 	}
 }

@@ -55,7 +55,6 @@ project(":android") {
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
         compile fileTree(dir: '../libs', include: '*.jar')
-        compile "com.badlogicgames.ashley:ashley:1.1.0"
         
     }
 }
@@ -85,7 +84,6 @@ project(":html") {
         compile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
         compile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
-        compile "com.badlogicgames.ashley:ashley:1.1.0:sources"
     }
 }
 
@@ -96,7 +94,6 @@ project(":core") {
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile fileTree(dir: '../libs', include: '*.jar')
-        compile "com.badlogicgames.ashley:ashley:1.1.0"
     }
 }
 

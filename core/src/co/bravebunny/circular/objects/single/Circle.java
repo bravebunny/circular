@@ -4,6 +4,7 @@ import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.equations.Back;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
@@ -17,22 +18,25 @@ import co.bravebunny.circular.screens.Level;
 
 public class Circle {
 	
-	static private Image circleOuter = Assets.loadImage("level/circle_outer");
-	static private Image circleInner = Assets.loadImage("level/circle_inner");
+	private Image circleOuter = Assets.getImage("level/circle_outer");
+	private Image circleInner = Assets.getImage("level/circle_inner");
 	
-	public static  void show() {
+	public Circle() {
 		Positions.setPolarPosition(circleOuter);
 		Positions.setPolarPosition(circleInner);
-		Level.layerGame.addActor(circleOuter);
-	    Level.layerGame.addActor(circleInner);
 	    beat();
 	}
 	
-	public static  void render(float delta) {
-		//nothing here brotha
+	public void setLayer(Group layer) {
+		layer.addActor(circleOuter);
+	    layer.addActor(circleInner);
 	}
 	
-	public static  void beat() {
+	public void render(float delta) {
+		//nothin here brotha
+	}
+	
+	public void beat() {
         Tween.from(circleOuter, ActorAccessor.SCALE, 60/Level.getBPM())
         .target(1.1f).ease(Back.OUT)
         .start(Common.getTweenManager());
@@ -43,7 +47,7 @@ public class Circle {
 	}
 	
 	//fills the screen with the inner circle
-	public static  void grow() {
+	public void grow() {
 		Level.layerGame.removeActor(circleInner);
 		Level.layerOverlay.addActor(circleInner);
 		
@@ -53,9 +57,11 @@ public class Circle {
 		Tween.to(circleInner, ActorAccessor.SCALE, 60/Level.getBPM())
         .target(target).ease(Back.IN)
         .start(Common.getTweenManager());
+		
+		
 	}
 	
-	public static  void shrink() {
+	public void shrink() {
 		Tween.to(circleInner, ActorAccessor.SCALE, 60/Level.getBPM())
         .target(1).ease(Back.IN)
         .start(Common.getTweenManager());
