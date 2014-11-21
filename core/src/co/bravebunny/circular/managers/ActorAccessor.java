@@ -10,14 +10,13 @@ public class ActorAccessor implements TweenAccessor<Actor> {
 	public static final int SIZE = 1;
 	public static final int SCALE = 2;
 	public static final int ANGLE = 3;
-	public static final int RADIUS = 4;
+	public static final int POSITION = 4;
 	
 	@Override
 	public int getValues(Actor target, int tweenType, float[] returnValues) {
 		switch (tweenType) {
 			case SIZE:
-				returnValues[0] = target.getWidth(); 
-				returnValues[0] = target.getHeight(); 
+				returnValues[0] = target.getWidth();
 				return 1;
 			case SCALE:
 				returnValues[0] = target.getScaleX();
@@ -25,9 +24,9 @@ public class ActorAccessor implements TweenAccessor<Actor> {
 			case ANGLE:
 				returnValues[0] = target.getRotation();
 				return 3;
-			case RADIUS:
-				returnValues[0] = Positions.getDistance(target, 0, 0);
-				
+			case POSITION:
+				returnValues[0] = Positions.getCenterX(target);
+				return 4;
 			default: assert false; return -1;
 		}
 	}
@@ -44,8 +43,9 @@ public class ActorAccessor implements TweenAccessor<Actor> {
 			break;
 		case ANGLE:
 			target.setRotation(newValues[0]);
-		case RADIUS:
-			//Ship.setRadius(newValues[0]);
+			break;
+		case POSITION:
+			Positions.setPolarPosition(target, newValues[0], 0);
 			break;
 		default: assert false; break;
 	}

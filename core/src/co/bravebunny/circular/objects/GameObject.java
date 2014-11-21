@@ -49,5 +49,9 @@ public abstract class GameObject {
 		layer.addActor(body);
 	}
 	
+	public void setPolarPosition(float radius, float angle) {
+		Positions.setPolarPosition(body, radius, angle);
+	}
+	
 	public abstract void dispose();
 }

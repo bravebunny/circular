@@ -1,4 +1,4 @@
-package co.bravebunny.circular.objects.single;
+package co.bravebunny.circular.objects;
 
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.equations.Back;

@@ -1,4 +1,4 @@
-package co.bravebunny.circular.objects.single;
+package co.bravebunny.circular.objects;
 
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.equations.Back;
@@ -16,7 +16,7 @@ import co.bravebunny.circular.screens.Common;
 import co.bravebunny.circular.screens.Level;
 
 
-public class Circle {
+public class Circle extends GameObject {
 	
 	private Image circleOuter = Assets.getImage("level/circle_outer");
 	private Image circleInner = Assets.getImage("level/circle_inner");
@@ -73,6 +73,12 @@ public class Circle {
     			Level.layerGame.addActor(circleInner);
     	    }
     	}, 60/Level.getBPM());
+		
+	}
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
 		
 	}
 

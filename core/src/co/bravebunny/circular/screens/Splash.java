@@ -87,7 +87,7 @@ public class Splash extends Common implements Screen {
     	
     	if(Assets.update() && animationDone) {
     		Assets.setMenuSkin();
-    		((Game)Gdx.app.getApplicationListener()).setScreen(new Level());
+    		((Game)Gdx.app.getApplicationListener()).setScreen(new Menu());
     	}
         
     }

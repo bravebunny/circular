@@ -5,6 +5,8 @@ import co.bravebunny.circular.screens.Common;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.input.GestureDetector.GestureListener;
+import com.badlogic.gdx.math.Vector2;
 
 public class GameInput extends InputAdapter implements InputProcessor{
 	

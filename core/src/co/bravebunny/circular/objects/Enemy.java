@@ -1,4 +1,4 @@
-package co.bravebunny.circular.objects.multiple;
+package co.bravebunny.circular.objects;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -11,8 +11,6 @@ import co.bravebunny.circular.managers.ActorAccessor;
 import co.bravebunny.circular.managers.Assets;
 import co.bravebunny.circular.managers.Particles;
 import co.bravebunny.circular.managers.Positions;
-import co.bravebunny.circular.objects.Solid;
-import co.bravebunny.circular.objects.single.Ship;
 import co.bravebunny.circular.screens.Common;
 import co.bravebunny.circular.screens.Level;
 import aurelienribon.tweenengine.BaseTween;

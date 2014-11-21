@@ -49,6 +49,14 @@ public abstract class Common {
 	
 	public abstract void backKey();
 	
+	public void fling(float velocityX, float velocityY) {
+		//Nothing interesting, just this boring comment.
+	}
+	
+	public void pan(float x, float y, float deltaX, float deltaY){
+		//Also boring
+	}
+	
 	protected void render(float delta) {
     	Gdx.gl.glClearColor(bgRed/255f ,bgGreen/255f ,bgBlue/255f ,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); //clear the batch
@@ -75,6 +83,7 @@ public abstract class Common {
     	this.stage.setViewport(viewport);
     	
     	//initialize tween engine
+    	Tween.setCombinedAttributesLimit(4);
     	Tween.registerAccessor(Actor.class, new ActorAccessor());
     	
     	//Assets.manager.finishLoading();
@@ -97,7 +106,6 @@ public abstract class Common {
     
     protected void dispose() {
     	this.stage.dispose();
-    	
     }
     
     protected abstract void renderRun(float delta);

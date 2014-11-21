@@ -1,18 +1,14 @@
 package co.bravebunny.circular.screens;
 
-import co.bravebunny.circular.Circular;
-import co.bravebunny.circular.Circular.State;
 import co.bravebunny.circular.Circular.CurrentScreen;
-import co.bravebunny.circular.managers.Assets;
 import co.bravebunny.circular.managers.GameInput;
 import co.bravebunny.circular.managers.Particles;
-import co.bravebunny.circular.objects.multiple.Enemy;
-import co.bravebunny.circular.objects.single.Circle;
-import co.bravebunny.circular.objects.single.HUD;
-import co.bravebunny.circular.objects.single.Score;
-import co.bravebunny.circular.objects.single.Ship;
-import co.bravebunny.circular.objects.single.Ship.ShipState;
-import co.bravebunny.circular.objects.Solid;
+import co.bravebunny.circular.objects.Circle;
+import co.bravebunny.circular.objects.Enemy;
+import co.bravebunny.circular.objects.HUD;
+import co.bravebunny.circular.objects.Score;
+import co.bravebunny.circular.objects.Ship;
+import co.bravebunny.circular.objects.Ship.ShipState;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;

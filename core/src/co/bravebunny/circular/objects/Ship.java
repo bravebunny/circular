@@ -1,4 +1,4 @@
-package co.bravebunny.circular.objects.single;
+package co.bravebunny.circular.objects;
 
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.equations.Elastic;
@@ -6,9 +6,9 @@ import co.bravebunny.circular.managers.ActorAccessor;
 import co.bravebunny.circular.managers.Assets;
 import co.bravebunny.circular.managers.Particles;
 import co.bravebunny.circular.managers.Positions;
-import co.bravebunny.circular.objects.Solid;
 import co.bravebunny.circular.screens.Common;
 import co.bravebunny.circular.screens.Level;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
