@@ -24,7 +24,7 @@ public abstract class GameScreen {
 	protected static int totalScore = 0;
 	protected static int selectedLevel = 0;
 	
-	protected static Level levels[];
+	protected static Level levels[] = {null, null, null, null, null, null};
 
 	
 	//color to be used as background for each screen [0, 255]

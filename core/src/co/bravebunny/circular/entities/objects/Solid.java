@@ -8,7 +8,7 @@ public abstract class Solid extends GameObject {
 	public boolean coll_on = true; //true if collisions are enabled
 	
 	public boolean collidesWith(Solid object) {
-		return (Positions.getDistance(body, object.getX(), object.getY()) < (radius + object.radius)) 
+		return (Positions.getDistance(actors, object.getX(), object.getY()) < (radius + object.radius)) 
 				&&
 				coll_on;
 

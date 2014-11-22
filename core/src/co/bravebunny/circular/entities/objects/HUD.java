@@ -12,11 +12,12 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
 public class HUD extends GameObject {
-	public Image restart = Assets.getImage("level/hud_restart");
+	public Image restart;
 	
-	public HUD() {
-		Positions.setPolarPosition(restart);
-	    Play.layerHUD.addActor(restart);
+	public void init() {
+		restart = Assets.getImage("level/hud_restart");
+		actors.addActor(restart);
+		Positions.setPolarPosition(actors);
 	    restart.setScale(0, 0);
 	    restart.setVisible(false);
 	}
@@ -28,15 +29,15 @@ public class HUD extends GameObject {
 	//Grows the restart symbol into sight
 	public void restartShow() {
 		restart.setVisible(true);
-		Tween.to(restart, ActorTween.SCALE, 60/Play.getBPM())
-        .target(1.0f).ease(Back.OUT).delay(60/Play.getBPM())
+		Tween.to(restart, ActorTween.SCALE, 0.5f)
+        .target(1.0f).ease(Back.OUT).delay(0.5f)
         .start(GameScreen.getTweenManager());
 		
 	}
 	
 	//Shrinks the restart symbol back 
 	public void restartHide() {
-		Tween.to(restart, ActorTween.SCALE, 60/Play.getBPM())
+		Tween.to(restart, ActorTween.SCALE, 0.5f)
         .target(0.0f).ease(Back.IN)
         .start(GameScreen.getTweenManager());
 		
@@ -45,7 +46,7 @@ public class HUD extends GameObject {
     	    public void run() {
     	    	restart.setVisible(false);
     	    }
-    	}, 60/Play.getBPM());
+    	}, 60/0.5f);
 		
 		
 	}

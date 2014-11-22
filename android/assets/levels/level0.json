@@ -1,0 +1,8 @@
+{
+	music: "music0",
+	bpm: 107,
+	title: null,
+	artist: null,
+	link_text: null,
+	url: null
+}

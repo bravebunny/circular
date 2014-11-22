@@ -9,37 +9,42 @@ import co.bravebunny.circular.screens.Play;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
-public class Score {
-	static Table table = new Table();
-	static Label label = new Label("0", Assets.skin);
-	static float angleVariation = 10;
+public class Score extends GameObject {
+	Table table;
+	Label label;
+	float angleVariation = 10;
 	
-	public static void show() {
-		Positions.setPolarPosition(table);
+	public void init() {
+		table = new Table();
+		label = new Label("0", Assets.skin);
 		table.add(label);
-		//table.debug();
-	    Play.layerHUD.addActor(table);
-	    //Assets.skin.getFont("font144").getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-	    table.setTransform(true);
-	    
-	    table.setRotation(-angleVariation);
-
-	    Tween.from(table, ActorTween.ANGLE, 60/Play.getBPM())
+		actors.addActor(table);
+		table.setTransform(true);
+	}
+	
+	public void startTween(float bpm) {
+		table.setRotation(-angleVariation);
+	    Tween.to(table, ActorTween.ANGLE, 60/bpm)
         .target(angleVariation).repeatYoyo(Tween.INFINITY, 0)
         .start(GameScreen.getTweenManager());
-	    
 	}
 	
 	//add a value to the beat counter
-	public static void inc(int value) {
+	public void inc(int value) {
 		Play.score += value;
 		label.setText(Integer.toString(Play.score));
 	}
-	public static void inc() {
+	public void inc() {
 		inc(1);
 	}
 	
-	public static void render(float delta) {
+	public void render(float delta) {
+		
+	}
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
 		
 	}
 }

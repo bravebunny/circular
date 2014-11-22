@@ -11,13 +11,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public class TextBlock extends GameObject {
-	Label label = new Label("Sample Text", Assets.skin);
+	Label label;
+	Table table;
 	
-	public TextBlock() {
-		body = new Table();
-		((Table)body).add(label);
-	    Play.layerHUD.addActor(body);
-	    ((Table)body).setTransform(true);
+	public void init() {
+		label = new Label("Sample Text", Assets.skin);
+		table = new Table();
+		actors.addActor(table);
+		table.add(label);
+	    table.setTransform(true);
 	}
 	
 	public void setText(String text) {
@@ -25,7 +27,7 @@ public class TextBlock extends GameObject {
 	}
 	
 	public void moveTo(float target) {
-    	Tween.to(body, ActorTween.POSITION, 0.5f)
+    	Tween.to(actors, ActorTween.POSITION, 0.5f)
         .target(target).ease(Back.OUT)
         .start(GameScreen.getTweenManager());
 	}
@@ -33,6 +35,10 @@ public class TextBlock extends GameObject {
 	@Override
 	public void dispose() {
 		label.remove();
-		body.remove();
+		table.remove();
+	}
+
+	public String getText() {
+		return label.getText().toString();
 	}
 }

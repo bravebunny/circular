@@ -1,8 +1,6 @@
 package co.bravebunny.circular.entities.objects;
 
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
@@ -22,6 +20,7 @@ public class Enemy extends Solid{
 	private float h;
 	private float angle = 0;
 	private int type;
+	private Image body;
 	
 	private TweenCallback tweenCallback = new TweenCallback()
 	{
@@ -34,21 +33,23 @@ public class Enemy extends Solid{
 		}
 	};
 
-	public Enemy() {
-
-		
+	public void init() {
 		body = Assets.getImage("level/enemy");
+		Positions.setPolarPosition(body);
+		actors.addActor(body);
 		coll_on = false;
 		type = MathUtils.random(1);
 		h = 400 - type*150;
 		radius = 10;
 		
-		body.setOrigin(body.getWidth()/2, body.getHeight()/2);
-		body.setScale(0);
-		Play.layerObjects.addActor(body);
-		
+		actors.setOrigin(actors.getWidth()/2, actors.getHeight()/2);
+		actors.setScale(0);
+		Play.layerObjects.addActor(actors);
+	}
+	
+	public void grow(float bpm) {
 		//grow to initial size
-		Tween.to(body, ActorTween.SCALE, 60/Play.getBPM()).target(1 - type*0.3f)
+		Tween.to(actors, ActorTween.SCALE, 60/bpm).target(1 - type*0.3f)
 		.ease(Back.OUT).start(GameScreen.getTweenManager());
 		
         //turn on collisions
@@ -57,7 +58,7 @@ public class Enemy extends Solid{
             public void run() {
                 coll_on = true;
             }
-        }, 60/Play.getBPM());
+        }, 60/bpm);
 		
         //destroy the enemy after some time
         Timer.schedule(new Task(){
@@ -65,8 +66,7 @@ public class Enemy extends Solid{
             public void run() {
                 destroy();
             }
-        }, 3*60/Play.getBPM());
-        
+        }, 3*60/bpm);
 	}
 	
 	public void destroy() {
@@ -80,16 +80,16 @@ public class Enemy extends Solid{
 	}
 
 	public void explode() {
-		if (body.isVisible()) {
-			Particles.create(Positions.getCenterX(body), Positions.getCenterY(body), "B71C1CFF");
-			body.setVisible(false);
+		if (actors.isVisible()) {
+			Particles.create(Positions.getCenterX(actors), Positions.getCenterY(actors), "B71C1CFF");
+			actors.setVisible(false);
 		}
 		destroy();
 	}
 	
 	public void render(float delta) {
 		//place the enemy in the game screen, and rotate it to an angle in front of the ship
-		Positions.setPolarPosition(body, h, angle);
+		Positions.setPolarPosition(actors, h, angle);
 
 	}
 	
@@ -101,13 +101,13 @@ public class Enemy extends Solid{
 	}
 	
 	public void dispose() {
-		if (body != null) {
-			body.remove();
+		if (actors != null) {
+			actors.remove();
 		}
-		body = null;
+		actors = null;
 	}
 	
 	public boolean isDead() {
-		return body == null;
+		return actors == null;
 	}
 }

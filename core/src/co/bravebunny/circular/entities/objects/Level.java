@@ -1,22 +1,19 @@
 package co.bravebunny.circular.entities.objects;
 
-import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.equations.Back;
-
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.Json.Serializable;
+import com.badlogic.gdx.utils.JsonValue;
 
 import co.bravebunny.circular.entities.objects.Clickable;
 import co.bravebunny.circular.entities.objects.TextBlock;
-import co.bravebunny.circular.managers.ActorTween;
-import co.bravebunny.circular.managers.Positions;
-import co.bravebunny.circular.screens.GameScreen;
 
 /**
  * Container for all the information related to a game level
  */
-public class Level extends Clickable {
-	TextBlock nameText;
-	String musicFile, artist, linkText, url;
+public class Level extends Clickable implements Serializable{
+	TextBlock levelText;
+	String musicFile, title, artist, linkText, url;
 	int minTotalScore;
 	float bpm;
 
@@ -24,9 +21,15 @@ public class Level extends Clickable {
 	 * @param levelName - Title to display on the level select menu
 	 * @param mintotalScore - Total score required to unlock this level
 	 */
-	public Level (String levelName, int minTotalScore) {
-		this.nameText = new TextBlock();
-		this.nameText.setText(levelName);
+	public void init() {
+		this.levelText = new TextBlock();
+	}
+	
+	public void setLevelName(String levelName) {
+		this.levelText.setText(levelName);
+	}
+	
+	public void setMinTotalScore(int minTotalScore) {
 		this.minTotalScore = minTotalScore;
 	}
 	
@@ -34,83 +37,84 @@ public class Level extends Clickable {
 		return musicFile;
 	}
 
-	public void setMusicFile(String musicFile) {
-		this.musicFile = musicFile;
-	}
-
 	public String getArtist() {
 		return artist;
-	}
-
-	public void setArtist(String artist) {
-		this.artist = artist;
 	}
 
 	public String getLinkText() {
 		return linkText;
 	}
 
-	public void setLinkText(String linkText) {
-		this.linkText = linkText;
-	}
-
 	public String getUrl() {
 		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
 	}
 
 	public float getBpm() {
 		return bpm;
 	}
-
-	public void setBpm(float bpm) {
-		this.bpm = bpm;
-	}
 	
 	@Override
 	public void setPosition(float x, float y) {
-		nameText.setPosition(x, y);
+		levelText.setPosition(x, y);
 	}
 
 	@Override
 	public void setRotation(float angle) {
-		nameText.setRotation(angle);
+		levelText.setRotation(angle);
 	}
 	
 	@Override
 	public void setLayer(Group layer) {
-		nameText.setLayer(layer);
+		levelText.setLayer(layer);
 	}
 	
 	@Override
 	public void setPolarPosition(float radius, float angle) {
-		nameText.setPolarPosition(radius, angle);
+		levelText.setPolarPosition(radius, angle);
 	}
 
 	@Override
 	public void dispose() {
-		nameText.dispose();
+		levelText.dispose();
 	}
 	
 	@Override
 	public float getRotation() {
-		return nameText.getRotation();
+		return levelText.getRotation();
 	}
 	
 	@Override
 	public float getX() {
-		return nameText.getX();
+		return levelText.getX();
 	}
 	
 	@Override
 	public float getY() {
-		return nameText.getY();
+		return levelText.getY();
 	}
 	
 	public void moveTo(float target) {
-    	nameText.moveTo(target);
+    	levelText.moveTo(target);
+	}
+
+	@Override
+	public void write(Json json) {
+		json.writeValue("music", musicFile);
+		json.writeValue("bpm", bpm);
+		json.writeValue("title", title);
+		json.writeValue("artist", artist);
+		json.writeValue("link_text", linkText);
+		json.writeValue("url", url);
+	}
+
+	@Override
+	public void read(Json json, JsonValue jsonData) {
+		musicFile = jsonData.getString("music");
+		bpm = jsonData.getInt("bpm");
+		title = jsonData.getString("title");
+		artist = jsonData.getString("artist");
+		linkText = jsonData.getString("link_text");
+		url = jsonData.getString("url");
+
 	}
 }

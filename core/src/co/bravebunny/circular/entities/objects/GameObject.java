@@ -1,5 +1,6 @@
 package co.bravebunny.circular.entities.objects;
 
+import co.bravebunny.circular.managers.Assets;
 import co.bravebunny.circular.managers.Positions;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -8,50 +9,70 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 public abstract class GameObject {
 	
 	/**
-	 * Actor that better represents the entire entity.
-	 * Used as a reference for position, angle, collisions and more fun stuff
+	 * Group of actors that represent this object
 	 */
-	public Actor body;
+	public Group actors;
+	
+	public GameObject() {
+		actors = new Group();
+		init();
+		centerActors();
+	}
+	
+	abstract public void init();
 
 	public float getRotation() {
-		if (body != null) {
-			return body.getRotation();
+		if (actors != null) {
+			return actors.getRotation();
 		} else {
 			return 0;
 		}
 	}
 	
 	public float getX() {
-		if (body != null) {
-			return Positions.getCenterX(body);
+		if (actors != null) {
+			return Positions.getCenterX(actors);
 		} else {
 			return 0;
 		}
 	}
 	
 	public float getY() {
-		if (body != null) {
-			return Positions.getCenterY(body);
+		if (actors != null) {
+			return Positions.getCenterY(actors);
 		} else {
 			return 0;
 		}
 	}
 
 	public void setPosition(float x, float y) {
-		body.setPosition(x, y);
+		actors.setPosition(x, y);
 	}
 
 	public void setRotation(float angle) {
-		body.setRotation(angle);
+		actors.setRotation(angle);
 	}
 
 	public void setLayer(Group layer) {
-		layer.addActor(body);
+		layer.addActor(actors);
 	}
 	
 	public void setPolarPosition(float radius, float angle) {
-		Positions.setPolarPosition(body, radius, angle);
+		Positions.setPolarPosition(actors, radius, angle);
 	}
 	
-	public abstract void dispose();
+	/**
+	 * By default, centers all the actors at the origin of the group.
+	 * Should be implemented differently in each object in case
+	 * any of the actors need a different position or rotation
+	 */
+	public void centerActors() {
+		for (Actor actor : actors.getChildren()) {
+			Positions.setPolarPosition(actor);
+		}
+	}
+	
+	public void dispose() {
+		actors.remove();
+	}
 }

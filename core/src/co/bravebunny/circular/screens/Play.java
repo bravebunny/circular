@@ -1,6 +1,5 @@
 package co.bravebunny.circular.screens;
 
-import co.bravebunny.circular.Circular.CurrentScreen;
 import co.bravebunny.circular.entities.objects.Circle;
 import co.bravebunny.circular.entities.objects.Enemy;
 import co.bravebunny.circular.entities.objects.HUD;
@@ -25,25 +24,26 @@ public class Play extends GameScreen implements Screen {
 	private static Music music;
 	
 	//values
-	private static float bpm = 107;
 	private static float time = 0;
 	public static int score = 0;
 	
 	//groups (object layers)
+	//THESE NEED TO STOP BEING STATIC ASAP
 	public static Group layerGame = new Group();
 	public static Group layerShip = new Group();
 	public static Group layerObjects = new Group();
 	public static Group layerOverlay = new Group();
-	public static Group layerHUD = new Group();
+	public Group layerHUD = new Group();
 	
 	//game objects
 	public Ship ship;
 	public Circle circle;
 	public HUD hud;
+	public Score scoreText;
 	public Array<Enemy> enemies = new Array<Enemy>();
 	
-    public static float getBPM() {
-    	return bpm;
+    public float getBPM() {
+    	return levels[selectedLevel].getBpm();
     }
 	
     @Override
@@ -62,16 +62,21 @@ public class Play extends GameScreen implements Screen {
     	bgGreen = 89;
     	bgBlue = 118;
     	stage = new Stage();
-    	//time = TimeUtils.millis();
     	
     	super.show();
     	
     	circle = new Circle();
     	circle.setLayer(layerGame);
-    	ship = new Ship();
-    	hud = new HUD();
     	
-        Score.show();
+    	ship = new Ship();
+    	ship.setLayer(layerShip);
+    	
+    	hud = new HUD();
+    	hud.setLayer(layerHUD);
+    	
+        scoreText = new Score();
+        scoreText.startTween(getBPM());
+        scoreText.setLayer(layerHUD);
         Particles.show();
         
         getStage().addActor(layerGame);
@@ -83,8 +88,6 @@ public class Play extends GameScreen implements Screen {
     	//initialize input
     	GameInput input = new GameInput(this);
     	Gdx.input.setInputProcessor(input);
-    	
-    	bpm = levels[selectedLevel].getBpm();
     	
     	//start music
     	music = Gdx.audio.newMusic(Gdx.files.internal("media/music/" + levels[selectedLevel].getMusicFile() + ".ogg"));
@@ -121,7 +124,7 @@ public class Play extends GameScreen implements Screen {
 	    	Particles.render(delta);
 	    	ship.render(delta);
 	    	circle.render(delta);
-	    	Score.render(delta);
+	    	scoreText.render(delta);
 	    	hud.render(delta);
 	    	
 	    	for (int i = 0; i < enemies.size; i++) {
@@ -130,8 +133,8 @@ public class Play extends GameScreen implements Screen {
 	    		} else {
 	    			enemies.get(i).render(delta);
 	    			if (ship.collidesWith(enemies.get(i))) {
-		    			enemies.removeIndex(i);
 		    			enemies.get(i).explode();
+		    			enemies.removeIndex(i);
 		    			ship.destroy();
 		    			hud.restartShow();
 		    			circle.growToCover(viewport.getWorldWidth(), viewport.getWorldHeight());
@@ -140,12 +143,12 @@ public class Play extends GameScreen implements Screen {
 	    	}
 	        
 	    	time += delta;
-	        if (time >= 60/bpm) {
+	        if (time >= 60/getBPM()) {
 	        	if (ship.state == ShipState.ALIVE) {
 	        		//call all the rhythm related stuff
 	            	rhythm();
 	        	}
-	            time -= 60/bpm;
+	            time -= 60/getBPM();
 	        }
         
         }
@@ -166,7 +169,7 @@ public class Play extends GameScreen implements Screen {
         	    	ship.reset();
         	    	ship.moveUp();
         	    }
-        	}, 60/Play.getBPM());
+        	}, 60/getBPM());
     	}
     }
     
@@ -175,9 +178,10 @@ public class Play extends GameScreen implements Screen {
     public void rhythm() {
 		Enemy enemy = new Enemy();
 		enemy.setRotation(ship.getRotation() + 180);
+		enemy.grow(getBPM());
 		enemies.add(enemy);
-		circle.beat();
-		Score.inc();
+		circle.beat(getBPM());
+		scoreText.inc();
 		//enemy.beat();
 
     }

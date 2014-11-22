@@ -16,22 +16,24 @@ import co.bravebunny.circular.screens.Play;
 
 public class Circle extends Clickable {
 	
-	private Image circleOuter = Assets.getImage("level/circle_outer");
+	private Image circleOuter;
+	private Image circleInner;
 	
-	public Circle() {
-		
-		body = Assets.getImage("level/circle_inner");
-		Positions.setPolarPosition(circleOuter);
-		Positions.setPolarPosition(body);
+	public void init() {
+		circleOuter = Assets.getImage("level/circle_outer");
+		circleInner = Assets.getImage("level/circle_inner");
+		actors.addActor(circleOuter);
+		actors.addActor(circleInner);
+		Positions.setPolarPosition(actors);
 
-		click_height = click_width = body.getWidth();
+		click_height = click_width = actors.getWidth();
 		
-	    beat();
+	    //beat();
 	}
 	
 	public void setLayer(Group layer) {
 		layer.addActor(circleOuter);
-	    layer.addActor(body);
+	    layer.addActor(actors);
 	}
 	
 	public void render(float delta) {
@@ -41,12 +43,12 @@ public class Circle extends Clickable {
 	/**
 	 * Triggers rhythm-related visual effects in the circle
 	 */
-	public void beat() {
-        Tween.from(circleOuter, ActorTween.SCALE, 60/Play.getBPM())
+	public void beat(float bpm) {
+        Tween.from(circleOuter, ActorTween.SCALE, 60/bpm)
         .target(1.1f).ease(Back.OUT)
         .start(GameScreen.getTweenManager());
         
-        Tween.from(body, ActorTween.SCALE, 60/Play.getBPM())
+        Tween.from(circleInner, ActorTween.SCALE, 60/bpm)
         .target(0.9f).ease(Back.OUT)
         .start(GameScreen.getTweenManager());
 	}
@@ -55,41 +57,32 @@ public class Circle extends Clickable {
 	 * Expands inner circle until it covers a specified point (x, y)
 	 */
 	public void growToCover(float x, float y) {
-		Play.layerGame.removeActor(body);
-		Play.layerOverlay.addActor(body);
+		Play.layerGame.removeActor(circleInner);
+		Play.layerOverlay.addActor(circleInner);
 		
-		float target = Positions.getDistance(body, x, y)
-				/ (body.getWidth());
+		float target = Positions.getDistance(circleInner, x, y)
+				/ (circleInner.getWidth());
 		
-		Tween.to(body, ActorTween.SCALE, 60/Play.getBPM())
+		Tween.to(circleInner, ActorTween.SCALE, 0.5f)
         .target(target).ease(Back.IN)
         .start(GameScreen.getTweenManager());
-		
-		
 	}
 	
 	/**
 	 * Makes the inner circle shrink back to its default size
 	 */
 	public void shrink() {
-		Tween.to(body, ActorTween.SCALE, 60/Play.getBPM())
+		Tween.to(circleInner, ActorTween.SCALE, 0.5f)
         .target(1).ease(Back.IN)
         .start(GameScreen.getTweenManager());
 		
     	Timer.schedule(new Task(){
     	    @Override
     	    public void run() {
-    	    	Play.layerOverlay.removeActor(body);
-    			Play.layerGame.addActor(body);
+    	    	Play.layerOverlay.removeActor(circleInner);
+    			Play.layerGame.addActor(circleInner);
     	    }
-    	}, 60/Play.getBPM());
-		
-	}
-
-	@Override
-	public void dispose() {
-		body.remove();
-		circleOuter.remove();
+    	}, 0.5f);
 		
 	}
 

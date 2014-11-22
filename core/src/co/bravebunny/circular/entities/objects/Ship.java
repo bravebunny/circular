@@ -17,13 +17,9 @@ public class Ship extends Solid {
 	//constants
 	String PCOLOR = "FFDE00FF";	//the color of the explosion particles
 	
-	//images
-	private Image fire = Assets.getImage("level/ship_fire1");
-	
-	//sounds
-	private Sound moveSFX_1 = Assets.getSound("move1");
-	private Sound moveSFX_2 = Assets.getSound("move2");
-	private Sound explosionSFX = Assets.getSound("explosion");
+	//assets
+	private Image fire, body;
+	private Sound moveSFX_1, moveSFX_2, explosionSFX;
 	
 	//values
 	float radius = 400;		//radius of the circular trajectory of the ship
@@ -31,15 +27,23 @@ public class Ship extends Solid {
 	public ShipState state = ShipState.DEAD;
 	
 	
-	public Ship() {
+	public void init() {
+		fire = Assets.getImage("level/ship_fire1");
 		body = Assets.getImage("level/ship_body");
 		
-		body.setX(GameScreen.getViewport().getWorldWidth()/2 - body.getWidth()/2);
-		body.setY(GameScreen.getViewport().getWorldHeight()/2 + 350);
-        Play.layerShip.addActor(body);
+		moveSFX_1 = Assets.getSound("move1");
+		moveSFX_2 = Assets.getSound("move2");
+		explosionSFX = Assets.getSound("explosion");
+		
+		actors.addActor(body);
+		
+		actors.setX(GameScreen.getViewport().getWorldWidth()/2 - actors.getWidth()/2);
+		actors.setY(GameScreen.getViewport().getWorldHeight()/2 + 350);
         
         fire.setX(-100);
         fire.setY(0);
+        
+        centerActors();
         //Common.getStage().addActor(fire);
 	}
 	
@@ -51,14 +55,14 @@ public class Ship extends Solid {
 	
 	public void moveDown () {
 		moveSFX_1.play();
-        Tween.to(body, ActorTween.SCALE, 0.8f)
+        Tween.to(actors, ActorTween.SCALE, 0.8f)
         .target(0.60f, 0.60f).ease(Elastic.OUT)
         .start(GameScreen.getTweenManager());
 	}
 	
 	public void moveUp() {
 		moveSFX_2.play();
-        Tween.to(body, ActorTween.SCALE, 0.8f)
+        Tween.to(actors, ActorTween.SCALE, 0.8f)
         .target(1f, 1f).ease(Elastic.OUT)
         .start(GameScreen.getTweenManager());
 	}
@@ -67,27 +71,27 @@ public class Ship extends Solid {
 		explosionSFX.play();
 		Particles.create(getX(), getY(), PCOLOR);
 		state = ShipState.DEAD;
-		body.setVisible(false);
+		actors.setVisible(false);
 	}
 	
 	public void reset() {
 		state = ShipState.ALIVE;
-		body.setVisible(true);
+		actors.setVisible(true);
 	}
 	
 	public boolean collidesWith(Solid object) {
-		if (Positions.getDistance(body, object.getX(), object.getY()) < (colRadius + object.radius)) {
-			return object.body.isVisible();
+		if (Positions.getDistance(actors, object.getX(), object.getY()) < (colRadius + object.radius)) {
+			return object.actors.isVisible();
 		}
 		return false;
 	}
 	
 	public void renderAlive (float delta) {
-		body.rotateBy(-3*60*delta);
+		actors.rotateBy(-3*60*delta);
         //set the rotation/scaling origin of the ship the the center of the screen
 		//body.setOrigin(body.getWidth()/2, -(body.getY() - Common.getViewport().getWorldHeight()/2));
 		
-		Positions.setPolarPosition(body, radius*body.getScaleX(), body.getRotation() + 90);
+		Positions.setPolarPosition(actors, radius*actors.getScaleX(), actors.getRotation() + 90);
 	}
 	
 	public void render (float delta) {
@@ -98,12 +102,5 @@ public class Ship extends Solid {
 		case DEAD:
 			break;
 		}
-	}
-
-	@Override
-	public void dispose() {
-		body.remove();
-		fire.remove();
-		
 	}
 }
