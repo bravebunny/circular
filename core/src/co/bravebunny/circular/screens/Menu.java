@@ -1,29 +1,27 @@
 package co.bravebunny.circular.screens;
 
 import co.bravebunny.circular.Circular.CurrentScreen;
+import co.bravebunny.circular.entities.objects.Circle;
+import co.bravebunny.circular.entities.objects.Level;
+import co.bravebunny.circular.entities.objects.Score;
+import co.bravebunny.circular.entities.objects.TextBlock;
 import co.bravebunny.circular.managers.Assets;
-import co.bravebunny.circular.managers.GameInput;
-import co.bravebunny.circular.objects.Circle;
-import co.bravebunny.circular.objects.Score;
-import co.bravebunny.circular.objects.TextBlock;
+import co.bravebunny.circular.managers.GameGestures;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-public class Menu extends Common implements Screen {
+public class Menu extends GameScreen implements Screen {
+	GestureDetector gestures;
+	
 	//objects
 	private Music music;
-	
-	//values
-	public float previousTouchX;
-	public boolean touching = false;
-	public int totalScore = 0;
-	public int selectedLevel = 0;
-	public String[] levelNames = {"Tutorial", "Easy", "Medium", "Hard", "Why"};
-	public TextBlock[] textBlocks = {null, null, null, null, null};
 	
 	//groups (object layers)
 	public Group layerCircles = new Group();
@@ -45,8 +43,6 @@ public class Menu extends Common implements Screen {
 
     @Override
     public void show() {
-    	screen = CurrentScreen.MENU;
-    	
     	bgRed = 0;
     	bgGreen = 89;
     	bgBlue = 118;
@@ -56,13 +52,39 @@ public class Menu extends Common implements Screen {
     	circle = new Circle();
     	circle.setLayer(layerCircles);
     	
-    	for (int i = 0; i < levelNames.length; i++) {
-    		TextBlock text = new TextBlock();
-        	text.setLayer(layerLevels);
-        	text.setPolarPosition(1000*i - 1000*selectedLevel, 0);
-        	text.setText(levelNames[i]);
-        	textBlocks[i] = text;
+    	Level l[] = {
+    		new Level("Tutorial", 0),
+    		new Level("Easy", 0),
+    		new Level("Medium", 100),
+    		new Level("Hard", 300),
+    		new Level("Crazy", 600),
+    		new Level("Why", 1000)
+    	};
+    	levels = l;
+    	
+    	for (int i = 0; i < levels.length; i++) {
+        	levels[i].setLayer(layerLevels);
+        	levels[i].setPolarPosition(1000*i - 1000*selectedLevel, 0);
     	}
+    	
+    	// Fill in the info for each level.
+    	// Will eventually be done via external file
+    	// using a sexy 'for' cycle.
+    	// Not now, though. I don't feel like it.
+    	levels[0].setMusicFile("music0");
+    	levels[0].setBpm(107);
+    	levels[1].setMusicFile("music1");
+    	levels[1].setBpm(107);
+    	levels[2].setMusicFile("music2");
+    	levels[2].setBpm(100);
+    	levels[3].setMusicFile("music3");
+    	levels[3].setBpm(126);
+    	levels[4].setMusicFile("music4");
+    	levels[4].setBpm(130);
+    	levels[5].setMusicFile("music5");
+    	levels[5].setBpm(140);
+    	/*levels[6].setMusicFile("round");
+    	levels[6].setBpm(128.36f);*/
     	
         Score.show();
 
@@ -72,11 +94,16 @@ public class Menu extends Common implements Screen {
         getStage().addActor(layerLocked);
         
     	//initialize input
-    	GameInput input = new GameInput(this);
-    	Gdx.input.setInputProcessor(input);
+    	/*GameInput input = new GameInput(this);
+    	Gdx.input.setInputProcessor(input);*/
+    	
+        //initialize gestures
+        gestures = new GestureDetector(new GameGestures(this));
+    	Gdx.input.setInputProcessor(gestures);
 
     	music = Assets.getMusic("menu");
     	music.play();
+    	music.setLooping(true);
     	
 
     }
@@ -107,12 +134,19 @@ public class Menu extends Common implements Screen {
     	circle.render(delta);
     	Score.render(delta);
     	
-    	if (touching == true) {
+    	/*if (touching == true) {
     		float deltaX = Gdx.input.getX() - previousTouchX;
+    		Vector3 vector_center_screen = viewport.getCamera().project(
+    				new Vector3(0, 0, 0));
+    		Vector3 vector_delta = viewport.getCamera().unproject(
+    				new Vector3(deltaX + vector_center_screen.x, 0, 0));
+    		
         	for (int i = 0; i < textBlocks.length; i++) {
-            	textBlocks[i].setPolarPosition(1000*i - 1000*selectedLevel + deltaX*2000/Common.viewport.getScreenWidth(), 0);
+        		
+            	textBlocks[i].setPolarPosition(1000*i - 1000*selectedLevel + vector_delta.x, 0);
+            	
         	}
-    	}
+    	}*/
 
     	
     }
@@ -120,7 +154,7 @@ public class Menu extends Common implements Screen {
     public void renderPause(float delta) {
     }
 
-	@Override
+	/*@Override
 	public void touchDown(int screenX, int screenY) {
 		touching = true;
 		previousTouchX = screenX;
@@ -142,6 +176,65 @@ public class Menu extends Common implements Screen {
     		textBlocks[i].moveTo(1000*i - 1000*selectedLevel);
     	}
     
+	}*/
+	
+	public void pan(float x, float y, float deltaX, float deltaY) {
+		Vector3 vector_center_screen = viewport.getCamera().project(
+				new Vector3(0, 0, 0));
+		Vector3 vector_delta = viewport.getCamera().unproject(
+				new Vector3(deltaX + vector_center_screen.x, 0, 0));
+		
+		//layerLevels.setX(layerLevels.getX() + vector_delta.x);
+    	for (int i = 0; i < levels.length; i++) {
+    		levels[i].setPosition(levels[i].getX() + vector_delta.x, levels[i].getY());
+        }
+	}
+	
+	public void panStop() {
+		
+		if (levels[selectedLevel].getX() < -500) {
+			selectedLevel = selectedLevel + 1;
+			if (selectedLevel > levels.length -1) {
+				selectedLevel = levels.length -1;
+			}
+		} else if (levels[selectedLevel].getX() > 500){
+			selectedLevel = (selectedLevel - 1)%levels.length;
+			if (selectedLevel < 0) {
+				selectedLevel = 0;
+			}
+		}
+		
+    	for (int i = 0; i < levels.length; i++) {
+    		levels[i].moveTo(1000*i - 1000*selectedLevel);
+    	}
+	}
+	
+	public void fling(float velocityX, float velocityY) {
+		if (!gestures.isPanning() & Math.abs(velocityX) > 100) {
+			if (velocityX < 0) {
+				selectedLevel = selectedLevel + 1;
+				if (selectedLevel > levels.length -1) {
+					selectedLevel = levels.length -1;
+				}
+			} else if (velocityX > 0){
+				selectedLevel = (selectedLevel - 1)%levels.length;
+				if (selectedLevel < 0) {
+					selectedLevel = 0;
+				}
+			}
+		}
+		
+		
+    	for (int i = 0; i < levels.length; i++) {
+    		levels[i].moveTo(1000*i - 1000*selectedLevel);
+    	}
+	}
+	
+	public void tap(float x, float y, int count) {
+		//if (circle.isTouching(x, y)) {
+			music.stop();
+			((Game)Gdx.app.getApplicationListener()).setScreen(new Play());
+		//}
 	}
 
 	@Override

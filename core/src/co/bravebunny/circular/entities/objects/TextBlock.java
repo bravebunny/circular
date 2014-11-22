@@ -1,11 +1,11 @@
-package co.bravebunny.circular.objects;
+package co.bravebunny.circular.entities.objects;
 
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.equations.Back;
-import co.bravebunny.circular.managers.ActorAccessor;
+import co.bravebunny.circular.managers.ActorTween;
 import co.bravebunny.circular.managers.Assets;
-import co.bravebunny.circular.screens.Common;
-import co.bravebunny.circular.screens.Level;
+import co.bravebunny.circular.screens.GameScreen;
+import co.bravebunny.circular.screens.Play;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -16,7 +16,7 @@ public class TextBlock extends GameObject {
 	public TextBlock() {
 		body = new Table();
 		((Table)body).add(label);
-	    Level.layerHUD.addActor(body);
+	    Play.layerHUD.addActor(body);
 	    ((Table)body).setTransform(true);
 	}
 	
@@ -25,9 +25,9 @@ public class TextBlock extends GameObject {
 	}
 	
 	public void moveTo(float target) {
-    	Tween.to(body, ActorAccessor.POSITION, 0.5f)
+    	Tween.to(body, ActorTween.POSITION, 0.5f)
         .target(target).ease(Back.OUT)
-        .start(Common.getTweenManager());
+        .start(GameScreen.getTweenManager());
 	}
 
 	@Override

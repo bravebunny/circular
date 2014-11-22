@@ -4,7 +4,7 @@ import aurelienribon.tweenengine.TweenAccessor;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class ActorAccessor implements TweenAccessor<Actor> {
+public class ActorTween implements TweenAccessor<Actor> {
 
 	//possible tween types:
 	public static final int SIZE = 1;
@@ -48,8 +48,6 @@ public class ActorAccessor implements TweenAccessor<Actor> {
 			Positions.setPolarPosition(target, newValues[0], 0);
 			break;
 		default: assert false; break;
+		}
 	}
-		
-	}
-
 }

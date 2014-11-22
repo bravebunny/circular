@@ -1,6 +1,6 @@
 package co.bravebunny.circular.managers;
 
-import co.bravebunny.circular.screens.Common;
+import co.bravebunny.circular.screens.GameScreen;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
@@ -10,9 +10,9 @@ import com.badlogic.gdx.math.Vector2;
 
 public class GameInput extends InputAdapter implements InputProcessor{
 	
-	Common screen;
+	GameScreen screen;
 	
-	public GameInput(Common common) {
+	public GameInput(GameScreen common) {
 		screen = common;
 	}
 	

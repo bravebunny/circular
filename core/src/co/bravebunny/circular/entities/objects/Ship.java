@@ -1,13 +1,13 @@
-package co.bravebunny.circular.objects;
+package co.bravebunny.circular.entities.objects;
 
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.equations.Elastic;
-import co.bravebunny.circular.managers.ActorAccessor;
+import co.bravebunny.circular.managers.ActorTween;
 import co.bravebunny.circular.managers.Assets;
 import co.bravebunny.circular.managers.Particles;
 import co.bravebunny.circular.managers.Positions;
-import co.bravebunny.circular.screens.Common;
-import co.bravebunny.circular.screens.Level;
+import co.bravebunny.circular.screens.GameScreen;
+import co.bravebunny.circular.screens.Play;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -34,9 +34,9 @@ public class Ship extends Solid {
 	public Ship() {
 		body = Assets.getImage("level/ship_body");
 		
-		body.setX(Common.getViewport().getWorldWidth()/2 - body.getWidth()/2);
-		body.setY(Common.getViewport().getWorldHeight()/2 + 350);
-        Level.layerShip.addActor(body);
+		body.setX(GameScreen.getViewport().getWorldWidth()/2 - body.getWidth()/2);
+		body.setY(GameScreen.getViewport().getWorldHeight()/2 + 350);
+        Play.layerShip.addActor(body);
         
         fire.setX(-100);
         fire.setY(0);
@@ -51,16 +51,16 @@ public class Ship extends Solid {
 	
 	public void moveDown () {
 		moveSFX_1.play();
-        Tween.to(body, ActorAccessor.SCALE, 0.8f)
+        Tween.to(body, ActorTween.SCALE, 0.8f)
         .target(0.60f, 0.60f).ease(Elastic.OUT)
-        .start(Common.getTweenManager());
+        .start(GameScreen.getTweenManager());
 	}
 	
 	public void moveUp() {
 		moveSFX_2.play();
-        Tween.to(body, ActorAccessor.SCALE, 0.8f)
+        Tween.to(body, ActorTween.SCALE, 0.8f)
         .target(1f, 1f).ease(Elastic.OUT)
-        .start(Common.getTweenManager());
+        .start(GameScreen.getTweenManager());
 	}
 	
 	public void destroy() {
@@ -68,7 +68,6 @@ public class Ship extends Solid {
 		Particles.create(getX(), getY(), PCOLOR);
 		state = ShipState.DEAD;
 		body.setVisible(false);
-		HUD.restartShow();
 	}
 	
 	public void reset() {
@@ -103,7 +102,8 @@ public class Ship extends Solid {
 
 	@Override
 	public void dispose() {
-		// TODO BOM
+		body.remove();
+		fire.remove();
 		
 	}
 }

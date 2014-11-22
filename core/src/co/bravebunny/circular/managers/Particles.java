@@ -1,6 +1,6 @@
 package co.bravebunny.circular.managers;
 
-import co.bravebunny.circular.screens.Common;
+import co.bravebunny.circular.screens.GameScreen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -30,12 +30,12 @@ public class Particles {
 		prototype.start();
 		
 		PooledEffect effect = pool.obtain();
-		effect.setPosition(Common.getViewport().getWorldWidth()/2 + x, Common.getViewport().getWorldHeight()/2 + y);
+		effect.setPosition(GameScreen.getViewport().getWorldWidth()/2 + x, GameScreen.getViewport().getWorldHeight()/2 + y);
 		effects.add(effect);
 	}
 	
 	public static void render(float delta) {
-		batch.getProjectionMatrix().setToOrtho2D(0, 0, Common.getViewport().getWorldWidth(), Common.getViewport().getWorldHeight());
+		batch.getProjectionMatrix().setToOrtho2D(0, 0, GameScreen.getViewport().getWorldWidth(), GameScreen.getViewport().getWorldHeight());
 		batch.begin();
 		for(PooledEffect effect : effects) {
 			effect.draw(batch, delta);
@@ -53,7 +53,12 @@ public class Particles {
 	}
 	
 	public static void dispose() {
-		batch.dispose();
-		prototype.dispose();
+		if(batch != null) {
+			batch.dispose();
+		}
+		if (prototype != null) {
+			prototype.dispose();
+		}
+		
 	}
 }

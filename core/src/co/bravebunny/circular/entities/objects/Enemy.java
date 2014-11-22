@@ -1,4 +1,4 @@
-package co.bravebunny.circular.objects;
+package co.bravebunny.circular.entities.objects;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -7,12 +7,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
-import co.bravebunny.circular.managers.ActorAccessor;
+import co.bravebunny.circular.managers.ActorTween;
 import co.bravebunny.circular.managers.Assets;
 import co.bravebunny.circular.managers.Particles;
 import co.bravebunny.circular.managers.Positions;
-import co.bravebunny.circular.screens.Common;
-import co.bravebunny.circular.screens.Level;
+import co.bravebunny.circular.screens.GameScreen;
+import co.bravebunny.circular.screens.Play;
 import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenCallback;
@@ -45,11 +45,11 @@ public class Enemy extends Solid{
 		
 		body.setOrigin(body.getWidth()/2, body.getHeight()/2);
 		body.setScale(0);
-		Level.layerObjects.addActor(body);
+		Play.layerObjects.addActor(body);
 		
 		//grow to initial size
-		Tween.to(body, ActorAccessor.SCALE, 60/Level.getBPM()).target(1 - type*0.3f)
-		.ease(Back.OUT).start(Common.getTweenManager());
+		Tween.to(body, ActorTween.SCALE, 60/Play.getBPM()).target(1 - type*0.3f)
+		.ease(Back.OUT).start(GameScreen.getTweenManager());
 		
         //turn on collisions
         Timer.schedule(new Task(){
@@ -57,7 +57,7 @@ public class Enemy extends Solid{
             public void run() {
                 coll_on = true;
             }
-        }, 60/Level.getBPM());
+        }, 60/Play.getBPM());
 		
         //destroy the enemy after some time
         Timer.schedule(new Task(){
@@ -65,7 +65,7 @@ public class Enemy extends Solid{
             public void run() {
                 destroy();
             }
-        }, 3*60/Level.getBPM());
+        }, 3*60/Play.getBPM());
         
 	}
 	
@@ -88,7 +88,6 @@ public class Enemy extends Solid{
 	}
 	
 	public void render(float delta) {
-		super.render(delta);
 		//place the enemy in the game screen, and rotate it to an angle in front of the ship
 		Positions.setPolarPosition(body, h, angle);
 
@@ -102,7 +101,9 @@ public class Enemy extends Solid{
 	}
 	
 	public void dispose() {
-		body.remove();
+		if (body != null) {
+			body.remove();
+		}
 		body = null;
 	}
 	

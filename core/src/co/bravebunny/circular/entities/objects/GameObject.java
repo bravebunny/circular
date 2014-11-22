@@ -1,4 +1,4 @@
-package co.bravebunny.circular.objects;
+package co.bravebunny.circular.entities.objects;
 
 import co.bravebunny.circular.managers.Positions;
 

@@ -1,6 +1,6 @@
 package co.bravebunny.circular.managers;
 
-import co.bravebunny.circular.screens.Common;
+import co.bravebunny.circular.screens.GameScreen;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -55,7 +55,7 @@ public class Positions {
 	 * @return Absolute X coordinate of the center of the actor
 	 */
 	public static float getAbsoluteX(Actor actor) {
-		return Common.getViewport().getWorldWidth()/2 - actor.getWidth()/2
+		return GameScreen.getViewport().getWorldWidth()/2 - actor.getWidth()/2
 				+ (float)MathUtils.cos(MathUtils.degreesToRadians*(actor.getRotation()+90))
 				* getDistance(actor, 0, 0);
 	}
@@ -67,7 +67,7 @@ public class Positions {
 	 * @return Absolute Y coordinate of the center of the actor
 	 */
 	public static float getAbsoluteY(Actor actor) {
-		return Common.getViewport().getWorldHeight()/2 - actor.getHeight()/2
+		return GameScreen.getViewport().getWorldHeight()/2 - actor.getHeight()/2
 				+ (float)MathUtils.sin(MathUtils.degreesToRadians*(actor.getRotation()+90))
 				* getDistance(actor, 0, 0);
 	}

@@ -13,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
-public class Splash extends Common implements Screen {
+public class Splash extends GameScreen implements Screen {
 	
 	private Texture bunnyTexture = new Texture(Gdx.files.internal("img/splash/bunny0.png"));
 	private Image bunny = new Image(bunnyTexture);
@@ -31,8 +31,6 @@ public class Splash extends Common implements Screen {
 
     @Override
     public void show() {
-    	screen = CurrentScreen.SPLASH;
-    	
     	bgRed = 104;
     	bgGreen = 156;
     	bgBlue = 59;

@@ -1,15 +1,16 @@
 package co.bravebunny.circular.screens;
 
 import co.bravebunny.circular.Circular.CurrentScreen;
+import co.bravebunny.circular.entities.objects.Circle;
+import co.bravebunny.circular.entities.objects.Enemy;
+import co.bravebunny.circular.entities.objects.HUD;
+import co.bravebunny.circular.entities.objects.Score;
+import co.bravebunny.circular.entities.objects.Ship;
+import co.bravebunny.circular.entities.objects.Ship.ShipState;
 import co.bravebunny.circular.managers.GameInput;
 import co.bravebunny.circular.managers.Particles;
-import co.bravebunny.circular.objects.Circle;
-import co.bravebunny.circular.objects.Enemy;
-import co.bravebunny.circular.objects.HUD;
-import co.bravebunny.circular.objects.Score;
-import co.bravebunny.circular.objects.Ship;
-import co.bravebunny.circular.objects.Ship.ShipState;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
@@ -19,7 +20,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
-public class Level extends Common implements Screen {
+public class Play extends GameScreen implements Screen {
 	//objects
 	private static Music music;
 	
@@ -35,10 +36,11 @@ public class Level extends Common implements Screen {
 	public static Group layerOverlay = new Group();
 	public static Group layerHUD = new Group();
 	
-	//other objects
-	public static Ship ship;
-	public static Circle circle;
-	public static Array<Enemy> enemies = new Array<Enemy>();
+	//game objects
+	public Ship ship;
+	public Circle circle;
+	public HUD hud;
+	public Array<Enemy> enemies = new Array<Enemy>();
 	
     public static float getBPM() {
     	return bpm;
@@ -56,8 +58,6 @@ public class Level extends Common implements Screen {
 
     @Override
     public void show() {
-    	screen = CurrentScreen.LEVEL;
-    	
     	bgRed = 0;
     	bgGreen = 89;
     	bgBlue = 118;
@@ -69,10 +69,10 @@ public class Level extends Common implements Screen {
     	circle = new Circle();
     	circle.setLayer(layerGame);
     	ship = new Ship();
+    	hud = new HUD();
     	
         Score.show();
         Particles.show();
-        HUD.show();
         
         getStage().addActor(layerGame);
         getStage().addActor(layerShip);
@@ -84,8 +84,10 @@ public class Level extends Common implements Screen {
     	GameInput input = new GameInput(this);
     	Gdx.input.setInputProcessor(input);
     	
+    	bpm = levels[selectedLevel].getBpm();
+    	
     	//start music
-    	music = Gdx.audio.newMusic(Gdx.files.internal("media/music/music1.ogg"));
+    	music = Gdx.audio.newMusic(Gdx.files.internal("media/music/" + levels[selectedLevel].getMusicFile() + ".ogg"));
     	//music = Assets.getMusic("music1");
     	//I SHOULD BE USING THE ASSET MANAGER HERE
     	//I'M NOT, THOUGH
@@ -113,12 +115,6 @@ public class Level extends Common implements Screen {
     	music.play();
     	super.resume();
     }
-
-    @Override
-    public void dispose() {
-    	super.dispose();
-    	Particles.dispose();
-    }
     
     public void renderRun(float delta) {
     	if (music.isPlaying()) {
@@ -126,7 +122,7 @@ public class Level extends Common implements Screen {
 	    	ship.render(delta);
 	    	circle.render(delta);
 	    	Score.render(delta);
-	    	HUD.render(delta);
+	    	hud.render(delta);
 	    	
 	    	for (int i = 0; i < enemies.size; i++) {
 	    		if (enemies.get(i).isDead()) {
@@ -137,7 +133,8 @@ public class Level extends Common implements Screen {
 		    			enemies.removeIndex(i);
 		    			enemies.get(i).explode();
 		    			ship.destroy();
-		    			circle.grow();
+		    			hud.restartShow();
+		    			circle.growToCover(viewport.getWorldWidth(), viewport.getWorldHeight());
 		    		}
 	    		}
 	    	}
@@ -157,10 +154,10 @@ public class Level extends Common implements Screen {
     public void renderPause(float delta) {
     }
     
-    public static void restart() {
-    	if (HUD.restart.getScaleX() >= 1) {
+    public void restart() {
+    	if (hud.restart.getScaleX() >= 1) {
         	circle.shrink();
-        	HUD.restartHide();
+        	hud.restartHide();
         	score = 0;
         	
         	Timer.schedule(new Task(){
@@ -169,7 +166,7 @@ public class Level extends Common implements Screen {
         	    	ship.reset();
         	    	ship.moveUp();
         	    }
-        	}, 60/Level.getBPM());
+        	}, 60/Play.getBPM());
     	}
     }
     
@@ -211,8 +208,23 @@ public class Level extends Common implements Screen {
 
 	@Override
 	public void backKey() {
-		// TODO Auto-generated method stub
+		music.stop();
+		dispose();
+		((Game)Gdx.app.getApplicationListener()).setScreen(new Menu());
 		
 	}
 
+	@Override
+	public void dispose() {
+		super.dispose();
+		Particles.dispose();
+		for (Enemy enemy : enemies) {
+			enemy.dispose();
+		}
+		ship.dispose();
+		circle.dispose();
+		//score.dispose();
+		hud.dispose();
+	}
+	
 }
