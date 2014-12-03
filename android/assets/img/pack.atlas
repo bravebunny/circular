@@ -1,111 +1,174 @@
 
 pack.png
-size: 958,997
+size: 1024,1024
 format: RGBA8888
-filter: Nearest,Nearest
+filter: Linear,Linear
 repeat: none
 level/circle_inner
   rotate: false
-  xy: 2, 6
+  xy: 2, 2
   size: 337, 337
   orig: 337, 337
   offset: 0, 0
   index: -1
 level/circle_outer
   rotate: false
-  xy: 2, 345
+  xy: 2, 341
   size: 652, 652
   orig: 652, 652
   offset: 0, 0
   index: -1
-level/enemy
+level/coin
   rotate: false
-  xy: 833, 407
-  size: 125, 136
-  orig: 125, 136
+  xy: 906, 900
+  size: 86, 93
+  orig: 86, 93
   offset: 0, 0
-  index: -1
+  index: 0
+level/coin
+  rotate: false
+  xy: 906, 805
+  size: 86, 93
+  orig: 86, 93
+  offset: 0, 0
+  index: 1
+level/coin
+  rotate: false
+  xy: 906, 710
+  size: 86, 93
+  orig: 86, 93
+  offset: 0, 0
+  index: 2
+level/coin
+  rotate: false
+  xy: 906, 615
+  size: 86, 93
+  orig: 86, 93
+  offset: 0, 0
+  index: 3
+level/coin
+  rotate: false
+  xy: 906, 520
+  size: 86, 93
+  orig: 86, 93
+  offset: 0, 0
+  index: 4
+level/coin
+  rotate: false
+  xy: 901, 425
+  size: 86, 93
+  orig: 86, 93
+  offset: 0, 0
+  index: 5
+level/coin
+  rotate: false
+  xy: 901, 330
+  size: 86, 93
+  orig: 86, 93
+  offset: 0, 0
+  index: 6
+level/coin
+  rotate: false
+  xy: 901, 235
+  size: 86, 93
+  orig: 86, 93
+  offset: 0, 0
+  index: 7
+level/coin
+  rotate: false
+  xy: 898, 140
+  size: 86, 93
+  orig: 86, 93
+  offset: 0, 0
+  index: 8
+level/coin
+  rotate: false
+  xy: 898, 45
+  size: 86, 93
+  orig: 86, 93
+  offset: 0, 0
+  index: 9
 level/hud_menu
   rotate: false
-  xy: 653, 99
+  xy: 656, 295
   size: 243, 244
   orig: 243, 244
   offset: 0, 0
   index: -1
 level/hud_rateup
   rotate: false
-  xy: 656, 545
+  xy: 656, 541
   size: 248, 452
   orig: 248, 452
   offset: 0, 0
   index: -1
 level/hud_restart
   rotate: false
-  xy: 341, 13
+  xy: 341, 9
   size: 310, 330
   orig: 310, 330
   offset: 0, 0
   index: -1
-level/hud_speedup
-  rotate: false
-  xy: 656, 385
-  size: 175, 158
-  orig: 175, 158
-  offset: 0, 0
-  index: -1
-level/ship_fire1
-  rotate: false
-  xy: 653, 2
-  size: 220, 95
-  orig: 220, 95
-  offset: 0, 0
-  index: -1
-
-pack2.png
-size: 467,477
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-level/coin
-  rotate: false
-  xy: 2, 291
-  size: 430, 186
-  orig: 430, 186
-  offset: 0, 0
-  index: -1
 level/hud_resume
   rotate: false
-  xy: 2, 45
+  xy: 653, 49
   size: 243, 244
   orig: 243, 244
   offset: 0, 0
   index: -1
+
+pack2.png
+size: 1024,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+level/enemy
+  rotate: false
+  xy: 845, 57
+  size: 125, 136
+  orig: 125, 136
+  offset: 0, 0
+  index: -1
+level/hud_speedup
+  rotate: false
+  xy: 2, 35
+  size: 175, 158
+  orig: 175, 158
+  offset: 0, 0
+  index: -1
 level/ship_back
   rotate: false
-  xy: 247, 98
+  xy: 623, 99
   size: 220, 94
   orig: 220, 94
   offset: 0, 0
   index: -1
 level/ship_body
   rotate: false
-  xy: 247, 2
+  xy: 179, 2
   size: 220, 94
   orig: 220, 94
   offset: 0, 0
   index: -1
+level/ship_fire1
+  rotate: false
+  xy: 179, 98
+  size: 220, 95
+  orig: 220, 95
+  offset: 0, 0
+  index: -1
 level/ship_fire2
   rotate: false
-  xy: 247, 194
+  xy: 401, 98
   size: 220, 95
   orig: 220, 95
   offset: 0, 0
   index: -1
 
 pack3.png
-size: 980,492
+size: 1024,512
 format: RGBA8888
-filter: Nearest,Nearest
+filter: Linear,Linear
 repeat: none
 menu/fullscreen_off
   rotate: false

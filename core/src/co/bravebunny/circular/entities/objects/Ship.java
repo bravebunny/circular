@@ -80,7 +80,7 @@ public class Ship extends Solid {
 	}
 	
 	public boolean collidesWith(Solid object) {
-		if (Positions.getDistance(actors, object.getX(), object.getY()) < (colRadius + object.radius)) {
+		if (Positions.getDistance(actors, object.getX(), object.getY()) < (colRadius + object.coll_radius)) {
 			return object.actors.isVisible();
 		}
 		return false;

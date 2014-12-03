@@ -2,6 +2,10 @@ package co.bravebunny.circular.entities.objects;
 
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.equations.Back;
+import aurelienribon.tweenengine.equations.Circ;
+import aurelienribon.tweenengine.equations.Cubic;
+import aurelienribon.tweenengine.equations.Quad;
+import aurelienribon.tweenengine.equations.Quart;
 import co.bravebunny.circular.managers.ActorTween;
 import co.bravebunny.circular.managers.Assets;
 import co.bravebunny.circular.screens.GameScreen;
@@ -28,7 +32,7 @@ public class TextBlock extends GameObject {
 	
 	public void moveTo(float target) {
     	Tween.to(actors, ActorTween.POSITION, 0.5f)
-        .target(target).ease(Back.OUT)
+        .target(target).ease(Quart.OUT)
         .start(GameScreen.getTweenManager());
 	}
 

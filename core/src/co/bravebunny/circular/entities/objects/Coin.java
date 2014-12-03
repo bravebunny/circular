@@ -1,26 +1,27 @@
 package co.bravebunny.circular.entities.objects;
 
+import aurelienribon.tweenengine.BaseTween;
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenCallback;
+import aurelienribon.tweenengine.equations.Back;
+import co.bravebunny.circular.managers.ActorTween;
+import co.bravebunny.circular.managers.Assets;
+import co.bravebunny.circular.managers.Positions;
+import co.bravebunny.circular.screens.GameScreen;
+import co.bravebunny.circular.screens.Play;
+
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
-import co.bravebunny.circular.managers.ActorTween;
-import co.bravebunny.circular.managers.Assets;
-import co.bravebunny.circular.managers.Particles;
-import co.bravebunny.circular.managers.Positions;
-import co.bravebunny.circular.screens.GameScreen;
-import co.bravebunny.circular.screens.Play;
-import aurelienribon.tweenengine.BaseTween;
-import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenCallback;
-import aurelienribon.tweenengine.equations.Back;
-
-public class Enemy extends Solid{
+public class Coin extends Solid {
 	private float h;
 	private float angle = 0;
 	private int type;
-	private Image body;
+	private AnimatedImage animation;
+	private float elapsedTime = 0;
 	
 	private TweenCallback tweenCallback = new TweenCallback()
 	{
@@ -34,15 +35,18 @@ public class Enemy extends Solid{
 	};
 
 	public void init() {
-		body = Assets.getImage("level/enemy");
-		actors.addActor(body);
 		coll_on = false;
 		type = MathUtils.random(1);
 		h = 400 - type*150;
-		coll_radius = 10;
+		coll_radius = 8;
 		
 		actors.setOrigin(actors.getWidth()/2, actors.getHeight()/2);
-		actors.setScale(0);
+		//actors.setScale(0);
+		animation = Assets.getAnimation("level/coin");
+		actors.addActor(animation);
+		Play.layerOverlay.addActor(actors);
+		
+		
 	}
 	
 	public void grow(float bpm) {
@@ -58,7 +62,7 @@ public class Enemy extends Solid{
             }
         }, 60/bpm);
 		
-        //destroy the enemy after some time
+        //destroy the coin after some time
         Timer.schedule(new Task(){
             @Override
             public void run() {
@@ -72,21 +76,13 @@ public class Enemy extends Solid{
 		dispose();
 	}
 	
-	//enemy beat effect
+	//coin beat effect
 	public void beat(){
 		//TODO
 	}
-
-	public void explode() {
-		if (actors.isVisible()) {
-			Particles.create(Positions.getCenterX(actors), Positions.getCenterY(actors), "B71C1CFF");
-			actors.setVisible(false);
-		}
-		destroy();
-	}
 	
 	public void render(float delta) {
-		//place the enemy in the game screen, and rotate it to an angle in front of the ship
+		//place the coin in the game screen, and rotate it to an angle in front of the ship
 		Positions.setPolarPosition(actors, h, angle);
 
 	}
@@ -95,17 +91,14 @@ public class Enemy extends Solid{
 	public void setRotation(float degrees) {
 		super.setRotation(degrees - 90);
 		this.angle = degrees;
-		
 	}
 	
-	public void dispose() {
-		if (actors != null) {
-			actors.remove();
-		}
-		actors = null;
+	public void collect() {
+		
 	}
 	
 	public boolean isDead() {
 		return actors == null;
 	}
+
 }

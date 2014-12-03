@@ -1,6 +1,7 @@
 package co.bravebunny.circular.screens;
 
 import co.bravebunny.circular.entities.objects.Circle;
+import co.bravebunny.circular.entities.objects.Coin;
 import co.bravebunny.circular.entities.objects.Enemy;
 import co.bravebunny.circular.entities.objects.HUD;
 import co.bravebunny.circular.entities.objects.Score;
@@ -41,6 +42,7 @@ public class Play extends GameScreen implements Screen {
 	public HUD hud;
 	public Score scoreText;
 	public Array<Enemy> enemies = new Array<Enemy>();
+	public Array<Coin> coins = new Array<Coin>();
 	
     public float getBPM() {
     	return levels[selectedLevel].getBpm();
@@ -141,6 +143,18 @@ public class Play extends GameScreen implements Screen {
 		    		}
 	    		}
 	    	}
+	    	
+	    	for (int i = 0; i < coins.size; i++) {
+	    		if (coins.get(i).isDead()) {
+	    			coins.removeIndex(i);
+	    		} else {
+	    			coins.get(i).render(delta);
+	    			if (ship.collidesWith(coins.get(i))) {
+	    				coins.get(i).collect();
+	    				coins.removeIndex(i);
+		    		}
+	    		}
+	    	}
 	        
 	    	time += delta;
 	        if (time >= 60/getBPM()) {
@@ -180,6 +194,14 @@ public class Play extends GameScreen implements Screen {
 		enemy.setRotation(ship.getRotation() + 180);
 		enemy.grow(getBPM());
 		enemies.add(enemy);
+		enemy.setLayer(layerObjects);
+		
+		Coin coin = new Coin();
+		coin.setRotation(ship.getRotation() + 200);
+		//coin.grow(getBPM());
+		coins.add(coin);
+		coin.setLayer(layerObjects);
+		
 		circle.beat(getBPM());
 		scoreText.inc();
 		//enemy.beat();
@@ -224,6 +246,9 @@ public class Play extends GameScreen implements Screen {
 		Particles.dispose();
 		for (Enemy enemy : enemies) {
 			enemy.dispose();
+		}
+		for (Coin coin : coins) {
+			coin.dispose();
 		}
 		ship.dispose();
 		circle.dispose();

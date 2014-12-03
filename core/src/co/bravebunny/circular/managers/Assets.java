@@ -4,10 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Array;
+
+import co.bravebunny.circular.entities.objects.AnimatedImage;
 
 public class Assets {
     public static AssetManager manager = new AssetManager();
@@ -47,6 +52,14 @@ public class Assets {
     public static Image getImage (String file) {
     	AtlasRegion region = skin.getAtlas().findRegion(file);
     	return new Image(region);
+    }
+    
+    public static AnimatedImage getAnimation(String file) {
+    	Array<AtlasRegion> regions = skin.getAtlas().findRegions(file);
+    	return new AnimatedImage(new Animation(0.1f, regions));
+        
+        //all aboard the animation train
+        //choo-choo
     }
     
     //Loads a sound. input string examples:

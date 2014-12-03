@@ -62,7 +62,6 @@ public class Menu extends GameScreen implements Screen {
     	for (int i = 0; i < levels.length; i++) {
     		levels[i] = new Level();
     		String levelJson = Gdx.files.internal("levels/level" + i + ".json").readString();
-    		System.out.println(levelJson);
     		levels[i] = json.fromJson(Level.class, levelJson);
         	levels[i].setLayer(layerLevels);
         	levels[i].setPolarPosition(1000*i - 1000*selectedLevel, 0);
