@@ -36,9 +36,6 @@ public class Ship extends Solid {
 		explosionSFX = Assets.getSound("explosion");
 		
 		actors.addActor(body);
-		
-		actors.setX(GameScreen.getViewport().getWorldWidth()/2 - actors.getWidth()/2);
-		actors.setY(GameScreen.getViewport().getWorldHeight()/2 + 350);
         
         fire.setX(-100);
         fire.setY(0);

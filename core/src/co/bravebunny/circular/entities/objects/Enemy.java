@@ -39,9 +39,9 @@ public class Enemy extends Solid{
 		coll_on = false;
 		type = MathUtils.random(1);
 		h = 400 - type*150;
-		coll_radius = 10;
+
 		
-		actors.setOrigin(actors.getWidth()/2, actors.getHeight()/2);
+		//actors.setOrigin(actors.getWidth()/2, actors.getHeight()/2);
 		actors.setScale(0);
 	}
 	
@@ -88,7 +88,7 @@ public class Enemy extends Solid{
 	public void render(float delta) {
 		//place the enemy in the game screen, and rotate it to an angle in front of the ship
 		Positions.setPolarPosition(actors, h, angle);
-
+		coll_radius = 60*actors.getScaleX();
 	}
 	
 	@Override

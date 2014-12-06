@@ -56,7 +56,7 @@ public class Assets {
     
     public static AnimatedImage getAnimation(String file) {
     	Array<AtlasRegion> regions = skin.getAtlas().findRegions(file);
-    	return new AnimatedImage(new Animation(0.1f, regions));
+    	return new AnimatedImage(new Animation(0.06f, regions));
         
         //all aboard the animation train
         //choo-choo

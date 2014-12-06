@@ -14,6 +14,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
@@ -27,6 +28,8 @@ public class Play extends GameScreen implements Screen {
 	//values
 	private static float time = 0;
 	public static int score = 0;
+	private static int coinBeat = 0;
+	private static int coinFreq = 3;
 	
 	//groups (object layers)
 	//THESE NEED TO STOP BEING STATIC ASAP
@@ -134,7 +137,7 @@ public class Play extends GameScreen implements Screen {
 	    			enemies.removeIndex(i);
 	    		} else {
 	    			enemies.get(i).render(delta);
-	    			if (ship.collidesWith(enemies.get(i))) {
+	    			if (enemies.get(i).collidesWith(ship)) {
 		    			enemies.get(i).explode();
 		    			enemies.removeIndex(i);
 		    			ship.destroy();
@@ -149,9 +152,9 @@ public class Play extends GameScreen implements Screen {
 	    			coins.removeIndex(i);
 	    		} else {
 	    			coins.get(i).render(delta);
-	    			if (ship.collidesWith(coins.get(i))) {
-	    				coins.get(i).collect();
-	    				coins.removeIndex(i);
+	    			if (coins.get(i).collidesWith(ship)) {
+	    				coins.get(i).collect(getBPM());
+	    				//coins.removeIndex(i);
 		    		}
 	    		}
 	    	}
@@ -190,17 +193,22 @@ public class Play extends GameScreen implements Screen {
     
     //events that happen every beat
     public void rhythm() {
+    	coinBeat = (coinBeat + 1)%coinFreq;
+    	
 		Enemy enemy = new Enemy();
 		enemy.setRotation(ship.getRotation() + 180);
 		enemy.grow(getBPM());
 		enemies.add(enemy);
 		enemy.setLayer(layerObjects);
 		
-		Coin coin = new Coin();
-		coin.setRotation(ship.getRotation() + 200);
-		//coin.grow(getBPM());
-		coins.add(coin);
-		coin.setLayer(layerObjects);
+		if (coinBeat == 0) {
+			Coin coin = new Coin();
+			coin.setRotation(ship.getRotation() + 200);
+			coin.grow(getBPM());
+			coins.add(coin);
+			coin.setLayer(layerObjects);
+		}
+		
 		
 		circle.beat(getBPM());
 		scoreText.inc();
