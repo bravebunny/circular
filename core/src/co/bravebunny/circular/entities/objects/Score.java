@@ -37,6 +37,10 @@ public class Score extends GameObject {
 	public void inc() {
 		inc(1);
 	}
+	public void reset() {
+		Play.score = 0;
+		label.setText(Integer.toString(Play.score));
+	}
 	
 	public void render(float delta) {
 		

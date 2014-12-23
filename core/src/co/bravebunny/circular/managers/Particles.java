@@ -16,22 +16,29 @@ public class Particles {
 	static private ParticleEffect prototype;
 	static private ParticleEffectPool pool;
 	static private Array<PooledEffect> effects;
-	
-	public static void create(float x, float y, String tint) {
+	/**
+	 * Creates a particle explosion effect at the given coordinates
+	 * @param x - X coordinate
+	 * @param y - Y coordinate
+	 * @param effect - name of the effect file (assets/effects directory)
+	 * 					to use, without the .p extension
+	 * @param tint - color to tint the particles with (#RGBA)
+	 */
+	public static void create(float x, float y, String effect, String tint) {
 		
 		Color color = Color.valueOf(tint);
 		float[] rgb = {(float)color.r, (float)color.g, (float)color.b};
 		
 		prototype = new ParticleEffect();
-		prototype.load(Gdx.files.internal("effects/ship_explosion.p"), Gdx.files.internal("img"));
+		prototype.load(Gdx.files.internal("effects/" + effect + ".p"), Gdx.files.internal("img"));
 		prototype.getEmitters().get(0).getTint().setColors(rgb);
 		pool = new ParticleEffectPool(prototype, 0, 70);
 		
 		prototype.start();
 		
-		PooledEffect effect = pool.obtain();
-		effect.setPosition(GameScreen.getViewport().getWorldWidth()/2 + x, GameScreen.getViewport().getWorldHeight()/2 + y);
-		effects.add(effect);
+		PooledEffect pooledEffect = pool.obtain();
+		pooledEffect.setPosition(GameScreen.getViewport().getWorldWidth()/2 + x, GameScreen.getViewport().getWorldHeight()/2 + y);
+		effects.add(pooledEffect);
 	}
 	
 	public static void render(float delta) {

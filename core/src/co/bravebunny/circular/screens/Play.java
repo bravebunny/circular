@@ -180,11 +180,13 @@ public class Play extends GameScreen implements Screen {
         	hud.restartHide();
         	score = 0;
         	
+        	
         	Timer.schedule(new Task(){
         	    @Override
         	    public void run() {
         	    	ship.reset();
         	    	ship.moveUp();
+        	    	scoreText.reset();
         	    }
         	}, 60/getBPM());
     	}

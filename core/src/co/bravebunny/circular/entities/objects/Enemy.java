@@ -79,7 +79,7 @@ public class Enemy extends Solid{
 
 	public void explode() {
 		if (actors.isVisible()) {
-			Particles.create(Positions.getCenterX(actors), Positions.getCenterY(actors), "B71C1CFF");
+			Particles.create(Positions.getCenterX(actors), Positions.getCenterY(actors), "explosion", "B71C1CFF");
 			actors.setVisible(false);
 		}
 		destroy();

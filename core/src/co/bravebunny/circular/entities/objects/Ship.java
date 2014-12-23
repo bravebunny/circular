@@ -66,7 +66,7 @@ public class Ship extends Solid {
 	
 	public void destroy() {
 		explosionSFX.play();
-		Particles.create(getX(), getY(), PCOLOR);
+		Particles.create(getX(), getY(), "explosion", PCOLOR);
 		state = ShipState.DEAD;
 		actors.setVisible(false);
 	}
