@@ -5,16 +5,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
+import aurelienribon.tweenengine.BaseTween;
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenCallback;
+import aurelienribon.tweenengine.equations.Back;
 import co.bravebunny.circular.managers.ActorTween;
 import co.bravebunny.circular.managers.Assets;
 import co.bravebunny.circular.managers.Particles;
 import co.bravebunny.circular.managers.Positions;
 import co.bravebunny.circular.screens.GameScreen;
-import co.bravebunny.circular.screens.Play;
-import aurelienribon.tweenengine.BaseTween;
-import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenCallback;
-import aurelienribon.tweenengine.equations.Back;
 
 public class Enemy extends Solid{
 	private float h;
@@ -40,7 +39,7 @@ public class Enemy extends Solid{
 		type = MathUtils.random(1);
 		h = 400 - type*150;
 
-		
+
 		//actors.setOrigin(actors.getWidth()/2, actors.getHeight()/2);
 		actors.setScale(0);
 	}

@@ -1,5 +1,15 @@
 package co.bravebunny.circular.screens;
 
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
+
 import co.bravebunny.circular.entities.objects.Circle;
 import co.bravebunny.circular.entities.objects.Coin;
 import co.bravebunny.circular.entities.objects.Enemy;
@@ -10,36 +20,23 @@ import co.bravebunny.circular.entities.objects.Ship.ShipState;
 import co.bravebunny.circular.managers.GameInput;
 import co.bravebunny.circular.managers.Particles;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.Timer.Task;
-
 public class Play extends GameScreen implements Screen {
-	//objects
-	private static Music music;
-	
-	//values
-	private static float time = 0;
 	public static int score = 0;
-	private static int coinBeat = 0;
-	private static int coinFreq = 3;
-	
 	//groups (object layers)
 	//THESE NEED TO STOP BEING STATIC ASAP
 	public static Group layerGame = new Group();
 	public static Group layerShip = new Group();
 	public static Group layerObjects = new Group();
 	public static Group layerOverlay = new Group();
-	public Group layerHUD = new Group();
-	
-	//game objects
+    //objects
+    private static Music music;
+    //values
+    private static float time = 0;
+    private static int coinBeat = 0;
+    private static int coinFreq = 3;
+    public Group layerHUD = new Group();
+
+    //game objects
 	public Ship ship;
 	public Circle circle;
 	public HUD hud;
@@ -75,9 +72,10 @@ public class Play extends GameScreen implements Screen {
     	
     	ship = new Ship();
     	ship.setLayer(layerShip);
-    	
-    	hud = new HUD();
-    	hud.setLayer(layerHUD);
+        ship.setBPM(getBPM());
+
+        hud = new HUD();
+        hud.setLayer(layerHUD);
     	
         scoreText = new Score();
         scoreText.startTween(getBPM());
