@@ -62,9 +62,6 @@ public class Assets {
         //choo-choo
     }
     
-    //Loads a sound. input string examples:
-    // "sfx/move1"
-    // "music/music1"
     public static Sound getSound (String file) {
     	return manager.get("media/sfx/" + file + ".ogg", Sound.class);
     }
