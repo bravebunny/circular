@@ -175,7 +175,12 @@ public class Play extends GameScreen implements Screen {
             circle.shrink(layerGame, layerOverlay);
             hud.restartHide();
             score.setScore(0);
-
+            for (Enemy enemy : enemies) {
+                enemy.dispose();
+            }
+            for (Coin coin : coins) {
+                coin.dispose();
+            }
 
             Timer.schedule(new Task(){
         	    @Override

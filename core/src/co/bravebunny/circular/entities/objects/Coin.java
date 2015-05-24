@@ -6,10 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
-import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.equations.Back;
 import aurelienribon.tweenengine.equations.Circ;
 import aurelienribon.tweenengine.equations.Expo;
@@ -27,16 +25,6 @@ public class Coin extends Solid {
 	private float elapsedTime = 0;
 	private Sound collectSound;
     private float bpm;
-
-    private TweenCallback destroyCallback = new TweenCallback() {
-		@Override
-		public void onEvent(int type, BaseTween<?> source)
-		{
-			if(type == TweenCallback.END) {
-				dispose();
-			}
-		}
-	};
 
     public void setBPM(float bpm) {
         this.bpm = bpm;
@@ -79,6 +67,7 @@ public class Coin extends Solid {
     }
 	
 	public void destroy() {
+        coll_on = false;
         Tween.to(actors, ActorTween.SCALE, 60 / bpm).target(2 - type * 0.6f)
                 .ease(Quad.IN).start(GameScreen.getTweenManager());
 
