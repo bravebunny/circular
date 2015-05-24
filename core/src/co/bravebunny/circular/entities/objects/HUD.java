@@ -1,18 +1,20 @@
 package co.bravebunny.circular.entities.objects;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
+
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.equations.Back;
 import co.bravebunny.circular.managers.ActorTween;
 import co.bravebunny.circular.managers.Assets;
 import co.bravebunny.circular.managers.Positions;
 import co.bravebunny.circular.screens.GameScreen;
-import co.bravebunny.circular.screens.Play;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.Timer.Task;
 
 public class HUD extends GameObject {
 	public Image restart;
+	public Array<Combo> combos = new Array<Combo>();
 	
 	public void init() {
 		restart = Assets.getImage("level/hud_restart");
@@ -20,6 +22,7 @@ public class HUD extends GameObject {
 		Positions.setPolarPosition(actors);
 	    restart.setScale(0, 0);
 	    restart.setVisible(false);
+
 	}
 	
 	public void render(float delta) {

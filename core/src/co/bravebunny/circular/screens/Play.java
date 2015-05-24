@@ -22,7 +22,6 @@ import co.bravebunny.circular.managers.Particles;
 
 public class Play extends GameScreen implements Screen {
 	//groups (object layers)
-	//THESE NEED TO STOP BEING STATIC ASAP
     public Group layerGame = new Group();
     public Group layerShip = new Group();
     public Group layerObjects = new Group();
@@ -79,7 +78,8 @@ public class Play extends GameScreen implements Screen {
         score.startTween(getBPM());
         score.setLayer(layerHUD);
         Particles.show();
-        
+
+        //the order of these lines defines the z-order of the layers
         getStage().addActor(layerGame);
         getStage().addActor(layerShip);
         getStage().addActor(layerObjects);

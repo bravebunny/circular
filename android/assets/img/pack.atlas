@@ -20,77 +20,105 @@ level/circle_outer
   index: -1
 level/coin
   rotate: false
-  xy: 906, 900
+  xy: 906, 790
   size: 86, 93
   orig: 86, 93
   offset: 0, 0
   index: 0
 level/coin
   rotate: false
-  xy: 906, 805
+  xy: 906, 695
   size: 86, 93
   orig: 86, 93
   offset: 0, 0
   index: 1
 level/coin
   rotate: false
-  xy: 906, 710
+  xy: 906, 600
   size: 86, 93
   orig: 86, 93
   offset: 0, 0
   index: 2
 level/coin
   rotate: false
-  xy: 906, 615
+  xy: 932, 446
   size: 86, 93
   orig: 86, 93
   offset: 0, 0
   index: 3
 level/coin
   rotate: false
-  xy: 906, 520
+  xy: 932, 351
   size: 86, 93
   orig: 86, 93
   offset: 0, 0
   index: 4
 level/coin
   rotate: false
-  xy: 901, 425
+  xy: 932, 256
   size: 86, 93
   orig: 86, 93
   offset: 0, 0
   index: 5
 level/coin
   rotate: false
-  xy: 901, 330
+  xy: 898, 161
   size: 86, 93
   orig: 86, 93
   offset: 0, 0
   index: 6
 level/coin
   rotate: false
-  xy: 901, 235
+  xy: 898, 66
   size: 86, 93
   orig: 86, 93
   offset: 0, 0
   index: 7
-level/coin
+level/combo_circle
   rotate: false
-  xy: 898, 140
-  size: 86, 93
-  orig: 86, 93
+  xy: 656, 265
+  size: 274, 274
+  orig: 274, 274
   offset: 0, 0
-  index: 8
-level/coin
+  index: -1
+level/combo_x1
   rotate: false
-  xy: 898, 45
-  size: 86, 93
-  orig: 86, 93
+  xy: 906, 885
+  size: 109, 108
+  orig: 109, 108
   offset: 0, 0
-  index: 9
+  index: -1
+level/combo_x2
+  rotate: false
+  xy: 906, 541
+  size: 71, 57
+  orig: 71, 57
+  offset: 0, 0
+  index: -1
+level/combo_x3
+  rotate: false
+  xy: 898, 18
+  size: 52, 46
+  orig: 52, 46
+  offset: 0, 0
+  index: -1
+level/combo_x4
+  rotate: false
+  xy: 952, 23
+  size: 45, 41
+  orig: 45, 41
+  offset: 0, 0
+  index: -1
+level/combo_x5
+  rotate: false
+  xy: 979, 558
+  size: 39, 40
+  orig: 39, 40
+  offset: 0, 0
+  index: -1
 level/hud_menu
   rotate: false
-  xy: 656, 295
+  xy: 653, 19
   size: 243, 244
   orig: 243, 244
   offset: 0, 0
@@ -109,57 +137,71 @@ level/hud_restart
   orig: 310, 330
   offset: 0, 0
   index: -1
-level/hud_resume
-  rotate: false
-  xy: 653, 49
-  size: 243, 244
-  orig: 243, 244
-  offset: 0, 0
-  index: -1
 
 pack2.png
-size: 1024,256
+size: 512,512
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
+level/coin
+  rotate: false
+  xy: 351, 119
+  size: 86, 93
+  orig: 86, 93
+  offset: 0, 0
+  index: 8
+level/coin
+  rotate: false
+  xy: 351, 24
+  size: 86, 93
+  orig: 86, 93
+  offset: 0, 0
+  index: 9
 level/enemy
   rotate: false
-  xy: 845, 57
+  xy: 224, 76
   size: 125, 136
   orig: 125, 136
   offset: 0, 0
   index: -1
+level/hud_resume
+  rotate: false
+  xy: 2, 258
+  size: 243, 244
+  orig: 243, 244
+  offset: 0, 0
+  index: -1
 level/hud_speedup
   rotate: false
-  xy: 2, 35
+  xy: 2, 98
   size: 175, 158
   orig: 175, 158
   offset: 0, 0
   index: -1
 level/ship_back
   rotate: false
-  xy: 623, 99
+  xy: 247, 214
   size: 220, 94
   orig: 220, 94
   offset: 0, 0
   index: -1
 level/ship_body
   rotate: false
-  xy: 179, 2
+  xy: 2, 2
   size: 220, 94
   orig: 220, 94
   offset: 0, 0
   index: -1
 level/ship_fire1
   rotate: false
-  xy: 179, 98
+  xy: 247, 407
   size: 220, 95
   orig: 220, 95
   offset: 0, 0
   index: -1
 level/ship_fire2
   rotate: false
-  xy: 401, 98
+  xy: 247, 310
   size: 220, 95
   orig: 220, 95
   offset: 0, 0
