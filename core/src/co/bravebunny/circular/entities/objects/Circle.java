@@ -1,18 +1,16 @@
 package co.bravebunny.circular.entities.objects;
 
-import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.equations.Back;
-
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.equations.Back;
 import co.bravebunny.circular.managers.ActorTween;
 import co.bravebunny.circular.managers.Assets;
 import co.bravebunny.circular.managers.Positions;
 import co.bravebunny.circular.screens.GameScreen;
-import co.bravebunny.circular.screens.Play;
 
 public class Circle extends Clickable {
 	
@@ -56,9 +54,10 @@ public class Circle extends Clickable {
 	/**
 	 * Expands inner circle until it covers a specified point (x, y)
 	 */
-	public void growToCover(float x, float y) {
-		Play.layerGame.removeActor(circleInner);
-		Play.layerOverlay.addActor(circleInner);
+	public void growToCover(float x, float y, Group layerGame, Group layerOverlay) {
+		layerGame.removeActor(circleInner);
+		layerOverlay.addActor(circleInner);
+
 		
 		float target = Positions.getDistance(circleInner, x, y)
 				/ (circleInner.getWidth());
@@ -71,7 +70,7 @@ public class Circle extends Clickable {
 	/**
 	 * Makes the inner circle shrink back to its default size
 	 */
-	public void shrink() {
+	public void shrink(final Group layerGame, final Group layerOverlay) {
 		Tween.to(circleInner, ActorTween.SCALE, 0.5f)
         .target(1).ease(Back.IN)
         .start(GameScreen.getTweenManager());
@@ -79,9 +78,9 @@ public class Circle extends Clickable {
     	Timer.schedule(new Task(){
     	    @Override
     	    public void run() {
-    	    	Play.layerOverlay.removeActor(circleInner);
-    			Play.layerGame.addActor(circleInner);
-    	    }
+				layerOverlay.removeActor(circleInner);
+				layerGame.addActor(circleInner);
+			}
     	}, 0.5f);
 		
 	}

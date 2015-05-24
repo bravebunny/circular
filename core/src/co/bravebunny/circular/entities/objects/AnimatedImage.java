@@ -23,6 +23,7 @@ public class AnimatedImage extends Image {
 	
 	    super.act(delta);
 	}
+
 	/**
 	 * Multiplies the current animation speed.
 	 * @param speed - a value of 1 uses the original speed, 2 means double the original speed, 0.5 means half the speed, etc.

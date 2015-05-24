@@ -1,19 +1,27 @@
 package co.bravebunny.circular.entities.objects;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+
 import aurelienribon.tweenengine.Tween;
 import co.bravebunny.circular.managers.ActorTween;
 import co.bravebunny.circular.managers.Assets;
-import co.bravebunny.circular.managers.Positions;
 import co.bravebunny.circular.screens.GameScreen;
-import co.bravebunny.circular.screens.Play;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public class Score extends GameObject {
 	Table table;
 	Label label;
 	float angleVariation = 10;
-	
+	int score = 0;
+
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
 	public void init() {
 		table = new Table();
 		label = new Label("0", Assets.skin);
@@ -31,15 +39,15 @@ public class Score extends GameObject {
 	
 	//add a value to the beat counter
 	public void inc(int value) {
-		Play.score += value;
-		label.setText(Integer.toString(Play.score));
+		score += value;
+		label.setText(Integer.toString(score));
 	}
 	public void inc() {
 		inc(1);
 	}
 	public void reset() {
-		Play.score = 0;
-		label.setText(Integer.toString(Play.score));
+		score = 0;
+		label.setText(Integer.toString(score));
 	}
 	
 	public void render(float delta) {

@@ -1,8 +1,9 @@
 package co.bravebunny.circular.managers;
 
-import aurelienribon.tweenengine.TweenAccessor;
-
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+
+import aurelienribon.tweenengine.TweenAccessor;
 
 public class ActorTween implements TweenAccessor<Actor> {
 
@@ -11,6 +12,7 @@ public class ActorTween implements TweenAccessor<Actor> {
 	public static final int SCALE = 2;
 	public static final int ANGLE = 3;
 	public static final int POSITION = 4;
+	public static final int OPACITY = 5;
 	
 	@Override
 	public int getValues(Actor target, int tweenType, float[] returnValues) {
@@ -27,6 +29,9 @@ public class ActorTween implements TweenAccessor<Actor> {
 			case POSITION:
 				returnValues[0] = Positions.getCenterX(target);
 				return 4;
+			case OPACITY:
+				returnValues[0] = target.getColor().a;
+				return 5;
 			default: assert false; return -1;
 		}
 	}
@@ -46,6 +51,10 @@ public class ActorTween implements TweenAccessor<Actor> {
 			break;
 		case POSITION:
 			Positions.setPolarPosition(target, newValues[0], 0);
+			break;
+			case OPACITY:
+				Color c = target.getColor();
+				target.setColor(c.r, c.g, c.b, newValues[0]);
 			break;
 		default: assert false; break;
 		}

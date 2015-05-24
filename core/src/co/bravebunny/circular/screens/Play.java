@@ -21,29 +21,27 @@ import co.bravebunny.circular.managers.GameInput;
 import co.bravebunny.circular.managers.Particles;
 
 public class Play extends GameScreen implements Screen {
-	public static int score = 0;
 	//groups (object layers)
 	//THESE NEED TO STOP BEING STATIC ASAP
-	public static Group layerGame = new Group();
-	public static Group layerShip = new Group();
-	public static Group layerObjects = new Group();
-	public static Group layerOverlay = new Group();
-    //objects
-    private static Music music;
-    //values
-    private static float time = 0;
-    private static int coinBeat = 0;
-    private static int coinFreq = 3;
+    public Group layerGame = new Group();
+    public Group layerShip = new Group();
+    public Group layerObjects = new Group();
+    public Group layerOverlay = new Group();
     public Group layerHUD = new Group();
-
     //game objects
 	public Ship ship;
 	public Circle circle;
 	public HUD hud;
-	public Score scoreText;
-	public Array<Enemy> enemies = new Array<Enemy>();
+    public Score score;
+    public Array<Enemy> enemies = new Array<Enemy>();
 	public Array<Coin> coins = new Array<Coin>();
-	
+    //objects
+    private Music music;
+    //values
+    private float time = 0;
+    private int coinBeat = 0;
+    private int coinFreq = 3;
+
     public float getBPM() {
     	return levels[selectedLevel].getBpm();
     }
@@ -76,10 +74,10 @@ public class Play extends GameScreen implements Screen {
 
         hud = new HUD();
         hud.setLayer(layerHUD);
-    	
-        scoreText = new Score();
-        scoreText.startTween(getBPM());
-        scoreText.setLayer(layerHUD);
+
+        score = new Score();
+        score.startTween(getBPM());
+        score.setLayer(layerHUD);
         Particles.show();
         
         getStage().addActor(layerGame);
@@ -127,8 +125,8 @@ public class Play extends GameScreen implements Screen {
 	    	Particles.render(delta);
 	    	ship.render(delta);
 	    	circle.render(delta);
-	    	scoreText.render(delta);
-	    	hud.render(delta);
+            score.render(delta);
+            hud.render(delta);
 	    	
 	    	for (int i = 0; i < enemies.size; i++) {
 	    		if (enemies.get(i).isDead()) {
@@ -140,8 +138,8 @@ public class Play extends GameScreen implements Screen {
 		    			enemies.removeIndex(i);
 		    			ship.destroy();
 		    			hud.restartShow();
-		    			circle.growToCover(viewport.getWorldWidth(), viewport.getWorldHeight());
-		    		}
+                        circle.growToCover(viewport.getWorldWidth(), viewport.getWorldHeight(), layerGame, layerOverlay);
+                    }
 	    		}
 	    	}
 	    	
@@ -151,8 +149,8 @@ public class Play extends GameScreen implements Screen {
 	    		} else {
 	    			coins.get(i).render(delta);
 	    			if (coins.get(i).collidesWith(ship)) {
-	    				coins.get(i).collect(getBPM());
-	    				//coins.removeIndex(i);
+                        coins.get(i).collect();
+                        //coins.removeIndex(i);
 		    		}
 	    		}
 	    	}
@@ -174,18 +172,18 @@ public class Play extends GameScreen implements Screen {
     
     public void restart() {
     	if (hud.restart.getScaleX() >= 1) {
-        	circle.shrink();
-        	hud.restartHide();
-        	score = 0;
-        	
-        	
-        	Timer.schedule(new Task(){
+            circle.shrink(layerGame, layerOverlay);
+            hud.restartHide();
+            score.setScore(0);
+
+
+            Timer.schedule(new Task(){
         	    @Override
         	    public void run() {
         	    	ship.reset();
         	    	ship.moveUp();
-        	    	scoreText.reset();
-        	    }
+                    score.reset();
+                }
         	}, 60/getBPM());
     	}
     }
@@ -196,23 +194,26 @@ public class Play extends GameScreen implements Screen {
     	coinBeat = (coinBeat + 1)%coinFreq;
     	
 		Enemy enemy = new Enemy();
-		enemy.setRotation(ship.getRotation() + 180);
-		enemy.grow(getBPM());
+        enemy.setBPM(getBPM());
+        enemy.setRotation(ship.getRotation() + 180);
+        enemy.grow();
+
 		enemies.add(enemy);
 		enemy.setLayer(layerObjects);
 		
 		if (coinBeat == 0) {
 			Coin coin = new Coin();
-			coin.setRotation(ship.getRotation() + 200);
-			coin.grow(getBPM());
-			coins.add(coin);
+            coin.setBPM(getBPM());
+            coin.setRotation(ship.getRotation() + 200);
+            coin.grow();
+            coins.add(coin);
 			coin.setLayer(layerObjects);
 		}
 		
 		
 		circle.beat(getBPM());
-		scoreText.inc();
-		//enemy.beat();
+        score.inc();
+        //enemy.beat();
 
     }
 
