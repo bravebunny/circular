@@ -17,6 +17,7 @@ import co.bravebunny.circular.entities.objects.HUD;
 import co.bravebunny.circular.entities.objects.Score;
 import co.bravebunny.circular.entities.objects.Ship;
 import co.bravebunny.circular.entities.objects.Ship.ShipState;
+import co.bravebunny.circular.managers.EntityFactory;
 import co.bravebunny.circular.managers.GameInput;
 import co.bravebunny.circular.managers.Particles;
 
@@ -27,15 +28,17 @@ public class Play extends GameScreen implements Screen {
     public Group layerObjects = new Group();
     public Group layerOverlay = new Group();
     public Group layerHUD = new Group();
+
     //game objects
 	public Ship ship;
 	public Circle circle;
 	public HUD hud;
     public Score score;
-    public Array<Enemy> enemies = new Array<Enemy>();
-	public Array<Coin> coins = new Array<Coin>();
+    public EntityFactory factory = EntityFactory.getInstance();
+
     //objects
     private Music music;
+
     //values
     private float time = 0;
     private int coinBeat = 0;
@@ -121,6 +124,9 @@ public class Play extends GameScreen implements Screen {
     }
     
     public void renderRun(float delta) {
+        Array<Enemy> enemies = factory.getEnemies();
+        Array<Coin> coins = factory.getCoins();
+
     	if (music.isPlaying()) {
 	    	Particles.render(delta);
 	    	ship.render(delta);
@@ -175,11 +181,15 @@ public class Play extends GameScreen implements Screen {
             circle.shrink(layerGame, layerOverlay);
             hud.restartHide();
             score.setScore(0);
-            for (Enemy enemy : enemies) {
-                enemy.dispose();
+
+            for (Enemy enemy : factory.getEnemies()) {
+                enemy.reset();
+                enemy.setDead(true);
             }
-            for (Coin coin : coins) {
-                coin.dispose();
+
+            for (Coin coin : factory.getCoins()) {
+                coin.reset();
+                coin.setDead(true);
             }
 
             Timer.schedule(new Task(){
@@ -197,21 +207,18 @@ public class Play extends GameScreen implements Screen {
     //events that happen every beat
     public void rhythm() {
     	coinBeat = (coinBeat + 1)%coinFreq;
-    	
-		Enemy enemy = new Enemy();
+
+        Enemy enemy = factory.createEnemy();
         enemy.setBPM(getBPM());
         enemy.setRotation(ship.getRotation() + 180);
         enemy.grow();
-
-		enemies.add(enemy);
 		enemy.setLayer(layerObjects);
 		
 		if (coinBeat == 0) {
-			Coin coin = new Coin();
+            Coin coin = factory.createCoin();
             coin.setBPM(getBPM());
             coin.setRotation(ship.getRotation() + 200);
             coin.grow();
-            coins.add(coin);
 			coin.setLayer(layerObjects);
 		}
 		
@@ -258,13 +265,8 @@ public class Play extends GameScreen implements Screen {
 	public void dispose() {
 		super.dispose();
 		Particles.dispose();
-		for (Enemy enemy : enemies) {
-			enemy.dispose();
-		}
-		for (Coin coin : coins) {
-			coin.dispose();
-		}
-		ship.dispose();
+        factory.dispose();
+        ship.dispose();
 		circle.dispose();
 		//score.dispose();
 		hud.dispose();

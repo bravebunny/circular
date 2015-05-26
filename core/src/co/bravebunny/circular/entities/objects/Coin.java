@@ -6,8 +6,10 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
+import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.equations.Back;
 import aurelienribon.tweenengine.equations.Circ;
 import aurelienribon.tweenengine.equations.Expo;
@@ -25,24 +27,34 @@ public class Coin extends Solid {
 	private float elapsedTime = 0;
 	private Sound collectSound;
     private float bpm;
+    private boolean dead;
+    private TweenCallback collectCallback = new TweenCallback() {
+        @Override
+        public void onEvent(int type, BaseTween<?> source) {
+            if (type == TweenCallback.END) {
+                dead = true;
+            }
+        }
+    };
 
     public void setBPM(float bpm) {
         this.bpm = bpm;
     }
 
 	public void init() {
-		coll_on = false;
-		type = MathUtils.random(1);
-		h = 400 - type*60;
-		
 		collectSound = Assets.getSound("coin");
-		
-		//actors.setOrigin(actors.getWidth()/2, actors.getHeight()/2);
-		actors.setScale(0);
 		animation = Assets.getAnimation("level/coin");
 		actors.addActor(animation);
-		
-	}
+        reset();
+    }
+
+    public void reset() {
+        dead = false;
+        coll_on = false;
+        type = MathUtils.random(1);
+        h = 400 - type * 60;
+        actors.setScale(0);
+    }
 
     public void grow() {
         //grow to initial size
@@ -65,8 +77,9 @@ public class Coin extends Solid {
             }
         }, 3 * 60 / bpm);
     }
-	
-	public void destroy() {
+
+    //called when coin disappears on its on (not collected)
+    public void destroy() {
         coll_on = false;
         Tween.to(actors, ActorTween.SCALE, 60 / bpm).target(2 - type * 0.6f)
                 .ease(Quad.IN).start(GameScreen.getTweenManager());
@@ -77,7 +90,7 @@ public class Coin extends Solid {
                 Actions.run(new Runnable() {
                     @Override
                     public void run() {
-                        dispose();
+                        dead = true;
                     }
                 })
         ));
@@ -107,12 +120,17 @@ public class Coin extends Solid {
 		animation.setSpeed(2);
         Timeline.createSequence()
         .push(Tween.to(actors, ActorTween.SCALE, 0.3f).target(actors.getScaleX()*1.2f, actors.getScaleX()*1.2f).ease(Circ.OUT))
-        .push(Tween.to(actors, ActorTween.SCALE, 0.5f).target(0f, 0f).ease(Expo.IN))
+                .push(Tween.to(actors, ActorTween.SCALE, 0.5f).target(0f, 0f).ease(Expo.IN).setCallback(collectCallback))
         .start(GameScreen.getTweenManager());
+
 	}
-	
+
 	public boolean isDead() {
-		return actors == null;
-	}
+        return dead;
+    }
+
+    public void setDead(boolean dead) {
+        this.dead = dead;
+    }
 
 }

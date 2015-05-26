@@ -21,26 +21,29 @@ public class Enemy extends Solid{
 	private int type;
 	private Image body;
     private float bpm;
+    private boolean dead = false;
 
     private TweenCallback destroyCallback = new TweenCallback() {
 		@Override
 		public void onEvent(int type, BaseTween<?> source)
 		{
 			if(type == TweenCallback.END) {
-				dispose();
-			}
+                dead = true;
+            }
 		}
 	};
 
 	public void init() {
 		body = Assets.getImage("level/enemy");
 		actors.addActor(body);
-		coll_on = false;
+        reset();
+    }
+
+    public void reset() {
+        dead = false;
+        coll_on = false;
 		type = MathUtils.random(1);
 		h = 400 - type*150;
-
-
-		//actors.setOrigin(actors.getWidth()/2, actors.getHeight()/2);
 		actors.setScale(0);
 	}
 
@@ -52,7 +55,7 @@ public class Enemy extends Solid{
         //grow to initial size
 		Tween.to(actors, ActorTween.SCALE, 60/bpm).target(1 - type*0.3f)
 		.ease(Back.OUT).start(GameScreen.getTweenManager());
-		
+
         //turn on collisions
         Timer.schedule(new Task(){
             @Override
@@ -60,16 +63,16 @@ public class Enemy extends Solid{
                 coll_on = true;
             }
         }, 60/bpm);
-		
+
         //destroy the enemy after some time
-        Timer.schedule(new Task(){
+        Timer.schedule(new Task() {
             @Override
             public void run() {
                 destroy();
             }
-        }, 3*60/bpm);
-	}
-	
+        }, 3 * 60 / bpm);
+    }
+
 	public void destroy() {
         Tween t = Tween.to(actors, ActorTween.SCALE, 60 / bpm).target(0)
                 .ease(Back.IN).start(GameScreen.getTweenManager());
@@ -81,15 +84,15 @@ public class Enemy extends Solid{
 		//TODO
 	}
 
-	public void explode() {
+    public void explode() {
 		if (actors.isVisible()) {
 			Particles.create(Positions.getCenterX(actors), Positions.getCenterY(actors), "explosion", "B71C1CFF");
 			actors.setVisible(false);
 		}
 		destroy();
 	}
-	
-	public void render(float delta) {
+
+    public void render(float delta) {
 		//place the enemy in the game screen, and rotate it to an angle in front of the ship
 		Positions.setPolarPosition(actors, h, angle);
 		coll_radius = 60*actors.getScaleX();
@@ -99,17 +102,14 @@ public class Enemy extends Solid{
 	public void setRotation(float degrees) {
 		super.setRotation(degrees - 90);
 		this.angle = degrees;
-		
-	}
-	
-	public void dispose() {
-		if (actors != null) {
-			actors.remove();
-		}
-		actors = null;
-	}
+
+    }
 	
 	public boolean isDead() {
-		return actors == null;
-	}
+        return dead;
+    }
+
+    public void setDead(boolean dead) {
+        this.dead = dead;
+    }
 }
