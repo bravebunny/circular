@@ -15,8 +15,10 @@ import co.bravebunny.circular.screens.GameScreen;
 public class HUD extends GameObject {
 	public Image restart;
 	public Array<Combo> combos = new Array<Combo>();
-	
-	public void init() {
+
+    private boolean isRestarting = false;
+
+    public void init() {
 		restart = Assets.getImage("level/hud_restart");
 		actors.addActor(restart);
 		Positions.setPolarPosition(actors);
@@ -31,7 +33,8 @@ public class HUD extends GameObject {
 	
 	//Grows the restart symbol into sight
 	public void restartShow() {
-		restart.setVisible(true);
+        isRestarting = false;
+        restart.setVisible(true);
 		Tween.to(restart, ActorTween.SCALE, 0.5f)
         .target(1.0f).ease(Back.OUT).delay(0.5f)
         .start(GameScreen.getTweenManager());
@@ -40,24 +43,28 @@ public class HUD extends GameObject {
 	
 	//Shrinks the restart symbol back 
 	public void restartHide() {
-		Tween.to(restart, ActorTween.SCALE, 0.5f)
-        .target(0.0f).ease(Back.IN)
-        .start(GameScreen.getTweenManager());
-		
-		Timer.schedule(new Task(){
-    	    @Override
-    	    public void run() {
-    	    	restart.setVisible(false);
-    	    }
-    	}, 60/0.5f);
-		
-		
-	}
+        if (!isRestarting) {
+            isRestarting = true;
+            Tween.to(restart, ActorTween.SCALE, 0.5f)
+                    .target(0.0f).ease(Back.IN)
+                    .start(GameScreen.getTweenManager());
+
+            Timer.schedule(new Task() {
+                @Override
+                public void run() {
+                    restart.setVisible(false);
+                }
+            }, 60 / 0.5f);
+        }
+    }
 
 	@Override
 	public void dispose() {
 		restart.remove();
-	}
+        for (Combo c : combos) {
+            c.dispose();
+        }
+    }
 	
 }
 
