@@ -31,9 +31,7 @@ public class Coin extends Solid {
     private TweenCallback collectCallback = new TweenCallback() {
         @Override
         public void onEvent(int type, BaseTween<?> source) {
-            if (type == TweenCallback.END) {
-                dead = true;
-            }
+            setDead(true);
         }
     };
 
@@ -42,14 +40,16 @@ public class Coin extends Solid {
     }
 
 	public void init() {
-		collectSound = Assets.getSound("coin");
+        System.out.println("---CREATED COIN---");
+        collectSound = Assets.getSound("coin");
 		animation = Assets.getAnimation("level/coin");
 		actors.addActor(animation);
         reset();
     }
 
     public void reset() {
-        dead = false;
+        actors.getColor().a = 1;
+        setDead(false);
         coll_on = false;
         type = MathUtils.random(1);
         h = 400 - type * 60;
@@ -90,7 +90,7 @@ public class Coin extends Solid {
                 Actions.run(new Runnable() {
                     @Override
                     public void run() {
-                        dead = true;
+                        setDead(true);
                     }
                 })
         ));
@@ -120,8 +120,8 @@ public class Coin extends Solid {
 		animation.setSpeed(2);
         Timeline.createSequence()
         .push(Tween.to(actors, ActorTween.SCALE, 0.3f).target(actors.getScaleX()*1.2f, actors.getScaleX()*1.2f).ease(Circ.OUT))
-                .push(Tween.to(actors, ActorTween.SCALE, 0.5f).target(0f, 0f).ease(Expo.IN).setCallback(collectCallback))
-        .start(GameScreen.getTweenManager());
+                .push(Tween.to(actors, ActorTween.SCALE, 0.5f).target(0f, 0f).ease(Expo.IN))
+                .start(GameScreen.getTweenManager()).setCallback(collectCallback);
 
 	}
 

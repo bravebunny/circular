@@ -20,6 +20,7 @@ public class Score extends GameObject {
 
 	public void setScore(int score) {
 		this.score = score;
+		label.setText(Integer.toString(score));
 	}
 
 	public void init() {

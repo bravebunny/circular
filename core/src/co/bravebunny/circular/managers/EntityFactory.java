@@ -44,8 +44,10 @@ public class EntityFactory {
     }
 
     public Coin createCoin() {
+        System.out.println("---Coins: " + coins.size);
         for (Coin c : coins) {
             if (c.isDead()) {
+                System.out.println("---RECYCLED COIN---");
                 c.reset();
                 return c;
             }
@@ -58,6 +60,7 @@ public class EntityFactory {
     public void dispose() {
         coins.clear();
         enemies.clear();
+        //TODO dispose them all
 
     }
 

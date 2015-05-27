@@ -18,7 +18,8 @@ public class Circle extends Clickable {
 	private Image circleInner;
 	
 	public void init() {
-		circleOuter = Assets.getImage("level/circle_outer");
+        System.out.println("---CREATED AN ENEMY---");
+        circleOuter = Assets.getImage("level/circle_outer");
 		circleInner = Assets.getImage("level/circle_inner");
 		actors.addActor(circleOuter);
 		actors.addActor(circleInner);

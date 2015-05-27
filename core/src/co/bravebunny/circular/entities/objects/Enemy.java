@@ -21,16 +21,13 @@ public class Enemy extends Solid{
 	private int type;
 	private Image body;
     private float bpm;
-    private boolean dead = false;
+    private boolean dead;
 
     private TweenCallback destroyCallback = new TweenCallback() {
 		@Override
-		public void onEvent(int type, BaseTween<?> source)
-		{
-			if(type == TweenCallback.END) {
-                dead = true;
-            }
-		}
+        public void onEvent(int type, BaseTween<?> source) {
+            setDead(true);
+        }
 	};
 
 	public void init() {
@@ -40,7 +37,7 @@ public class Enemy extends Solid{
     }
 
     public void reset() {
-        dead = false;
+        setDead(false);
         coll_on = false;
 		type = MathUtils.random(1);
 		h = 400 - type*150;
@@ -74,9 +71,8 @@ public class Enemy extends Solid{
     }
 
 	public void destroy() {
-        Tween t = Tween.to(actors, ActorTween.SCALE, 60 / bpm).target(0)
-                .ease(Back.IN).start(GameScreen.getTweenManager());
-        t.setCallback(destroyCallback);
+        Tween.to(actors, ActorTween.SCALE, 60 / bpm).target(0).ease(Back.IN)
+                .start(GameScreen.getTweenManager()).setCallback(destroyCallback);
     }
 	
 	//enemy beat effect

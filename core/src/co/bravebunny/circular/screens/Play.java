@@ -135,10 +135,8 @@ public class Play extends GameScreen implements Screen {
             hud.render(delta);
 	    	
 	    	for (int i = 0; i < enemies.size; i++) {
-	    		if (enemies.get(i).isDead()) {
-	    			enemies.removeIndex(i);
-	    		} else {
-	    			enemies.get(i).render(delta);
+                if (!enemies.get(i).isDead()) {
+                    enemies.get(i).render(delta);
 	    			if (enemies.get(i).collidesWith(ship)) {
 		    			enemies.get(i).explode();
 		    			enemies.removeIndex(i);
@@ -150,10 +148,8 @@ public class Play extends GameScreen implements Screen {
 	    	}
 	    	
 	    	for (int i = 0; i < coins.size; i++) {
-	    		if (coins.get(i).isDead()) {
-	    			coins.removeIndex(i);
-	    		} else {
-	    			coins.get(i).render(delta);
+                if (!coins.get(i).isDead()) {
+                    coins.get(i).render(delta);
 	    			if (coins.get(i).collidesWith(ship)) {
                         coins.get(i).collect();
                         //coins.removeIndex(i);
