@@ -16,21 +16,23 @@ public class Circle extends Clickable {
 	
 	private Image circleOuter;
 	private Image circleInner;
-	
-	public void init() {
+
+    private boolean isShrinking = false;
+
+    public void init() {
         System.out.println("---CREATED AN ENEMY---");
         circleOuter = Assets.getImage("level/circle_outer");
-		circleInner = Assets.getImage("level/circle_inner");
-		actors.addActor(circleOuter);
-		actors.addActor(circleInner);
-		Positions.setPolarPosition(actors);
+        circleInner = Assets.getImage("level/circle_inner");
+        actors.addActor(circleOuter);
+        actors.addActor(circleInner);
+        Positions.setPolarPosition(actors);
 
-		click_height = click_width = actors.getWidth();
-		
-	    //beat();
-	}
-	
-	public void setLayer(Group layer) {
+        click_height = click_width = actors.getWidth();
+
+        //beat();
+    }
+
+    public void setLayer(Group layer) {
 		layer.addActor(circleOuter);
 	    layer.addActor(actors);
 	}
@@ -72,17 +74,22 @@ public class Circle extends Clickable {
 	 * Makes the inner circle shrink back to its default size
 	 */
 	public void shrink(final Group layerGame, final Group layerOverlay) {
-		Tween.to(circleInner, ActorTween.SCALE, 0.5f)
-        .target(1).ease(Back.IN)
-        .start(GameScreen.getTweenManager());
-		
-    	Timer.schedule(new Task(){
-    	    @Override
-    	    public void run() {
-				layerOverlay.removeActor(circleInner);
-				layerGame.addActor(circleInner);
-			}
-    	}, 0.5f);
+        if (!isShrinking) {
+            isShrinking = true;
+            Tween.to(circleInner, ActorTween.SCALE, 0.5f)
+                    .target(1).ease(Back.IN)
+                    .start(GameScreen.getTweenManager());
+            Timer.schedule(new Task() {
+                @Override
+                public void run() {
+                    isShrinking = false;
+                    layerOverlay.removeActor(circleInner);
+                    layerGame.addActor(circleInner);
+                }
+            }, 0.5f);
+        }
+
+
 		
 	}
 

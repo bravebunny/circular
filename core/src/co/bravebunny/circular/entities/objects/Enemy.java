@@ -15,8 +15,8 @@ import co.bravebunny.circular.managers.Particles;
 import co.bravebunny.circular.managers.Positions;
 import co.bravebunny.circular.screens.GameScreen;
 
-public class Enemy extends Solid{
-	private float h;
+public class Enemy extends Solid implements Recyclable {
+    private float h;
 	private float angle = 0;
 	private int type;
 	private Image body;
@@ -37,12 +37,13 @@ public class Enemy extends Solid{
     }
 
     public void reset() {
-        setDead(false);
         coll_on = false;
-		type = MathUtils.random(1);
+        setDead(false);
+        type = MathUtils.random(1);
 		h = 400 - type*150;
 		actors.setScale(0);
-	}
+        actors.setVisible(true);
+    }
 
     public void setBPM(float bpm) {
         this.bpm = bpm;
@@ -81,7 +82,8 @@ public class Enemy extends Solid{
 	}
 
     public void explode() {
-		if (actors.isVisible()) {
+        setDead(true);
+        if (actors.isVisible()) {
 			Particles.create(Positions.getCenterX(actors), Positions.getCenterY(actors), "explosion", "B71C1CFF");
 			actors.setVisible(false);
 		}

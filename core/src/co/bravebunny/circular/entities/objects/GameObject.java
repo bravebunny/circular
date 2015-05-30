@@ -1,10 +1,9 @@
 package co.bravebunny.circular.entities.objects;
 
-import co.bravebunny.circular.managers.Assets;
-import co.bravebunny.circular.managers.Positions;
-
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+
+import co.bravebunny.circular.managers.Positions;
 
 public abstract class GameObject {
 	
@@ -28,6 +27,10 @@ public abstract class GameObject {
 			return 0;
 		}
 	}
+
+	public void setRotation(float angle) {
+		actors.setRotation(angle);
+	}
 	
 	public float getX() {
 		if (actors != null) {
@@ -36,7 +39,7 @@ public abstract class GameObject {
 			return 0;
 		}
 	}
-	
+
 	public float getY() {
 		if (actors != null) {
 			return Positions.getCenterY(actors);
@@ -47,10 +50,6 @@ public abstract class GameObject {
 
 	public void setPosition(float x, float y) {
 		actors.setPosition(x, y);
-	}
-
-	public void setRotation(float angle) {
-		actors.setRotation(angle);
 	}
 
 	public void setLayer(Group layer) {
@@ -70,6 +69,14 @@ public abstract class GameObject {
 		for (Actor actor : actors.getChildren()) {
 			Positions.setPolarPosition(actor);
 		}
+	}
+
+	public void setVisibility(boolean visibility) {
+		actors.setVisible(visibility);
+	}
+
+	public boolean isVisible() {
+		return actors.isVisible();
 	}
 	
 	public void dispose() {

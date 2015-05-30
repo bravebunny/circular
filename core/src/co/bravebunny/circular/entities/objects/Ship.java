@@ -40,6 +40,8 @@ public class Ship extends Solid {
         
         fire.setX(-100);
         fire.setY(0);
+
+        setVisibility(false);
         
         centerActors();
         //Common.getStage().addActor(fire);

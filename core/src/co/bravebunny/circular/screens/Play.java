@@ -14,9 +14,11 @@ import co.bravebunny.circular.entities.objects.Circle;
 import co.bravebunny.circular.entities.objects.Coin;
 import co.bravebunny.circular.entities.objects.Enemy;
 import co.bravebunny.circular.entities.objects.HUD;
+import co.bravebunny.circular.entities.objects.Recyclable;
 import co.bravebunny.circular.entities.objects.Score;
 import co.bravebunny.circular.entities.objects.Ship;
 import co.bravebunny.circular.entities.objects.Ship.ShipState;
+import co.bravebunny.circular.managers.Assets;
 import co.bravebunny.circular.managers.EntityFactory;
 import co.bravebunny.circular.managers.GameInput;
 import co.bravebunny.circular.managers.Particles;
@@ -38,6 +40,7 @@ public class Play extends GameScreen implements Screen {
 
     //objects
     private Music music;
+    private Music deathMusic;
 
     //values
     private float time = 0;
@@ -95,13 +98,20 @@ public class Play extends GameScreen implements Screen {
     	
     	//start music
     	music = Gdx.audio.newMusic(Gdx.files.internal("media/music/" + levels[selectedLevel].getMusicFile() + ".ogg"));
-    	//music = Assets.getMusic("music1");
-    	//I SHOULD BE USING THE ASSET MANAGER HERE
+        deathMusic = Assets.getMusic("menu");
+        deathMusic.setLooping(true);
+
+        //music = Assets.getMusic("music1");
+        //TODO
+        //I SHOULD BE USING THE ASSET MANAGER HERE
     	//I'M NOT, THOUGH
     	//WHY ARE WE YELLING
-    	music.play();
-    	
-    	ship.state = ShipState.ALIVE;
+        //Not sure why i'm not using the asset manager
+        //Past me must have had a good reason
+        music.play();
+        music.setLooping(true);
+
+        ship.state = ShipState.ALIVE;
 
 
     }
@@ -124,36 +134,41 @@ public class Play extends GameScreen implements Screen {
     }
     
     public void renderRun(float delta) {
-        Array<Enemy> enemies = factory.getEnemies();
-        Array<Coin> coins = factory.getCoins();
+        Array<Recyclable> enemies = factory.getEnemies();
+        Array<Recyclable> coins = factory.getCoins();
 
-    	if (music.isPlaying()) {
-	    	Particles.render(delta);
+        if (music.getPosition() > 0) {
+            if (!ship.isVisible()) {
+                ship.setVisibility(true);
+            }
+            Particles.render(delta);
 	    	ship.render(delta);
 	    	circle.render(delta);
             score.render(delta);
             hud.render(delta);
-	    	
-	    	for (int i = 0; i < enemies.size; i++) {
-                if (!enemies.get(i).isDead()) {
-                    enemies.get(i).render(delta);
-	    			if (enemies.get(i).collidesWith(ship)) {
-		    			enemies.get(i).explode();
-		    			enemies.removeIndex(i);
-		    			ship.destroy();
-		    			hud.restartShow();
+
+            for (Recyclable r : enemies) {
+                Enemy e = (Enemy) r;
+                if (!e.isDead()) {
+                    e.render(delta);
+                    if (e.collidesWith(ship)) {
+                        e.explode();
+                        ship.destroy();
+                        hud.restartShow();
                         circle.growToCover(viewport.getWorldWidth(), viewport.getWorldHeight(), layerGame, layerOverlay);
+                        music.pause();
+                        deathMusic.play();
                     }
-	    		}
-	    	}
-	    	
-	    	for (int i = 0; i < coins.size; i++) {
-                if (!coins.get(i).isDead()) {
-                    coins.get(i).render(delta);
-	    			if (coins.get(i).collidesWith(ship)) {
-                        coins.get(i).collect();
-                        //coins.removeIndex(i);
-		    		}
+                }
+            }
+
+            for (Recyclable r : coins) {
+                Coin c = (Coin) r;
+                if (!c.isDead()) {
+                    c.render(delta);
+                    if (c.collidesWith(ship)) {
+                        c.collect();
+                    }
 	    		}
 	    	}
 	        
@@ -178,20 +193,14 @@ public class Play extends GameScreen implements Screen {
             hud.restartHide();
             score.setScore(0);
 
-            for (Enemy enemy : factory.getEnemies()) {
-                enemy.reset();
-                enemy.setDead(true);
-            }
-
-            for (Coin coin : factory.getCoins()) {
-                coin.reset();
-                coin.setDead(true);
-            }
+            factory.resetAll();
 
             Timer.schedule(new Task(){
         	    @Override
         	    public void run() {
-        	    	ship.reset();
+                    music.play();
+                    deathMusic.stop();
+                    ship.reset();
         	    	ship.moveUp();
                     score.reset();
                 }
@@ -266,6 +275,7 @@ public class Play extends GameScreen implements Screen {
 		circle.dispose();
 		//score.dispose();
 		hud.dispose();
-	}
+        music.dispose();
+    }
 	
 }

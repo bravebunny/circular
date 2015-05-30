@@ -19,8 +19,8 @@ import co.bravebunny.circular.managers.Assets;
 import co.bravebunny.circular.managers.Positions;
 import co.bravebunny.circular.screens.GameScreen;
 
-public class Coin extends Solid {
-	private float h;
+public class Coin extends Solid implements Recyclable {
+    private float h;
 	private float angle = 0;
 	private int type;
 	private AnimatedImage animation;

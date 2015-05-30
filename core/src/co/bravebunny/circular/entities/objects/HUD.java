@@ -16,6 +16,7 @@ public class HUD extends GameObject {
 	public Image restart;
 	public Array<Combo> combos = new Array<Combo>();
 
+
     private boolean isRestarting = false;
 
     public void init() {
