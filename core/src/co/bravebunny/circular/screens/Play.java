@@ -139,7 +139,7 @@ public class Play extends GameScreen implements Screen {
 
         if (music.getPosition() > 0) {
             if (!ship.isVisible()) {
-                ship.setVisibility(true);
+                //ship.setVisibility(true);
             }
             Particles.render(delta);
 	    	ship.render(delta);

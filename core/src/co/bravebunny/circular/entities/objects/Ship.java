@@ -31,21 +31,19 @@ public class Ship extends Solid {
 	public void init() {
 		fire = Assets.getImage("level/ship_fire1");
 		body = Assets.getImage("level/ship_body");
-		
+
 		moveSFX_1 = Assets.getSound("move1");
 		moveSFX_2 = Assets.getSound("move2");
 		explosionSFX = Assets.getSound("explosion");
-		
-		actors.addActor(body);
-        
+
+        actors.addActor(fire);
+        actors.addActor(body);
+
         fire.setX(-100);
         fire.setY(0);
 
         setVisibility(false);
-        
-        centerActors();
-        //Common.getStage().addActor(fire);
-	}
+    }
 
     public void moveDown() {
         moveSFX_1.play();
@@ -65,12 +63,12 @@ public class Ship extends Solid {
 		explosionSFX.play();
 		Particles.create(getX(), getY(), "explosion", PCOLOR);
 		state = ShipState.DEAD;
-		actors.setVisible(false);
+		setVisibility(false);
 	}
 	
 	public void reset() {
 		state = ShipState.ALIVE;
-		actors.setVisible(true);
+		setVisibility(true);
 	}
 	
 	public boolean collidesWith(Solid object) {
@@ -91,9 +89,11 @@ public class Ship extends Solid {
 	public void render (float delta) {
 		switch (state) {
 		case ALIVE:
+            setVisibility(true);
 			renderAlive(delta);
 			break;
 		case DEAD:
+            setVisibility(false);
 			break;
 		}
     }
