@@ -50,7 +50,7 @@ public class Coin extends Solid implements Recyclable {
         System.out.println("---CREATED COIN---");
         collectSound = Assets.getSound("coin");
 		animation = Assets.getAnimation("level/coin");
-		actors.addActor(animation);
+        actors.addActor(animation);
         reset();
     }
 
@@ -61,6 +61,7 @@ public class Coin extends Solid implements Recyclable {
         type = MathUtils.random(1);
         h = 400 - type * 60;
         actors.setScale(0);
+        animation.setSpeed(1);
     }
 
     public void grow() {
@@ -126,7 +127,7 @@ public class Coin extends Solid implements Recyclable {
 		collectSound.play();
 
         //make coin rotate faster after collecting for a pretty effect
-		animation.setSpeed(2);
+		animation.setSpeed(3);
 
         //coin effect when collecting: first grows, then shrinks
         Timeline.createSequence()

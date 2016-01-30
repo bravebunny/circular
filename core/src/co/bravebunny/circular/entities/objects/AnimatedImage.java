@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 public class AnimatedImage extends Image {
 	protected Animation animation = null;
 	private float stateTime = 0;
-	private float originalFrameDuration = 0.1f;
+	private float originalFrameDuration = 0.2f;
 	
 	public AnimatedImage(Animation animation) {
 	    super(animation.getKeyFrame(0));
