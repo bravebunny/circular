@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 public class Positions {
 	
 	/**
-	 * Positions an actor in the center of the screen with polar coordinates.
+	 * Positions an actor with polar coordinates.
 	 * The origin of the referential is the center of the screen.
 	 * Angle presumed to be in degrees.
 	 * @param actor - actor to be positioned

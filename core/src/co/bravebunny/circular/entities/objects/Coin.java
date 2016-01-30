@@ -16,18 +16,25 @@ import aurelienribon.tweenengine.equations.Expo;
 import aurelienribon.tweenengine.equations.Quad;
 import co.bravebunny.circular.managers.ActorTween;
 import co.bravebunny.circular.managers.Assets;
+import co.bravebunny.circular.managers.Particles;
 import co.bravebunny.circular.managers.Positions;
 import co.bravebunny.circular.screens.GameScreen;
 
 public class Coin extends Solid implements Recyclable {
+    //constants:
+    String PCOLOR = "FFDE00FF";	//color of effect particles
+    //values:
     private float h;
 	private float angle = 0;
-	private int type;
-	private AnimatedImage animation;
-	private float elapsedTime = 0;
-	private Sound collectSound;
-    private float bpm;
+    private float elapsedTime = 0;
     private boolean dead;
+    //external values:
+    private float bpm;
+    private int type;
+    //assets:
+    private AnimatedImage animation;
+    private Sound collectSound;
+
     private TweenCallback collectCallback = new TweenCallback() {
         @Override
         public void onEvent(int type, BaseTween<?> source) {
@@ -117,12 +124,18 @@ public class Coin extends Solid implements Recyclable {
     public void collect() {
         coll_on = false;
 		collectSound.play();
+
+        //make coin rotate faster after collecting for a pretty effect
 		animation.setSpeed(2);
+
+        //coin effect when collecting: first grows, then shrinks
         Timeline.createSequence()
         .push(Tween.to(actors, ActorTween.SCALE, 0.3f).target(actors.getScaleX()*1.2f, actors.getScaleX()*1.2f).ease(Circ.OUT))
                 .push(Tween.to(actors, ActorTween.SCALE, 0.5f).target(0f, 0f).ease(Expo.IN))
                 .start(GameScreen.getTweenManager()).setCallback(collectCallback);
 
+        //show pretty coin particles
+        Particles.create(getX(), getY(), "collect", PCOLOR);
 	}
 
 	public boolean isDead() {

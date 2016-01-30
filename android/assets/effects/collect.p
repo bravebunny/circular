@@ -2,8 +2,8 @@ Untitled
 - Delay -
 active: false
 - Duration - 
-lowMin: 200.0
-lowMax: 200.0
+lowMin: 50.0
+lowMax: 50.0
 - Count - 
 min: 10
 max: 200
@@ -22,8 +22,8 @@ timeline1: 1.0
 - Life - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 800.0
-highMax: 800.0
+highMin: 400.0
+highMax: 400.0
 relative: false
 scalingCount: 3
 scaling0: 1.0
@@ -64,8 +64,8 @@ timeline0: 0.0
 - Scale - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 32.0
-highMax: 32.0
+highMin: 16.0
+highMax: 16.0
 relative: true
 scalingCount: 3
 scaling0: 1.0
@@ -128,8 +128,8 @@ timeline1: 1.0
 attached: false
 continuous: false
 aligned: false
-additive: false
+additive: true
 behind: false
 premultipliedAlpha: false
 - Image Path -
-.\assets\img\particle.png
+/D:/Git/Circular/android/assets/img/particle.png
