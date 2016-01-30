@@ -1,7 +1,10 @@
 package co.bravebunny.circular.entities.objects;
 
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.Preferences;
 
 import aurelienribon.tweenengine.Tween;
 import co.bravebunny.circular.managers.ActorTween;
@@ -13,6 +16,9 @@ public class Score extends GameObject {
 	Label label;
 	float angleVariation = 10;
 	int score = 0;
+    int level = 0;
+
+    Preferences prefs;
 
 	public int getScore() {
 		return score;
@@ -23,12 +29,17 @@ public class Score extends GameObject {
 		label.setText(Integer.toString(score));
 	}
 
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
 	public void init() {
 		table = new Table();
 		label = new Label("0", Assets.skin);
 		table.add(label);
 		actors.addActor(table);
 		table.setTransform(true);
+        prefs = Gdx.app.getPreferences("Circular");
 	}
 	
 	public void startTween(float bpm) {
@@ -42,6 +53,13 @@ public class Score extends GameObject {
 	public void inc(int value) {
 		score += value;
 		label.setText(Integer.toString(score));
+
+        int highScore = prefs.getInteger("hs" + level, 0);
+        if (score > highScore) {
+            prefs.putInteger("hs" + level, score);
+            prefs.flush(); //Saves prefs to file. Not sure if it's cool to do it this often
+            System.out.println("" + prefs.getInteger("hs" + level, 0));
+        }
 	}
 	public void inc() {
 		inc(1);

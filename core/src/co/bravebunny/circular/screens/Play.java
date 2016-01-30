@@ -81,6 +81,7 @@ public class Play extends GameScreen implements Screen {
         hud.setLayer(layerHUD);
 
         score = new Score();
+        score.setLevel(selectedLevel);
         score.startTween(getBPM());
         score.setLayer(layerHUD);
         Particles.show();
