@@ -117,7 +117,6 @@ public class Coin extends Solid implements Recyclable {
 		//place the coin in the game screen, and rotate it to an angle in front of the ship
 		Positions.setPolarPosition(actors, h*actors.getScaleX(), angle);
 		coll_radius = 100*actors.getScaleX();
-
 	}
 	
 	@Override

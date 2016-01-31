@@ -44,7 +44,7 @@ public class Menu extends GameScreen implements Screen {
     	bgGreen = 89;
     	bgBlue = 118;
     	stage = new Stage();
-    	
+
     	super.show();
     	circle = new Circle();
     	circle.setLayer(layerCircles);

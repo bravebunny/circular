@@ -84,6 +84,7 @@ public class Play extends GameScreen implements Screen {
         hud.setLayer(layerHUD);
 
         combo = new Combo();
+        combo.setBPM(getBPM());
         combo.setLayer(layerHUD);
 
         score = new Score();
@@ -153,6 +154,7 @@ public class Play extends GameScreen implements Screen {
 	    	circle.render(delta);
             score.render(delta);
             hud.render(delta);
+            combo.render(delta);
 
             //check collisions between enemies and ship
             for (Recyclable r : enemies) {
@@ -161,11 +163,7 @@ public class Play extends GameScreen implements Screen {
                     e.render(delta);
                     if (e.collidesWith(ship)) {
                         e.explode();
-                        ship.destroy();
-                        hud.restartShow();
-                        circle.growToCover(viewport.getWorldWidth(), viewport.getWorldHeight(), layerGame, layerOverlay);
-                        music.pause();
-                        deathMusic.play();
+                        death();
                     }
                 }
             }
@@ -195,6 +193,15 @@ public class Play extends GameScreen implements Screen {
     }
     
     public void renderPause(float delta) {
+    }
+
+    public void death() {
+        ship.destroy();
+        hud.restartShow();
+        circle.growToCover(viewport.getWorldWidth(), viewport.getWorldHeight(), layerGame, layerOverlay);
+        music.pause();
+        deathMusic.play();
+        combo.reset();
     }
     
     public void restart() {
@@ -246,7 +253,7 @@ public class Play extends GameScreen implements Screen {
 		
 		
 		circle.beat(getBPM());
-        score.inc();
+        score.inc(combo.getMultiplier());
         //enemy.beat();
 
     }
@@ -277,10 +284,10 @@ public class Play extends GameScreen implements Screen {
 
 	@Override
 	public void backKey() {
-		music.stop();
+        music.stop();
 		dispose();
 		((Game)Gdx.app.getApplicationListener()).setScreen(new Menu());
-		
+
 	}
 
 	@Override
@@ -293,6 +300,7 @@ public class Play extends GameScreen implements Screen {
 		//score.dispose();
 		hud.dispose();
         music.dispose();
+        combo.dispose();
     }
 	
 }
