@@ -14,6 +14,7 @@ import co.bravebunny.circular.entities.objects.Circle;
 import co.bravebunny.circular.entities.objects.Coin;
 import co.bravebunny.circular.entities.objects.Enemy;
 import co.bravebunny.circular.entities.objects.HUD;
+import co.bravebunny.circular.entities.objects.Combo;
 import co.bravebunny.circular.entities.objects.Recyclable;
 import co.bravebunny.circular.entities.objects.Score;
 import co.bravebunny.circular.entities.objects.Ship;
@@ -34,8 +35,10 @@ public class Play extends GameScreen implements Screen {
     //game objects
 	public Ship ship;
 	public Circle circle;
+    public Coin lastCoin;
 	public HUD hud;
     public Score score;
+    public Combo combo;
     public EntityFactory factory = EntityFactory.getInstance();
 
     //objects
@@ -79,6 +82,9 @@ public class Play extends GameScreen implements Screen {
 
         hud = new HUD();
         hud.setLayer(layerHUD);
+
+        combo = new Combo();
+        combo.setLayer(layerHUD);
 
         score = new Score();
         score.setLevel(selectedLevel);
@@ -148,6 +154,7 @@ public class Play extends GameScreen implements Screen {
             score.render(delta);
             hud.render(delta);
 
+            //check collisions between enemies and ship
             for (Recyclable r : enemies) {
                 Enemy e = (Enemy) r;
                 if (!e.isDead()) {
@@ -163,12 +170,14 @@ public class Play extends GameScreen implements Screen {
                 }
             }
 
+            //check collisions between coins and ship
             for (Recyclable r : coins) {
                 Coin c = (Coin) r;
                 if (!c.isDead()) {
                     c.render(delta);
                     if (c.collidesWith(ship)) {
                         c.collect();
+                        combo.incCounter();
                     }
 	    		}
 	    	}
@@ -221,12 +230,19 @@ public class Play extends GameScreen implements Screen {
 		enemy.setLayer(layerObjects);
 		
 		if (coinBeat == 0) {
-            Coin coin = factory.createCoin();
-            coin.setBPM(getBPM());
-            coin.setRotation(ship.getRotation() + 200);
-            coin.grow();
-			coin.setLayer(layerObjects);
-		}
+            if (lastCoin != null) {
+                if(lastCoin.destroy()) combo.reset();
+            }
+            lastCoin = null;
+            lastCoin = factory.createCoin();
+            lastCoin.setBPM(getBPM());
+            lastCoin.setRotation(ship.getRotation() + 200);
+            lastCoin.grow();
+            lastCoin.setLayer(layerObjects);
+		} else if (coinBeat == 2 && lastCoin != null) {
+            //destroy the coin after some time
+            //lastCoin.destroy();
+        }
 		
 		
 		circle.beat(getBPM());

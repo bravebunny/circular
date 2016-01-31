@@ -14,8 +14,6 @@ import co.bravebunny.circular.screens.GameScreen;
 
 public class HUD extends GameObject {
 	public Image restart;
-	public Array<Combo> combos = new Array<Combo>();
-
 
     private boolean isRestarting = false;
 
@@ -62,9 +60,6 @@ public class HUD extends GameObject {
 	@Override
 	public void dispose() {
 		restart.remove();
-        for (Combo c : combos) {
-            c.dispose();
-        }
     }
 	
 }

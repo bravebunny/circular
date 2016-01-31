@@ -78,37 +78,41 @@ public class Coin extends Solid implements Recyclable {
         }, 90/bpm);
 		
         //destroy the coin after some time
-        Timer.schedule(new Task() {
+        /*Timer.schedule(new Task() {
             @Override
             public void run() {
                 if (coll_on) destroy();
             }
-        }, 3 * 60 / bpm);
+        }, 3 * 60 / bpm);*/
     }
 
     //called when coin disappears on its on (not collected)
-    public void destroy() {
-        coll_on = false;
-        Tween.to(actors, ActorTween.SCALE, 60 / bpm).target(2 - type * 0.6f)
-                .ease(Quad.IN).start(GameScreen.getTweenManager());
+    //returns true if destroyed
+    public boolean destroy() {
+        if (coll_on) {
+            coll_on = false;
+            Tween.to(actors, ActorTween.SCALE, 60 / bpm).target(2 - type * 0.6f)
+                    .ease(Quad.IN).start(GameScreen.getTweenManager());
 
-        actors.addAction(Actions.sequence(
-                Actions.fadeOut(60 / bpm),
-                Actions.delay(60 / bpm),
-                Actions.run(new Runnable() {
-                    @Override
-                    public void run() {
-                        setDead(true);
-                    }
-                })
-        ));
+            actors.addAction(Actions.sequence(
+                    Actions.fadeOut(60 / bpm),
+                    Actions.delay(60 / bpm),
+                    Actions.run(new Runnable() {
+                        @Override
+                        public void run() {
+                            setDead(true);
+                        }
+                    })
+            ));
+            return true;
+        } else return false;
     }
-	
+
 	//coin beat effect
 	public void beat(){
 		//TODO
 	}
-	
+
 	public void render(float delta) {
 		//place the coin in the game screen, and rotate it to an angle in front of the ship
 		Positions.setPolarPosition(actors, h*actors.getScaleX(), angle);
