@@ -52,6 +52,14 @@ public class Combo extends GameObject {
         }
     }
 
+    public void clear() {
+        for (Array<Image> parts: body) {
+            for (Image part : parts) {
+                part.setVisible(false);
+            }
+        }
+    }
+
     //sets combo counter back to zero
     public void reset() {
         if (counter > 0 || multiplier > 1) {
@@ -66,8 +74,8 @@ public class Combo extends GameObject {
     //called every time a coin is connected
     public void incCounter() {
         if (counter >= multiplier * 4) incMultiplier();
-
             Image part = body.get(multiplier-1).get(counter);
+            part.setVisible(true);
             //TODO bpm here
             Tween.to(part, ActorTween.SCALE, 60/bpm).target(1).delay(90/bpm)
                     .ease(Back.OUT).start(GameScreen.getTweenManager());

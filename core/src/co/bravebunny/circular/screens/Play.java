@@ -202,6 +202,7 @@ public class Play extends GameScreen implements Screen {
         music.pause();
         deathMusic.play();
         combo.reset();
+        combo.clear();
     }
     
     public void restart() {
