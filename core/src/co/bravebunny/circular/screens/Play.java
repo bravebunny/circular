@@ -131,13 +131,15 @@ public class Play extends GameScreen implements Screen {
 
     @Override
     public void pause() {
-    	music.pause();
-    	super.pause();
+        if (ship.state == ShipState.ALIVE) music.pause();
+    	else deathMusic.pause();
+        super.pause();
     }
 
     @Override
     public void resume() {
-    	music.play();
+        if (ship.state == ShipState.ALIVE) music.play();
+        else deathMusic.play();
     	super.resume();
     }
     
