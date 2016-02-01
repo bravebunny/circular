@@ -56,6 +56,7 @@ public class Combo extends GameObject {
         for (Array<Image> parts: body) {
             for (Image part : parts) {
                 part.setVisible(false);
+                part.setScale(0);
             }
         }
     }

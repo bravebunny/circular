@@ -32,7 +32,11 @@ public class Level extends Clickable implements Serializable{
 	public void setMinTotalScore(int minTotalScore) {
 		this.minTotalScore = minTotalScore;
 	}
-	
+
+	public int getMinTotalScore() {
+		return minTotalScore;
+	}
+
 	public String getMusicFile() {
 		return musicFile;
 	}
