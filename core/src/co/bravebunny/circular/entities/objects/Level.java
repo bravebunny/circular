@@ -12,22 +12,32 @@ import co.bravebunny.circular.entities.objects.TextBlock;
  * Container for all the information related to a game level
  */
 public class Level extends Clickable implements Serializable{
-	TextBlock levelText;
-	String musicFile, title, artist, linkText, url;
+	TextBlock levelText, score, description, linkText;
+	String musicFile, title, artist, url;
 	int minTotalScore;
 	float bpm;
 
-	/**
-	 * @param levelName - Title to display on the level select menu
-	 * @param mintotalScore - Total score required to unlock this level
-	 */
 	public void init() {
-		this.levelText = new TextBlock();
+		levelText = new TextBlock();
+        levelText.setPosition(0, 50);
+        score = new TextBlock();
+        score.setPosition(0, -100);
+        score.setScale(0.8f);
+        description = new TextBlock();
+        description.setPosition(0, -400);
+        description.setScale(0.4f);
+        linkText = new TextBlock();
+        linkText.setPosition(0, -460);
+        linkText.setScale(0.4f);
 	}
 	
 	public void setLevelName(String levelName) {
 		this.levelText.setText(levelName);
 	}
+
+    public void setScore(int score) {
+        this.score.setText("" + score);
+    }
 	
 	public void setMinTotalScore(int minTotalScore) {
 		this.minTotalScore = minTotalScore;
@@ -45,10 +55,6 @@ public class Level extends Clickable implements Serializable{
 		return artist;
 	}
 
-	public String getLinkText() {
-		return linkText;
-	}
-
 	public String getUrl() {
 		return url;
 	}
@@ -59,7 +65,10 @@ public class Level extends Clickable implements Serializable{
 	
 	@Override
 	public void setPosition(float x, float y) {
-		levelText.setPosition(x, y);
+		levelText.setPosition(x, levelText.getY());
+        score.setPosition(x, score.getY());
+        description.setPosition(x, description.getY());
+        linkText.setPosition(x, linkText.getY());
 	}
 
 	@Override
@@ -70,20 +79,21 @@ public class Level extends Clickable implements Serializable{
 	@Override
 	public void setLayer(Group layer) {
 		levelText.setLayer(layer);
-	}
-	
-	@Override
-	public void setPolarPosition(float radius, float angle) {
-		levelText.setPolarPosition(radius, angle);
+        score.setLayer(layer);
+        description.setLayer(layer);
+        linkText.setLayer(layer);
 	}
 
 	@Override
 	public void dispose() {
 		levelText.dispose();
+        score.dispose();
+        description.dispose();
+        linkText.dispose();
 	}
-	
-	@Override
-	public float getRotation() {
+
+    @Override
+    public float getRotation() {
 		return levelText.getRotation();
 	}
 	
@@ -99,6 +109,9 @@ public class Level extends Clickable implements Serializable{
 	
 	public void moveTo(float target) {
     	levelText.moveTo(target);
+        score.moveTo(target);
+        description.moveTo(target);
+        linkText.moveTo(target);
 	}
 
 	@Override
@@ -109,7 +122,7 @@ public class Level extends Clickable implements Serializable{
 		json.writeValue("bpm", bpm);
 		json.writeValue("title", title);
 		json.writeValue("artist", artist);
-		json.writeValue("link_text", linkText);
+		json.writeValue("link_text", linkText.getText());
 		json.writeValue("url", url);
 	}
 
@@ -121,8 +134,8 @@ public class Level extends Clickable implements Serializable{
 		bpm = jsonData.getInt("bpm");
 		title = jsonData.getString("title");
 		artist = jsonData.getString("artist");
-		linkText = jsonData.getString("link_text");
-		url = jsonData.getString("url");
-
+		linkText.setText(jsonData.getString("link_text"));
+        url = jsonData.getString("url");
+        description.setText(title + " by " + artist);
 	}
 }

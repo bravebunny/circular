@@ -32,7 +32,7 @@ public class TextBlock extends GameObject {
 	
 	public void moveTo(float target) {
     	Tween.to(actors, ActorTween.POSITION, 0.5f)
-        .target(target).ease(Quart.OUT)
+        .target(target, actors.getY()).ease(Quart.OUT)
         .start(GameScreen.getTweenManager());
 	}
 
@@ -44,5 +44,13 @@ public class TextBlock extends GameObject {
 
 	public String getText() {
 		return label.getText().toString();
+	}
+
+	public void setScale(float scale) {
+		label.setFontScale(scale);
+	}
+
+	public void setAlignment(int alignment) {
+		label.setAlignment(alignment);
 	}
 }

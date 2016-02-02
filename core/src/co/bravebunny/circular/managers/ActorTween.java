@@ -28,6 +28,7 @@ public class ActorTween implements TweenAccessor<Actor> {
 				return 3;
 			case POSITION:
 				returnValues[0] = Positions.getCenterX(target);
+				returnValues[1] = Positions.getCenterY(target);
 				return 4;
 			case OPACITY:
 				returnValues[0] = target.getColor().a;
@@ -50,7 +51,7 @@ public class ActorTween implements TweenAccessor<Actor> {
 			target.setRotation(newValues[0]);
 			break;
 		case POSITION:
-			Positions.setPolarPosition(target, newValues[0], 0);
+			target.setPosition(newValues[0], newValues[1]);
 			break;
 			case OPACITY:
 				Color c = target.getColor();

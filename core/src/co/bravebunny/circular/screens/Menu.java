@@ -28,13 +28,13 @@ public class Menu extends GameScreen implements Screen {
 	private Music music;
 	
 	//groups (object layers)
-	public Group layerCircles = new Group();
-	public Group layerLevels = new Group();
-	public Group layerButtons = new Group();
+	private Group layerCircles = new Group();
+	private Group layerLevels = new Group();
+	private Group layerButtons = new Group();
 	private Group layerLocked = new Group();
 	private Circle circle;
     private ShapeRenderer shapes = new ShapeRenderer();
-    private Label score = new Label("", Assets.skin);
+    private TextBlock score = new TextBlock();
     private int totalScore = 0, nextMin = 0;
 		
     @Override
@@ -64,7 +64,7 @@ public class Menu extends GameScreen implements Screen {
     		String levelJson = Gdx.files.internal("levels/level" + i + ".json").readString();
     		levels[i] = json.fromJson(Level.class, levelJson);
         	levels[i].setLayer(layerLevels);
-        	levels[i].setPolarPosition(1000*i - 1000*selectedLevel, 0);
+            levels[i].setPosition(1000*i - 1000*selectedLevel, 0);
     	}
 
         setupScore();
@@ -87,6 +87,7 @@ public class Menu extends GameScreen implements Screen {
         for (int i = 0; i < levels.length; i++) {
             Preferences prefs = Gdx.app.getPreferences("Circular");
             int score = prefs.getInteger("hs" + i, 0);
+            levels[i].setScore(score);
             totalScore += score;
         }
 
@@ -96,9 +97,9 @@ public class Menu extends GameScreen implements Screen {
         }
 
         score.setText(totalScore + " / " + nextMin);
-        score.setFontScale(0.3f);
+        score.setScale(0.3f);
         score.setAlignment(Align.center);
-        layerCircles.addActor(score);
+        score.setLayer(layerCircles);
     }
 
     @Override
