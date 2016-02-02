@@ -1,8 +1,10 @@
 {
-	music: "music4",
-	bpm: 130,
-	title: "Fold My Brain",
-	artist: "Alex H",
-	link_text: "alexh.org",
-	url: "http://www.alexh.org"
+	"level": "Why",
+	"min_score": 2000,
+  	"music": "music4",
+	"bpm": 140,
+	"title": "Vivi X",
+	"artist": "Chain Reaction",
+	"link_text": "Chain Reaction's Bandcamp",
+	"url": "http://chainreaction.bandcamp.com"
 }

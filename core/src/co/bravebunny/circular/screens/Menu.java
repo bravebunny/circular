@@ -67,22 +67,6 @@ public class Menu extends GameScreen implements Screen {
         	levels[i].setPolarPosition(1000*i - 1000*selectedLevel, 0);
     	}
 
-    	// Not sure if this info should be here or in the json files
-    	// since it isn't directly related to the music.
-    	// It will stay here for now
-    	levels[0].setLevelName("Easy");
-    	levels[0].setMinTotalScore(0);
-    	levels[1].setLevelName("Medium");
-    	levels[1].setMinTotalScore(100);
-    	levels[2].setLevelName("Hard");
-    	levels[2].setMinTotalScore(300);
-    	levels[3].setLevelName("Crazy");
-    	levels[3].setMinTotalScore(600);
-    	levels[4].setLevelName("Why");
-    	levels[4].setMinTotalScore(1000);
-    	/*levels[6].setMusicFile("round");
-    	levels[6].setBpm(128.36f);*/
-
         setupScore();
 
         getStage().addActor(layerCircles);

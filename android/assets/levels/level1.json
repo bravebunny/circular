@@ -1,8 +1,10 @@
 {
-	music: "music1",
-	bpm: 107,
-	title: "Ouroboros",
-	artist: "Kevin Macleod",
-	link_text: "Incompetech.com",
-	url: "http://incompetech.com"
+	"level": "Medium",
+	"min_score": 100,
+	"music": "music1",
+	"bpm": 120,
+	"title": "Straight Forward",
+	"artist": "LPChip",
+	"link_text": "lpchip.nl",
+	"url": "http://www.lpchip.nl"
 }

@@ -103,6 +103,8 @@ public class Level extends Clickable implements Serializable{
 
 	@Override
 	public void write(Json json) {
+		json.writeValue("level", levelText.getText());
+        json.writeValue("min_score", minTotalScore);
 		json.writeValue("music", musicFile);
 		json.writeValue("bpm", bpm);
 		json.writeValue("title", title);
@@ -113,6 +115,8 @@ public class Level extends Clickable implements Serializable{
 
 	@Override
 	public void read(Json json, JsonValue jsonData) {
+        levelText.setText(jsonData.getString("level"));
+        minTotalScore = jsonData.getInt("min_score");
 		musicFile = jsonData.getString("music");
 		bpm = jsonData.getInt("bpm");
 		title = jsonData.getString("title");

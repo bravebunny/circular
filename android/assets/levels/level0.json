@@ -1,8 +1,10 @@
 {
-	music: "music0",
-	bpm: 107,
-	title: null,
-	artist: null,
-	link_text: null,
-	url: null
+    "level": "Easy",
+    "min_score": 0,
+	"music": "music0",
+	"bpm": 107,
+	"title": "Ouroboros",
+	"artist": "Kevin Macleod",
+	"link_text": "Incompetech.com",
+	"url": "http://incompetech.com"
 }

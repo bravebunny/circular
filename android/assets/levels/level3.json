@@ -1,8 +1,10 @@
 {
-	music: "music3",
-	bpm: 126,
-	title: "No More",
-	artist: "ifen",
-	link_text: "Ifen's Soundcloud",
-	url: "http://www.soundcloud.com/ifen"
+	"level": "Crazy",
+	"min_score": 900,
+	"music": "music3",
+	"bpm": 130,
+	"title": "Fold My Brain",
+	"artist": "Alex H",
+	"link_text": "alexh.org",
+	"url": "http://www.alexh.org"
 }
