@@ -77,7 +77,7 @@ public class Combo extends GameObject {
         if (counter >= multiplier * 4) incMultiplier();
             Image part = body.get(multiplier-1).get(counter);
             part.setVisible(true);
-            //TODO bpm here
+            part.setScale(0);
             Tween.to(part, ActorTween.SCALE, 60/bpm).target(1).delay(90/bpm)
                     .ease(Back.OUT).start(GameScreen.getTweenManager());
             counter++;

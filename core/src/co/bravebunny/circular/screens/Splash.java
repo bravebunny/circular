@@ -47,8 +47,8 @@ public class Splash extends GameScreen implements Screen {
         //Bunny fading
         bunny.addAction(Actions.sequence(
     		Actions.alpha(0),
-    		Actions.fadeIn(0.5f),
-    		Actions.delay(2),
+    		Actions.fadeIn(0.0f),//0.5
+    		Actions.delay(0),//2
     		Actions.run(new Runnable() {
 	            @Override
 	            public void run() {

@@ -11,6 +11,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
@@ -131,24 +132,47 @@ public class Menu extends GameScreen implements Screen {
     public void renderRun(float delta) {
     	circle.render(delta);
 
-        drawProgress(viewport.getCamera().viewportWidth); //progress background rectangle
+		float progressWidth = viewport.getCamera().viewportWidth / ((float) nextMin / (float) totalScore);
+		score.setPosition(progressWidth / 2 - viewport.getCamera().viewportWidth / 2, viewport.getCamera().viewportHeight / 2 - 25);
 
-        float progressWidth = viewport.getCamera().viewportWidth / ((float) nextMin / (float) totalScore);
+		Gdx.gl.glEnable(GL20.GL_BLEND);
+		drawProgress(viewport.getCamera().viewportWidth); //progress background rectangle
         drawProgress(progressWidth); //actual progress rectangle
-        score.setPosition(progressWidth/2 - viewport.getCamera().viewportWidth / 2, viewport.getCamera().viewportHeight/2 - 25);
-    }
+		drawGradients(); //simulate a fade out effect when scrolling
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+	}
+
+	public void drawGradients() {
+		float vpWidth = viewport.getCamera().viewportWidth;
+		float vpHeight = viewport.getCamera().viewportHeight;
+        float gradY = -vpHeight / 2;
+        float gradHeight = vpHeight - 50;
+
+		shapes.setProjectionMatrix(viewport.getCamera().projection);
+		shapes.begin(ShapeRenderer.ShapeType.Filled);
+		float r = bgRed / 255;
+		float g = bgGreen / 255;
+		float b = bgBlue / 255;
+
+		float gradWidth = 300;
+		float gradX = 800;
+		Color blue = new Color(r, g, b, 1);
+		Color transparent = new Color(r, g, b, 0);
+		shapes.rect(-gradX, gradY, gradWidth, gradHeight, blue, transparent, transparent, blue);
+        shapes.rect(gradX - gradWidth, gradY, gradWidth, gradHeight, transparent, blue, blue, transparent);
+        shapes.setColor(blue);
+		shapes.rect(-vpWidth / 2, gradY, vpWidth / 2 - gradX, gradHeight);
+		shapes.rect(gradX, gradY, vpWidth / 2 - gradX, gradHeight);
+		shapes.end();
+	}
 
     public void drawProgress(float width) {
         float height = 50;
         float vpWidth = viewport.getCamera().viewportWidth;
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        shapes.setProjectionMatrix(viewport.getCamera().projection);
         shapes.begin(ShapeRenderer.ShapeType.Filled);
         shapes.setColor(1, 1, 1, 0.5f);
         shapes.rect(-vpWidth / 2, viewport.getCamera().viewportHeight / 2 - height, width, height);
         shapes.end();
-        Gdx.gl.glDisable(GL20.GL_BLEND);
     }
     
     public void renderPause(float delta) {
