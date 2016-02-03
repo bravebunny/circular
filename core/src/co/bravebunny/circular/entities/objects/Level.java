@@ -1,6 +1,7 @@
 package co.bravebunny.circular.entities.objects;
 
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Json.Serializable;
 import com.badlogic.gdx.utils.JsonValue;
@@ -16,6 +17,7 @@ public class Level extends Clickable implements Serializable{
 	String musicFile, title, artist, url;
 	int minTotalScore;
 	float bpm;
+	boolean locked = false;
 
 	public void init() {
 		levelText = new TextBlock();
@@ -26,9 +28,23 @@ public class Level extends Clickable implements Serializable{
         description = new TextBlock();
         description.setPosition(0, -400);
         description.setScale(0.4f);
+		description.setAlignment(Align.center);
         linkText = new TextBlock();
         linkText.setPosition(0, -460);
         linkText.setScale(0.4f);
+	}
+
+	public void setLocked(boolean locked) {
+		this.locked = locked;
+		if (locked) {
+			description.setText(minTotalScore + " total beats required\nto unlock this level");
+			score.setText("Locked");
+			linkText.setText("");
+		}
+	}
+
+	public boolean getLocked() {
+		return locked;
 	}
 	
 	public void setLevelName(String levelName) {

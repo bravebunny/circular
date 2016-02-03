@@ -92,11 +92,13 @@ public class Menu extends GameScreen implements Screen {
             totalScore += score;
         }
 
-        for (int i = 0; i < levels.length; i++) {
-            nextMin = levels[i].getMinTotalScore();
-            if (totalScore < nextMin) break;
+        for (int i = levels.length-1; i > -1; i--) {
+            int min = levels[i].getMinTotalScore();
+            if (totalScore >= min) break;
+            nextMin = min;
+            levels[i].setLocked(true);
         }
-
+        
         score.setText(totalScore + " / " + nextMin);
         score.setScale(0.3f);
         score.setAlignment(Align.center);
@@ -110,14 +112,14 @@ public class Menu extends GameScreen implements Screen {
 
     @Override
     public void pause() {
-    	music.pause();
-    	super.pause();
+        music.pause();
+        super.pause();
     }
 
     @Override
     public void resume() {
-    	music.play();
-    	super.resume();
+        music.play();
+        super.resume();
     }
 
     @Override
@@ -175,8 +177,7 @@ public class Menu extends GameScreen implements Screen {
         shapes.end();
     }
     
-    public void renderPause(float delta) {
-    }
+    public void renderPause(float delta) {}
 	
 	public void pan(float x, float y, float deltaX, float deltaY) {
 		Vector3 vector_center_screen = viewport.getCamera().project(
@@ -191,7 +192,6 @@ public class Menu extends GameScreen implements Screen {
 	}
 	
 	public void panStop() {
-		
 		if (levels[selectedLevel].getX() < -500) {
 			selectedLevel = selectedLevel + 1;
 			if (selectedLevel > levels.length -1) {
@@ -203,10 +203,7 @@ public class Menu extends GameScreen implements Screen {
 				selectedLevel = 0;
 			}
 		}
-		
-    	for (int i = 0; i < levels.length; i++) {
-    		levels[i].moveTo(1000*i - 1000*selectedLevel);
-    	}
+        repositionLevels();
 	}
 	
 	public void fling(float velocityX, float velocityY) {
@@ -223,18 +220,20 @@ public class Menu extends GameScreen implements Screen {
 				}
 			}
 		}
-		
-		
-    	for (int i = 0; i < levels.length; i++) {
-    		levels[i].moveTo(1000*i - 1000*selectedLevel);
-    	}
+        repositionLevels();
 	}
-	
+
+    public void repositionLevels() {
+        for (int i = 0; i < levels.length; i++) {
+            levels[i].moveTo(1000*i - 1000*selectedLevel);
+        }
+    }
+
 	public void tap(float x, float y, int count) {
-		//if (circle.isTouching(x, y)) {
+		if (!levels[selectedLevel].getLocked()) {
 			music.stop();
 			((Game)Gdx.app.getApplicationListener()).setScreen(new Play());
-		//}
+		}
 	}
 
 	@Override
