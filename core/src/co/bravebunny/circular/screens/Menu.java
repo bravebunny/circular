@@ -98,7 +98,7 @@ public class Menu extends GameScreen implements Screen {
             nextMin = min;
             levels[i].setLocked(true);
         }
-        
+
         score.setText(totalScore + " / " + nextMin);
         score.setScale(0.3f);
         score.setAlignment(Align.center);

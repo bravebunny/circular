@@ -40,6 +40,7 @@ public class Level extends Clickable implements Serializable{
 			description.setText(minTotalScore + " total beats required\nto unlock this level");
 			score.setText("Locked");
 			linkText.setText("");
+			levelText.setAlpha(0.75f);
 		}
 	}
 

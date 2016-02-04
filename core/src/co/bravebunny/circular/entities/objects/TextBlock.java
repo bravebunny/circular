@@ -11,6 +11,7 @@ import co.bravebunny.circular.managers.Assets;
 import co.bravebunny.circular.screens.GameScreen;
 import co.bravebunny.circular.screens.Play;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
@@ -52,5 +53,10 @@ public class TextBlock extends GameObject {
 
 	public void setAlignment(int alignment) {
 		label.setAlignment(alignment);
+	}
+
+	public void setAlpha(float alpha) {
+		Color c = label.getColor();
+		label.setColor(c.r, c.g, c.b, alpha);
 	}
 }
