@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
@@ -49,6 +50,8 @@ public class Play extends GameScreen implements Screen {
     private float time = 0;
     private int coinBeat = 0;
     private int coinFreq = 3;
+    private float nextEventScore = 0;
+    private static final int EVENT_SCORE_INC = 50;
 
     public float getBPM() {
     	return levels[selectedLevel].getBpm();
@@ -114,8 +117,6 @@ public class Play extends GameScreen implements Screen {
         music.setLooping(true);
 
         ship.state = ShipState.ALIVE;
-
-
     }
 
     @Override
@@ -138,54 +139,52 @@ public class Play extends GameScreen implements Screen {
     }
     
     public void renderRun(float delta) {
+        if (music.getPosition() < 0) return;
+
         Array<Recyclable> enemies = factory.getEnemies();
         Array<Recyclable> coins = factory.getCoins();
 
-        if (music.getPosition() > 0) {
-            if (!ship.isVisible()) {
-                //ship.setVisibility(true);
-            }
-            Particles.render(delta);
-	    	ship.render(delta);
-	    	circle.render(delta);
-            score.render(delta);
-            hud.render(delta);
-            combo.render(delta);
+        Particles.render(delta);
+        ship.render(delta);
+        circle.render(delta);
+        score.render(delta);
+        hud.render(delta);
+        combo.render(delta);
 
-            //check collisions between enemies and ship
-            for (Recyclable r : enemies) {
-                Enemy e = (Enemy) r;
-                if (!e.isDead()) {
-                    e.render(delta);
-                    if (e.collidesWith(ship)) {
-                        e.explode();
-                        death();
-                    }
+        //check collisions between enemies and ship
+        for (Recyclable r : enemies) {
+            Enemy e = (Enemy) r;
+            if (!e.isDead()) {
+                e.render(delta);
+                if (e.collidesWith(ship)) {
+                    e.explode();
+                    death();
                 }
             }
-
-            //check collisions between coins and ship
-            for (Recyclable r : coins) {
-                Coin c = (Coin) r;
-                if (!c.isDead()) {
-                    c.render(delta);
-                    if (c.collidesWith(ship)) {
-                        c.collect();
-                        combo.incCounter();
-                    }
-	    		}
-	    	}
-	        
-	    	time += delta;
-	        if (time >= 60/getBPM()) {
-	        	if (ship.state == ShipState.ALIVE) {
-	        		//call all the rhythm related stuff
-	            	rhythm();
-	        	}
-	            time -= 60/getBPM();
-	        }
-        
         }
+
+        //check collisions between coins and ship
+        for (Recyclable r : coins) {
+            Coin c = (Coin) r;
+            if (!c.isDead()) {
+                c.render(delta);
+                if (c.collidesWith(ship)) {
+                    c.collect();
+                    combo.incCounter();
+                }
+            }
+        }
+
+        time += delta;
+        if (time >= 60/getBPM()) {
+            if (ship.state == ShipState.ALIVE) {
+                //call all the rhythm related stuff
+                rhythm();
+            }
+            time -= 60/getBPM();
+        }
+
+        rotateScreenProgress(delta);
     }
     
     public void renderPause(float delta) {
@@ -206,6 +205,7 @@ public class Play extends GameScreen implements Screen {
             circle.shrink(layerGame, layerOverlay);
             hud.restartHide();
             score.setScore(0);
+            nextEventScore = 0;
 
             factory.resetAll();
 
@@ -223,8 +223,9 @@ public class Play extends GameScreen implements Screen {
     }
     
     
-    //events that happen every beat
+    // events that happen every beat
     public void rhythm() {
+        // used to know when we should spawn a coin
     	coinBeat = (coinBeat + 1)%coinFreq;
 
         Enemy enemy = factory.createEnemy();
@@ -243,16 +244,55 @@ public class Play extends GameScreen implements Screen {
             lastCoin.setRotation(ship.getRotation() + 200);
             lastCoin.grow();
             lastCoin.setLayer(layerObjects);
-		} else if (coinBeat == 2 && lastCoin != null) {
-            //destroy the coin after some time
-            //lastCoin.destroy();
-        }
-		
-		
+		}
+
 		circle.beat(getBPM());
         score.inc(combo.getMultiplier());
-        //enemy.beat();
 
+        callEvents();
+    }
+
+    public void callEvents() {
+        // weight that the difficulty of the level has in determining the frequency of game events
+        float weight = 1 + (selectedLevel) * 0.5f;
+
+        boolean isEvenTime = score.getScore() > nextEventScore;
+
+        // score at witch we will call a game event
+        if (nextEventScore == 0 || isEvenTime) nextEventScore += weight * EVENT_SCORE_INC;
+
+        if (isEvenTime) {
+            rotateScreenEvent();
+        }
+    }
+
+    private float progress = 0;
+    private boolean rotateScreen = false;
+    private int rotateSlowdown = 1;
+    private int rotateDirection = 1;
+    private int rotationCount = 0;
+
+    public void rotateScreenEvent() {
+        rotateScreen = true;
+    }
+
+    public void rotateScreenProgress(float delta) {
+        if(rotationCount > 1) {
+            rotationCount = 0;
+            rotateScreen = false;
+        }
+        if (!rotateScreen) return;
+
+        if (progress > 0.5) rotateSlowdown *= -1;
+        else if (progress < 0) {
+            rotateDirection *= -1;
+            rotateSlowdown = 1;
+            rotationCount++;
+        }
+
+        float angle = MathUtils.lerpAngleDeg(0, 3*rotateDirection, progress);
+        progress += 0.05 * delta * rotateSlowdown;
+        viewport.getCamera().rotate(angle, 0, 0, 1);
     }
 
 	@Override
@@ -262,7 +302,6 @@ public class Play extends GameScreen implements Screen {
 		} else {
 			restart();
 		}
-		
 	}
 
 	@Override
@@ -276,7 +315,6 @@ public class Play extends GameScreen implements Screen {
         	
             break;
         }
-		
 	}
 
 	@Override
@@ -284,7 +322,6 @@ public class Play extends GameScreen implements Screen {
         music.stop();
 		dispose();
 		((Game)Gdx.app.getApplicationListener()).setScreen(new Menu());
-
 	}
 
 	@Override
@@ -299,5 +336,4 @@ public class Play extends GameScreen implements Screen {
         music.dispose();
         combo.dispose();
     }
-	
 }
