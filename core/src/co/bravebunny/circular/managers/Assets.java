@@ -67,7 +67,11 @@ public class Assets {
     }
     
     public static Music getMusic (String file) {
-    	return manager.get("media/music/" + file + ".ogg", Music.class);
+        if (manager.isLoaded(file)) {
+            return manager.get("media/music/" + file + ".ogg", Music.class);
+        } else {
+            return Gdx.audio.newMusic(Gdx.files.internal("media/music/" + file + ".ogg"));
+        }
     }
     
     public static void loadMusic (int level) {

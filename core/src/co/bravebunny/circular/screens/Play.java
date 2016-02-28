@@ -93,29 +93,23 @@ public class Play extends GameScreen implements Screen {
         score.setLayer(layerHUD);
         Particles.show();
 
-        //the order of these lines defines the z-order of the layers
+        // the order of these lines defines the z-order of the layers
         getStage().addActor(layerGame);
         getStage().addActor(layerShip);
         getStage().addActor(layerObjects);
         getStage().addActor(layerOverlay);
         getStage().addActor(layerHUD);
         
-    	//initialize input
+    	// initialize input
     	GameInput input = new GameInput(this);
     	Gdx.input.setInputProcessor(input);
     	
-    	//start music
-    	music = Gdx.audio.newMusic(Gdx.files.internal("media/music/" + levels[selectedLevel].getMusicFile() + ".ogg"));
+    	// start music
+        // TODO might need some countdown here to make the game not hang when starting
+        music = Assets.getMusic(levels[selectedLevel].getMusicFile());
         deathMusic = Assets.getMusic("menu");
         deathMusic.setLooping(true);
 
-        //music = Assets.getMusic("music1");
-        //TODO
-        //I SHOULD BE USING THE ASSET MANAGER HERE
-    	//I'M NOT, THOUGH
-    	//WHY ARE WE YELLING
-        //Not sure why i'm not using the asset manager
-        //Past me must have had a good reason
         music.play();
         music.setLooping(true);
 
@@ -300,7 +294,7 @@ public class Play extends GameScreen implements Screen {
         factory.dispose();
         ship.dispose();
 		circle.dispose();
-		//score.dispose();
+		score.dispose();
 		hud.dispose();
         music.dispose();
         combo.dispose();

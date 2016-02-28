@@ -76,6 +76,5 @@ public class Score extends GameObject {
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-		
 	}
 }
