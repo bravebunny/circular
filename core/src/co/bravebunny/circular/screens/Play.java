@@ -26,20 +26,20 @@ import co.bravebunny.circular.managers.Particles;
 
 public class Play extends GameScreen implements Screen {
 	//groups (object layers)
-    public Group layerGame = new Group();
-    public Group layerShip = new Group();
-    public Group layerObjects = new Group();
-    public Group layerOverlay = new Group();
-    public Group layerHUD = new Group();
+    private Group layerGame = new Group();
+    private Group layerShip = new Group();
+    private Group layerObjects = new Group();
+    private Group layerOverlay = new Group();
+    private Group layerHUD = new Group();
 
     //game objects
-	public Ship ship;
-	public Circle circle;
-    public Coin lastCoin;
-	public HUD hud;
-    public Score score;
-    public Combo combo;
-    public EntityFactory factory = EntityFactory.getInstance();
+    private Ship ship;
+    private Circle circle;
+    private Coin lastCoin;
+    private HUD hud;
+    private Score score;
+    private Combo combo;
+    private EntityFactory factory = EntityFactory.getInstance();
 
     //objects
     private Music music;
