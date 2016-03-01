@@ -16,9 +16,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 public class TextBlock extends GameObject {
-	Label label;
+    public Label getLabel() {
+        return label;
+    }
+
+    Label label;
 	Table table;
-	
+
+	public Table getTable() {
+		return table;
+	}
+
 	public void init() {
 		label = new Label("Sample Text", Assets.skin);
 		table = new Table();

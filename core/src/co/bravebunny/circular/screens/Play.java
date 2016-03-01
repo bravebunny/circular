@@ -16,6 +16,7 @@ import co.bravebunny.circular.entities.objects.Coin;
 import co.bravebunny.circular.entities.objects.Enemy;
 import co.bravebunny.circular.entities.objects.HUD;
 import co.bravebunny.circular.entities.objects.Combo;
+import co.bravebunny.circular.entities.objects.Multiplier;
 import co.bravebunny.circular.entities.objects.Recyclable;
 import co.bravebunny.circular.entities.objects.Score;
 import co.bravebunny.circular.entities.objects.Ship;
@@ -27,6 +28,7 @@ import co.bravebunny.circular.managers.Particles;
 
 public class Play extends GameScreen implements Screen {
 	//groups (object layers)
+    private Group layerBackground = new Group();
     private Group layerGame = new Group();
     private Group layerShip = new Group();
     private Group layerObjects = new Group();
@@ -40,6 +42,7 @@ public class Play extends GameScreen implements Screen {
     private HUD hud;
     private Score score;
     private Combo combo;
+    private Multiplier multiplier;
     private EntityFactory factory = EntityFactory.getInstance();
 
     //objects
@@ -75,6 +78,9 @@ public class Play extends GameScreen implements Screen {
     	stage = new Stage();
     	
     	super.show();
+
+        multiplier = new Multiplier();
+        multiplier.setLayer(layerBackground);
     	
     	circle = new Circle();
     	circle.setLayer(layerGame);
@@ -97,6 +103,7 @@ public class Play extends GameScreen implements Screen {
         Particles.show();
 
         // the order of these lines defines the z-order of the layers
+        getStage().addActor(layerBackground);
         getStage().addActor(layerGame);
         getStage().addActor(layerShip);
         getStage().addActor(layerObjects);
@@ -214,6 +221,7 @@ public class Play extends GameScreen implements Screen {
             rotateDirection = 1;
             rotationCount = 0;
             viewport.getCamera().rotate(-angle, 0, 0, 1);
+            angle = 0;
 
             factory.resetAll();
 
