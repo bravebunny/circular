@@ -208,6 +208,12 @@ public class Play extends GameScreen implements Screen {
             nextEventScore = 0;
             speed = 1;
             bpm = levels[selectedLevel].getBpm();
+            rotationProgress = 0;
+            rotateScreen = false;
+            rotateSlowdown = 1;
+            rotateDirection = 1;
+            rotationCount = 0;
+            viewport.getCamera().rotate(-angle, 0, 0, 1);
 
             factory.resetAll();
 
@@ -265,11 +271,11 @@ public class Play extends GameScreen implements Screen {
         if (nextEventScore == 0 || isEvenTime) nextEventScore += weight * EVENT_SCORE_INC;
 
         if (isEvenTime) {
-            speedupEvent();
+            rotateEvent();
         }
     }
 
-    private float progress = 0;
+    private float rotationProgress = 0;
     private boolean rotateScreen = false;
     private int rotateSlowdown = 1;
     private int rotateDirection = 1;
@@ -285,22 +291,23 @@ public class Play extends GameScreen implements Screen {
     }
 
     public void rotateScreenProgress(float delta) {
-        if(rotationCount > 0) {
+        if(rotationCount > 1) {
             rotationCount = 0;
             rotateScreen = false;
         }
         if (!rotateScreen) return;
 
-        if (progress > 0.5) rotateSlowdown *= -1;
-        else if (progress < 0) {
+        if (rotationProgress > 0.5) rotateSlowdown *= -1;
+        else if (rotationProgress < 0) {
             rotateDirection *= -1;
             rotateSlowdown = 1;
             rotationCount++;
         }
 
-        float angle = MathUtils.lerpAngleDeg(0, 3*rotateDirection, progress);
-        progress += 0.05 * delta * rotateSlowdown;
+        float angle = MathUtils.lerpAngleDeg(0, 3*rotateDirection, rotationProgress);
+        rotationProgress += 0.05 * delta * rotateSlowdown;
         viewport.getCamera().rotate(angle, 0, 0, 1);
+        this.angle += angle;
     }
 
 	@Override

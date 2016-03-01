@@ -26,7 +26,7 @@ public abstract class GameScreen {
 	
 	protected static Level levels[] = {null, null, null, null, null};
 
-	
+	protected static float angle = 0;
 	//color to be used as background for each screen [0, 255]
 	protected float bgRed, bgGreen, bgBlue;
 	
@@ -42,6 +42,7 @@ public abstract class GameScreen {
 	public static TextureAtlas getAtlas() {
 		return Assets.skin.getAtlas();
 	}
+	public static float getAngle() { return angle; }
 
 	//input handlers
 	//do absolutely nothing by default

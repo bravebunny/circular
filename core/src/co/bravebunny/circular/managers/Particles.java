@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffectPool.PooledEffect;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 
 public class Particles {
@@ -37,10 +39,13 @@ public class Particles {
 		prototype.start();
 		
 		PooledEffect pooledEffect = pool.obtain();
-		pooledEffect.setPosition(GameScreen.getViewport().getWorldWidth()/2 + x, GameScreen.getViewport().getWorldHeight()/2 + y);
+        Vector2 position = new Vector2(x, y).rotate(-GameScreen.getAngle());
+        float effectX = GameScreen.getViewport().getWorldWidth()/2 + position.x;
+        float effectY = GameScreen.getViewport().getWorldHeight()/2 + position.y;
+		pooledEffect.setPosition(effectX, effectY);
 		effects.add(pooledEffect);
 	}
-	
+
 	public static void render(float delta) {
 		batch.getProjectionMatrix().setToOrtho2D(0, 0, GameScreen.getViewport().getWorldWidth(), GameScreen.getViewport().getWorldHeight());
 		batch.begin();
