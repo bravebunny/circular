@@ -21,6 +21,7 @@ public class Enemy extends Solid implements Recyclable {
 	private int type;
 	private Image body;
     private float bpm;
+    private float speed = 1;
     private boolean dead;
 
     private TweenCallback destroyCallback = new TweenCallback() {
@@ -49,9 +50,11 @@ public class Enemy extends Solid implements Recyclable {
         this.bpm = bpm;
     }
 
+    public void setSpeed(float speed) { this.speed = speed; }
+
     public void grow() {
         //grow to initial size
-		Tween.to(actors, ActorTween.SCALE, 60/bpm).target(1 - type*0.3f)
+		Tween.to(actors, ActorTween.SCALE, 60 / (bpm * speed)).target(1 - type*0.3f)
 		.ease(Back.OUT).start(GameScreen.getTweenManager());
 
         //turn on collisions
@@ -60,7 +63,7 @@ public class Enemy extends Solid implements Recyclable {
             public void run() {
                 coll_on = true;
             }
-        }, 60/bpm);
+        }, 60 / (bpm * speed));
 
         //destroy the enemy after some time
         Timer.schedule(new Task() {
@@ -68,11 +71,11 @@ public class Enemy extends Solid implements Recyclable {
             public void run() {
                 destroy();
             }
-        }, 3 * 60 / bpm);
+        }, 3 * 60 / (bpm * speed));
     }
 
 	public void destroy() {
-        Tween.to(actors, ActorTween.SCALE, 60 / bpm).target(0).ease(Back.IN)
+        Tween.to(actors, ActorTween.SCALE, 60 / (bpm * speed)).target(0).ease(Back.IN)
                 .start(GameScreen.getTweenManager()).setCallback(destroyCallback);
     }
 	

@@ -18,14 +18,20 @@ public class Ship extends Solid {
 	//values
 	float radius = 400;		//radius of the circular trajectory of the ship
 	float colRadius = 60;	//radius of the collision circle
+
+    float speed = 1;
+
     //external values
     float bpm;
     //assets
     private Image fire, body;
     private Sound moveSFX_1, moveSFX_2, explosionSFX;
-
     public void setBPM(float bpm) {
         this.bpm = bpm;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
     }
 
 	public void init() {
@@ -79,10 +85,7 @@ public class Ship extends Solid {
 	}
 	
 	public void renderAlive (float delta) {
-        actors.rotateBy(-3 * 60 * (bpm / 100) * delta);
-        //set the rotation/scaling origin of the ship the the center of the screen
-		//body.setOrigin(body.getWidth()/2, -(body.getY() - Common.getViewport().getWorldHeight()/2));
-
+        actors.rotateBy(-3 * 60 * (bpm / 100) * delta * speed);
 		Positions.setPolarPosition(actors, radius*actors.getScaleX(), actors.getRotation() + 90);
 	}
 	

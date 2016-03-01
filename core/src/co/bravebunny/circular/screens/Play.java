@@ -52,10 +52,8 @@ public class Play extends GameScreen implements Screen {
     private int coinFreq = 3;
     private float nextEventScore = 0;
     private static final int EVENT_SCORE_INC = 50;
-
-    public float getBPM() {
-    	return levels[selectedLevel].getBpm();
-    }
+    private float bpm;
+    private float speed = 1;
 	
     @Override
     public void render(float delta) {
@@ -69,6 +67,8 @@ public class Play extends GameScreen implements Screen {
 
     @Override
     public void show() {
+        bpm = levels[selectedLevel].getBpm();
+
     	bgRed = 0;
     	bgGreen = 89;
     	bgBlue = 118;
@@ -81,18 +81,18 @@ public class Play extends GameScreen implements Screen {
     	
     	ship = new Ship();
     	ship.setLayer(layerShip);
-        ship.setBPM(getBPM());
+        ship.setBPM(bpm);
 
         hud = new HUD();
         hud.setLayer(layerHUD);
 
         combo = new Combo();
-        combo.setBPM(getBPM());
+        combo.setBPM(bpm);
         combo.setLayer(layerHUD);
 
         score = new Score();
         score.setLevel(selectedLevel);
-        score.startTween(getBPM());
+        score.startTween(bpm);
         score.setLayer(layerHUD);
         Particles.show();
 
@@ -176,12 +176,12 @@ public class Play extends GameScreen implements Screen {
         }
 
         time += delta;
-        if (time >= 60/getBPM()) {
+        if (time >= 60/bpm) {
             if (ship.state == ShipState.ALIVE) {
                 //call all the rhythm related stuff
                 rhythm();
             }
-            time -= 60/getBPM();
+            time -= 60/bpm;
         }
 
         rotateScreenProgress(delta);
@@ -206,6 +206,8 @@ public class Play extends GameScreen implements Screen {
             hud.restartHide();
             score.setScore(0);
             nextEventScore = 0;
+            speed = 1;
+            bpm = levels[selectedLevel].getBpm();
 
             factory.resetAll();
 
@@ -218,7 +220,7 @@ public class Play extends GameScreen implements Screen {
         	    	ship.moveUp();
                     score.reset();
                 }
-        	}, 60/getBPM());
+        	}, 60/bpm);
     	}
     }
     
@@ -229,7 +231,8 @@ public class Play extends GameScreen implements Screen {
     	coinBeat = (coinBeat + 1)%coinFreq;
 
         Enemy enemy = factory.createEnemy();
-        enemy.setBPM(getBPM());
+        enemy.setSpeed(speed);
+        enemy.setBPM(bpm);
         enemy.setRotation(ship.getRotation() + 180);
         enemy.grow();
 		enemy.setLayer(layerObjects);
@@ -240,13 +243,13 @@ public class Play extends GameScreen implements Screen {
             }
             lastCoin = null;
             lastCoin = factory.createCoin();
-            lastCoin.setBPM(getBPM());
+            lastCoin.setBPM(bpm);
             lastCoin.setRotation(ship.getRotation() + 200);
             lastCoin.grow();
             lastCoin.setLayer(layerObjects);
 		}
 
-		circle.beat(getBPM());
+		circle.beat(bpm);
         score.inc(combo.getMultiplier());
 
         callEvents();
@@ -262,7 +265,7 @@ public class Play extends GameScreen implements Screen {
         if (nextEventScore == 0 || isEvenTime) nextEventScore += weight * EVENT_SCORE_INC;
 
         if (isEvenTime) {
-            rotateScreenEvent();
+            speedupEvent();
         }
     }
 
@@ -272,12 +275,17 @@ public class Play extends GameScreen implements Screen {
     private int rotateDirection = 1;
     private int rotationCount = 0;
 
-    public void rotateScreenEvent() {
+    public void rotateEvent() {
         rotateScreen = true;
     }
 
+    public void speedupEvent() {
+        speed *= 1.2;
+        ship.setSpeed(speed);
+    }
+
     public void rotateScreenProgress(float delta) {
-        if(rotationCount > 1) {
+        if(rotationCount > 0) {
             rotationCount = 0;
             rotateScreen = false;
         }
